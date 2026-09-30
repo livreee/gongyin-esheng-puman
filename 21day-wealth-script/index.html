@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>工银e生 · 21天扑满计划</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231E2A4A'/%3E%3Crect x='10' y='10' width='44' height='44' fill='none' stroke='%23FFC93C' stroke-width='5'/%3E%3Ctext x='32' y='46' font-size='36' font-weight='bold' text-anchor='middle' fill='%23FFC93C'%3Ee%3C/text%3E%3C/svg%3E">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; image-rendering: pixelated; -webkit-tap-highlight-color: transparent; }
+  :root {
+    --bg:#1E2A4A; --red:#C7000B; --gold:#FFC93C; --cream:#FFF8E7;
+    --pink:#FFB6C1; --green:#4CAF50; --panel:#2A3A5F; --dark:#1A2540;
+  }
+  html,body { height:100%; }
+  body {
+    font-family:'Microsoft YaHei','PingFang SC',sans-serif;
+    background: var(--bg); color:#fff; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:16px 16px;
+  }
+  .app { position:relative; z-index:1; max-width:520px; margin:0 auto; min-height:100vh; padding-bottom:84px; }
+
+  /* ---------- 通用 ---------- */
+  .screen { display:none; }
+  .screen.on { display:block; }
+  .pixel-font { font-family:'Courier New',monospace; letter-spacing:2px; }
+  .btn {
+    display:inline-block; background:var(--gold); color:var(--bg);
+    border:3px solid #000; box-shadow:3px 3px 0 #000; padding:10px 22px;
+    font-size:14px; font-weight:700; cursor:pointer; font-family:inherit;
+    transition:all .1s; text-align:center;
+  }
+  .btn:active { transform:translate(2px,2px); box-shadow:1px 1px 0 #000; }
+  .btn.red { background:var(--red); color:#fff; }
+  .btn.green { background:var(--green); color:#fff; }
+  .btn.gray { background:#8a93a8; color:#fff; }
+  .btn:disabled { background:#8a93a8; color:#ddd; cursor:default; transform:none; box-shadow:3px 3px 0 #000; }
+  .panel {
+    background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000;
+    padding:14px; margin-bottom:14px;
+  }
+  .panel-title { font-size:13px; font-weight:700; color:var(--gold); margin-bottom:10px; }
+  .mini { font-size:12px; color:rgba(255,255,255,.6); }
+  .toast {
+    position:fixed; top:60px; left:50%; transform:translateX(-50%);
+    background:var(--cream); color:var(--bg); border:3px solid #000; box-shadow:4px 4px 0 #000;
+    padding:10px 18px; font-size:13px; font-weight:700; z-index:1000;
+    display:none; max-width:80%; text-align:center; line-height:1.5;
+  }
+
+  /* ---------- 启动页 ---------- */
+  #start-screen { min-height:100vh; display:none; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; text-align:center; }
+  #start-screen.on { display:flex; }
+  .pixel-title { font-size:13px; color:var(--gold); letter-spacing:4px; margin-bottom:10px; text-shadow:2px 2px 0 #000; }
+  .main-title { font-size:40px; font-weight:900; color:#fff; text-shadow:4px 4px 0 var(--red),6px 6px 0 #000; line-height:1.2; }
+  .sub-title { font-size:18px; color:var(--gold); margin:8px 0 24px; text-shadow:2px 2px 0 #000; }
+  .start-pig { width:140px; height:140px; margin:0 auto 26px; filter:drop-shadow(4px 4px 0 #000); }
+  .start-tip { margin-top:16px; font-size:13px; color:rgba(255,255,255,.55); }
+
+  /* ---------- 选线页 ---------- */
+  #select-screen { padding:30px 18px; }
+  .select-title { text-align:center; font-size:22px; font-weight:900; color:#fff; text-shadow:2px 2px 0 #000; margin-bottom:6px; }
+  .select-sub { text-align:center; font-size:14px; color:rgba(255,255,255,.6); margin-bottom:22px; }
+  .story-card {
+    background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000;
+    padding:14px 16px; margin-bottom:12px; cursor:pointer; transition:all .1s;
+    display:flex; align-items:center; gap:12px;
+  }
+  .story-card:hover { background:#354873; }
+  .story-card:active { transform:translate(2px,2px); box-shadow:2px 2px 0 #000; }
+  .story-icon { font-size:30px; width:44px; text-align:center; }
+  .story-name { font-size:16px; font-weight:800; color:var(--gold); margin-bottom:3px; }
+  .story-desc { font-size:13px; color:rgba(255,255,255,.7); line-height:1.5; }
+
+  /* ---------- 底部导航 ---------- */
+  #nav-bar {
+    position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+    width:100%; max-width:520px; z-index:90;
+    background:var(--dark); border-top:3px solid #000;
+    display:none; grid-template-columns:repeat(5,1fr);
+  }
+  #nav-bar.on { display:grid; }
+  .nav-item {
+    padding:8px 2px 10px; text-align:center; cursor:pointer; color:rgba(255,255,255,.5);
+    font-size:10px; border-right:2px solid #111a2e;
+  }
+  .nav-item:last-child { border-right:none; }
+  .nav-item .ico { font-size:20px; display:block; margin-bottom:2px; }
+  .nav-item.active { color:var(--gold); background:#25345c; }
+  .nav-item.active .ico { filter:drop-shadow(0 0 4px var(--gold)); }
+
+  /* ---------- 小屋主界面 ---------- */
+  #home-screen { padding:0; position:relative; }
+  .room-wrap { position:relative; border-bottom:3px solid #000; overflow:hidden; }
+  .room-img { width:100%; aspect-ratio:4/3; background-size:cover; background-position:center; background-repeat:no-repeat; }
+  .room-spring { background-image:url('assets/room-spring.webp'); }
+  .room-summer { background-image:url('assets/room-summer.webp'); }
+  .room-autumn { background-image:url('assets/room-autumn.webp'); }
+  .room-winter { background-image:url('assets/room-winter.webp'); }
+  .room-veil { position:absolute; inset:0; background:linear-gradient(to bottom, rgba(30,42,74,0) 55%, rgba(30,42,74,.35) 100%); pointer-events:none; }
+  .room-top {
+    position:absolute; top:0; left:0; right:0; padding:10px 12px;
+    display:flex; justify-content:space-between; align-items:center;
+    text-shadow:2px 2px 0 #000; z-index:5;
+  }
+  @media (max-width:640px){ .room-top { padding-right:64px; } }
+  .room-top .story-label { font-size:13px; font-weight:800; color:var(--gold); background:rgba(30,42,74,.6); border:2px solid #000; padding:3px 8px; }
+  .room-top .day-label { font-size:12px; font-weight:800; color:#fff; background:var(--red); border:2px solid #000; padding:3px 8px; }
+  .gold-pill {
+    position:absolute; top:10px; left:50%; transform:translateX(-50%);
+    background:rgba(30,42,74,.75); border:2px solid var(--gold); color:var(--gold);
+    font-size:13px; font-weight:800; padding:3px 14px; z-index:6;
+    display:flex; align-items:center; gap:6px;
+  }
+  .season-tag {
+    position:absolute; right:12px; bottom:8px; z-index:5;
+    background:rgba(30,42,74,.7); border:2px solid #000; padding:2px 8px;
+    font-size:11px; color:#fff; font-weight:700;
+  }
+  /* 扑满在家区域 */
+  .pig-stage {
+    position:absolute; left:50%; bottom:8px; transform:translateX(-50%);
+    text-align:center; z-index:5;
+  }
+  .pig-img { width:120px; height:120px; cursor:pointer; filter:drop-shadow(3px 3px 0 #000); transition:transform .1s; display:none; }
+  .pig-img.on { display:block; }
+  .pig-img:active { transform:scale(.94); }
+  .pig-halo { display:none; position:absolute; inset:-10px; border-radius:50%; background:radial-gradient(circle, rgba(255,201,60,.55) 0%, transparent 70%); pointer-events:none; z-index:-1; }
+  .pig-stage.stage2 .pig-halo { display:block; }
+  .pig-stage.stage3 .pig-halo { display:block; background:radial-gradient(circle, rgba(255,215,0,.75) 0%, transparent 72%); }
+  .crown { display:none; position:absolute; top:-26px; left:50%; transform:translateX(-50%); font-size:28px; filter:drop-shadow(2px 2px 0 #000); }
+  .pig-stage.stage3 .crown { display:block; }
+  .pig-bubble {
+    position:absolute; bottom:130px; left:50%; transform:translateX(-50%);
+    background:#fff; color:var(--bg); border:3px solid #000; border-radius:4px;
+    padding:8px 12px; font-size:12px; font-weight:700; box-shadow:3px 3px 0 #000;
+    display:none; max-width:230px; line-height:1.5; z-index:10; white-space:normal;
+  }
+  .pig-bubble::after { content:''; position:absolute; bottom:-12px; left:50%; transform:translateX(-50%); border:7px solid transparent; border-top-color:#fff; }
+  .pig-exclaim {
+    position:absolute; top:-8px; right:-6px; color:var(--gold); font-size:20px; font-weight:900;
+    text-shadow:2px 2px 0 #000; animation:blink 1s infinite; display:none; z-index:6;
+  }
+  @keyframes blink { 0%,50%{opacity:1;} 51%,100%{opacity:0;} }
+  .travel-sign {
+    position:absolute; left:50%; bottom:20px; transform:translateX(-50%);
+    background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000;
+    padding:12px 18px; text-align:center; z-index:5; width:86%;
+  }
+  .travel-sign .t1 { font-size:15px; font-weight:900; color:var(--gold); margin-bottom:4px; }
+  .travel-sign .t2 { font-size:12px; color:rgba(255,255,255,.75); }
+  .travel-sign .t3 { font-size:12px; color:var(--pink); margin-top:6px; font-weight:700; }
+  /* 小屋下方信息 */
+  .home-panels { padding:14px 14px 0; }
+  .home-quick {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px;
+  }
+  .quick-card {
+    background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000;
+    padding:10px 6px; cursor:pointer; text-align:center;
+  }
+  .quick-card:active { transform:translate(2px,2px); box-shadow:2px 2px 0 #000; }
+  .quick-card .q-ico { font-size:26px; margin-bottom:6px; }
+  .quick-card .q-name { font-size:12px; font-weight:800; color:var(--gold); margin-bottom:3px; }
+  .quick-card .q-desc { font-size:11px; color:rgba(255,255,255,.65); }
+  .progress-box { background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000; padding:12px; margin-bottom:14px; }
+  .progress-text { display:flex; justify-content:space-between; font-size:12px; margin-bottom:8px; }
+  .progress-bar { height:16px; background:var(--dark); border:2px solid #000; position:relative; overflow:hidden; }
+  .progress-fill {
+    height:100%; width:0%; transition:width .5s;
+    background:repeating-linear-gradient(90deg,var(--red) 0px,var(--red) 8px,var(--gold) 8px,var(--gold) 16px);
+  }
+
+  /* ---------- 行囊窗 ---------- */
+  #bag-screen { padding:18px 14px; }
+  .bag-sum { text-align:center; padding:18px 10px; margin-bottom:14px; }
+  .bag-sum .num { font-size:34px; font-weight:900; color:var(--gold); text-shadow:3px 3px 0 #000; }
+  .bag-sum .lbl { font-size:12px; color:rgba(255,255,255,.6); margin-top:4px; }
+  .save-form { display:flex; gap:8px; margin-bottom:12px; }
+  .save-form input {
+    flex:1; background:var(--cream); border:3px solid #000; padding:10px 12px;
+    font-size:16px; font-weight:700; color:var(--bg); font-family:inherit;
+  }
+  .record-item {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 4px; border-bottom:1px dashed rgba(255,255,255,.12); font-size:12px;
+  }
+  .record-item:last-child { border-bottom:none; }
+  .record-item .amt { color:var(--gold); font-weight:800; }
+  .record-item .tag { background:var(--dark); border:2px solid #000; padding:1px 6px; font-size:10px; color:rgba(255,255,255,.7); }
+
+  /* ---------- 纪念品窗 ---------- */
+  #gift-screen { padding:18px 14px; }
+  .sou-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; }
+  .sou-item {
+    aspect-ratio:1; background:var(--dark); border:3px solid #000; border-radius:4px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; position:relative;
+  }
+  .sou-item .s-emoji { font-size:30px; margin-bottom:4px; filter:drop-shadow(2px 2px 0 #000); }
+  .sou-item .s-name { font-size:9px; color:rgba(255,255,255,.75); text-align:center; line-height:1.2; }
+  .sou-item.locked { background:#141c30; }
+  .sou-item.locked .s-emoji { filter:none; opacity:.35; }
+  .sou-item.locked .s-name { color:rgba(255,255,255,.3); }
+  .sou-item.new { outline:3px solid var(--gold); outline-offset:2px; animation:pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{outline-color:var(--gold);} 50%{outline-color:transparent;} }
+  .sou-detail {
+    position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:120;
+    width:82%; max-width:400px; background:var(--cream); color:var(--bg);
+    border:4px solid #000; box-shadow:6px 6px 0 #000; padding:18px; text-align:center;
+  }
+  .sou-detail .d-emoji { font-size:56px; margin-bottom:8px; }
+  .sou-detail .d-name { font-size:18px; font-weight:900; margin-bottom:6px; }
+  .sou-detail .d-from { font-size:12px; color:#888; margin-bottom:8px; }
+  .sou-detail .d-story { font-size:13px; line-height:1.7; margin-bottom:14px; }
+  .badge-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .badge-item { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:10px; color:rgba(255,255,255,.4); }
+  .badge-bean { width:38px; height:38px; margin-bottom:4px; display:grid; grid-template-columns:repeat(8,1fr); grid-template-rows:repeat(8,1fr); }
+  .bean-pixel { width:100%; height:100%; }
+  .badge-item.unlocked { color:var(--gold); }
+
+  /* ---------- 任务窗 ---------- */
+  #task-screen { padding:18px 14px; }
+  .task-card { background:var(--cream); color:var(--bg); border:3px solid #000; box-shadow:4px 4px 0 #000; padding:14px; margin-bottom:14px; }
+  .task-card .t-title { font-size:14px; font-weight:900; color:var(--red); margin-bottom:6px; }
+  .task-card .t-content { font-size:13px; line-height:1.7; margin-bottom:10px; }
+  .task-card .t-knowledge { background:#F0E6C8; padding:8px 10px; border-left:4px solid var(--red); font-size:12px; margin-bottom:10px; line-height:1.5; }
+  .challenge-card { background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000; padding:14px; margin-bottom:14px; }
+  .challenge-card .c-title { font-size:14px; font-weight:900; color:var(--gold); margin-bottom:6px; }
+  .challenge-card .c-desc { font-size:12px; color:rgba(255,255,255,.8); line-height:1.6; margin-bottom:10px; }
+  .challenge-card .c-form { display:flex; gap:8px; }
+  .challenge-card input { flex:1; background:var(--cream); border:3px solid #000; padding:8px 10px; font-size:16px; font-weight:700; color:var(--bg); font-family:inherit; }
+  .quiz-card { background:var(--panel); border:3px solid #000; box-shadow:4px 4px 0 #000; padding:14px; margin-bottom:14px; }
+  .quiz-card .q-title { font-size:14px; font-weight:900; color:var(--gold); margin-bottom:8px; }
+  .quiz-card .q-text { font-size:13px; line-height:1.6; margin-bottom:10px; }
+  .quiz-opt {
+    display:block; width:100%; text-align:left; background:var(--dark); border:2px solid #000;
+    color:#fff; padding:9px 12px; font-size:12px; margin-bottom:6px; cursor:pointer; font-family:inherit;
+  }
+  .quiz-opt:hover { background:#354873; }
+  .quiz-opt.correct { background:var(--green); color:#fff; }
+  .quiz-opt.wrong { background:var(--red); color:#fff; }
+  .quiz-explain { display:none; font-size:12px; background:#F0E6C8; color:var(--bg); padding:8px 10px; border-left:4px solid var(--green); margin-top:6px; line-height:1.5; }
+  .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
+  .cal-day { aspect-ratio:1; background:var(--dark); border:2px solid #000; display:flex; align-items:center; justify-content:center; font-size:10px; color:rgba(255,255,255,.4); cursor:pointer; }
+  .cal-day.active { background:var(--gold); color:var(--bg); font-weight:800; }
+  .cal-day.done { background:var(--green); color:#fff; }
+
+  /* ---------- 小队窗 ---------- */
+  #team-screen { padding:18px 14px; }
+  .team-goal { text-align:center; padding:16px 10px; margin-bottom:14px; }
+  .team-goal .g-title { font-size:14px; font-weight:900; color:var(--gold); margin-bottom:8px; }
+  .team-member { display:flex; justify-content:space-between; align-items:center; padding:10px 4px; border-bottom:1px dashed rgba(255,255,255,.12); font-size:13px; }
+  .team-member:last-child { border-bottom:none; }
+  .team-member .m-name { display:flex; align-items:center; gap:8px; }
+  .team-member .m-avatar { width:30px; height:30px; background:var(--dark); border:2px solid #000; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .team-member .m-progress { font-size:12px; color:rgba(255,255,255,.6); }
+  .team-member .m-bar { width:80px; height:10px; background:var(--dark); border:2px solid #000; margin-top:4px; }
+  .team-member .m-fill { height:100%; width:0%; background:var(--gold); }
+
+  /* ---------- 结业页 ---------- */
+  #finish-screen { min-height:100vh; display:none; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; text-align:center; }
+  #finish-screen.on { display:flex; }
+  .finish-title { font-size:30px; font-weight:900; color:var(--gold); text-shadow:3px 3px 0 #000; margin-bottom:16px; }
+  .finish-pig { width:150px; height:150px; margin:10px auto 22px; filter:drop-shadow(4px 4px 0 #000); }
+  .finish-text { font-size:14px; line-height:2; color:rgba(255,255,255,.9); margin-bottom:22px; }
+
+  /* ---------- 音乐按钮 ---------- */
+  .music-btn {
+    position:fixed; top:14px; right:14px; z-index:99;
+    background:rgba(0,0,0,.35); border:2px solid var(--gold); color:var(--gold);
+    width:44px; height:44px; min-width:44px; min-height:44px; font-size:18px; cursor:pointer; font-family:inherit;
+  }
+  /* 投币动画 */
+  .coin-fly {
+    position:fixed; width:22px; height:22px; background:var(--gold); border:2px solid #000; border-radius:50%;
+    z-index:999; pointer-events:none; animation:coinFly .9s ease-in forwards;
+  }
+  @keyframes coinFly {
+    0%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:translate(0,120px) scale(.4);}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== 启动页 ===== -->
+  <div id="start-screen" class="screen on">
+    <div class="pixel-title">ICBC e-SHENG · 21-DAY PIGGY BANK</div>
+    <h1 class="main-title">工银e生</h1>
+    <div class="sub-title">· 21天扑满计划 ·</div>
+    <img class="start-pig" src="assets/pig-default.webp" alt="扑满">
+    <button class="btn" onclick="startGame()">▶ 开始养扑满</button>
+    <div class="start-tip">每天5分钟 · 扑满会出门旅行 · 带回属于你的纪念品</div>
+  </div>
+
+  <!-- ===== 选线页 ===== -->
+  <div id="select-screen" class="screen">
+    <div class="select-title">选择你的人生剧本</div>
+    <div class="select-sub">每条剧本都是21天的攒钱成长之旅，扑满会陪着你</div>
+    <div id="storyList"></div>
+  </div>
+
+  <!-- ===== 小屋主界面 ===== -->
+  <div id="home-screen" class="screen">
+    <div class="room-wrap">
+      <div class="room-img room-spring" id="roomImg" role="img" aria-label="小屋"></div>
+      <div class="room-veil"></div>
+      <div class="room-top">
+        <span class="story-label" id="hStory"></span>
+        <span class="day-label" id="hDay"></span>
+      </div>
+      <div class="gold-pill" id="hGold">💰 <span id="hGoldNum">0</span> 金珠</div>
+      <div class="season-tag" id="seasonTag"></div>
+
+      <!-- 扑满在家 -->
+      <div class="pig-stage stage1" id="pigStage">
+        <div class="pig-exclaim" id="pigExclaim">!</div>
+        <div class="crown">👑</div>
+        <div class="pig-halo"></div>
+        <img class="pig-img on" data-face="default" src="assets/pig-default.webp" alt="扑满" onclick="pigTalk()">
+        <img class="pig-img" data-face="happy" src="assets/pig-happy.webp" alt="扑满开心" onclick="pigTalk()">
+        <img class="pig-img" data-face="surprised" src="assets/pig-surprised.webp" alt="扑满惊讶" onclick="pigTalk()">
+        <img class="pig-img" data-face="plead" src="assets/pig-plead.webp" alt="扑满期待" onclick="pigTalk()">
+        <img class="pig-img" data-face="full" src="assets/pig-full.webp" alt="扑满满足" onclick="pigTalk()">
+        <img class="pig-img" data-face="sleep" src="assets/pig-sleep.webp" alt="扑满安睡" onclick="pigTalk()">
+        <div class="pig-bubble" id="pigBubble"></div>
+      </div>
+
+      <!-- 扑满旅行中 -->
+      <div class="travel-sign" id="travelSign" style="display:none;">
+        <div class="t1">🧳 扑满旅行中</div>
+        <div class="t2" id="travelMsg">它正替你去看世界</div>
+        <div class="t3" id="travelCountdown"></div>
+      </div>
+    </div>
+
+    <div class="home-panels">
+      <div class="home-quick">
+        <div class="quick-card" onclick="goTab('task')">
+          <div class="q-ico">📖</div>
+          <div class="q-name">今日任务</div>
+          <div class="q-desc" id="quickTask"></div>
+        </div>
+        <div class="quick-card" onclick="goTab('gift')">
+          <div class="q-ico">🎁</div>
+          <div class="q-name">旅行纪念品</div>
+          <div class="q-desc" id="quickSou">已收集 0 / 12 件</div>
+        </div>
+        <div class="quick-card" onclick="goTab('team')">
+          <div class="q-ico">👥</div>
+          <div class="q-name">攒钱小队</div>
+          <div class="q-desc" id="quickTeam">一起去看看</div>
+        </div>
+      </div>
+
+      <div class="progress-box">
+        <div class="progress-text"><span>扑满成长进度</span><span id="progressText">0 / 21</span></div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 行囊窗 ===== -->
+  <div id="bag-screen" class="screen">
+    <div class="panel bag-sum">
+      <div class="num" id="bagGoldNum">0</div>
+      <div class="lbl">已喂扑满的金珠 · 攒下的每一颗都在</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">💰 随手存一笔</div>
+      <div class="save-form">
+        <input type="number" id="saveInput" placeholder="输入金额，如 100" min="0" step="0.01">
+        <button class="btn green" onclick="quickSave()">存入</button>
+      </div>
+      <div class="mini">存下的钱记在这里，扑满会帮你看着它长大</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">📒 存钱记录</div>
+      <div id="recordList"><div class="mini">还没有记录，去完成任务吧</div></div>
+    </div>
+  </div>
+
+  <!-- ===== 纪念品窗 ===== -->
+  <div id="gift-screen" class="screen">
+    <div class="panel">
+      <div class="panel-title">🎁 扑满带回来的纪念品</div>
+      <div class="mini" style="margin-bottom:10px;">扑满每次旅行都会带回一件纪念品，集齐它们解锁拼豆成就</div>
+      <div class="sou-grid" id="souGrid"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">🧩 拼豆徽章收集册</div>
+      <div class="badge-grid" id="badgeGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== 任务窗 ===== -->
+  <div id="task-screen" class="screen">
+    <div id="taskStoryCard"></div>
+    <div id="challengeCard"></div>
+    <div id="quizCard"></div>
+    <div class="panel">
+      <div class="panel-title">📅 21天旅程日历</div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+  </div>
+
+  <!-- ===== 小队窗 ===== -->
+  <div id="team-screen" class="screen">
+    <div class="panel team-goal">
+      <div class="g-title">🎯 全队闯关：一起攒满 84 颗金珠</div>
+      <div class="progress-bar"><div class="progress-fill" id="teamFill"></div></div>
+      <div class="mini" id="teamProgress" style="margin-top:6px;">0 / 84</div>
+    </div>
+    <div class="panel">
+      <div class="panel-title">👥 小队成员</div>
+      <div id="teamList"></div>
+      <div class="mini" style="margin-top:8px;">只比坚持、不比金额——队友进度是模拟示例</div>
+    </div>
+  </div>
+
+  <!-- ===== 结业页 ===== -->
+  <div id="finish-screen" class="screen">
+    <div class="finish-title">🎉 恭喜结业！</div>
+    <img class="finish-pig" src="assets/pig-happy.webp" alt="扑满毕业">
+    <div class="finish-text">
+      21天前，你只是想试试攒钱<br>
+      21天后，你拥有了第一只装满的扑满<br>
+      它去过了远方，带回了一路的故事<br><br>
+      这不是结束，而是你理财人生的开始<br>
+      工银e生，陪你攒好人生每一颗金珠
+    </div>
+    <div id="finishSou"></div>
+    <button class="btn red" onclick="restart()">再养一只扑满</button>
+  </div>
+
+</div>
+
+<!-- 底部导航 -->
+<div id="nav-bar">
+  <div class="nav-item active" data-tab="home" onclick="goTab('home')"><span class="ico">🏠</span>小屋</div>
+  <div class="nav-item" data-tab="bag" onclick="goTab('bag')"><span class="ico">🧳</span>行囊</div>
+  <div class="nav-item" data-tab="gift" onclick="goTab('gift')"><span class="ico">🎁</span>纪念</div>
+  <div class="nav-item" data-tab="task" onclick="goTab('task')"><span class="ico">📖</span>任务</div>
+  <div class="nav-item" data-tab="team" onclick="goTab('team')"><span class="ico">👥</span>小队</div>
+</div>
+
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()">♪</button>
+<div class="toast" id="toast"></div>
+<div class="sou-detail" id="souDetail" style="display:none;"></div>
+
+<script>
+/* ================= 剧情数据（五条线 × 21天） ================= */
+const STORIES = [
+{name:'我的小家', icon:'🏠', desc:'从毛坯到温馨小窝，和TA一起攒出第一个家',
+ days:[
+  ['Day 1 · 觉醒：看见你的钱','欢迎来到你的小家。今天先不着急攒钱，我们来做一件小事：把你这个月的收入和花出去的钱，认认真真看一遍。','理财第一步：不是赚更多，而是先看清钱从哪来、到哪去。'],
+  ['Day 2 · 算一算装修要多少钱','你看着空荡荡的毛坯房，开始盘算：刷墙、地板、家具、家电……先列个清单，不用一步到位，但心里要有数。','目标越具体，攒钱越有动力。把“装修”拆成一件件小事。'],
+  ['Day 3 · 第一笔家装基金','今天存入第一笔家装基金。不用多，100块也是开始。扑满肚子里有了第一颗金珠。','智存宝：每月自动转存定期，小钱也能攒起来。'],
+  ['Day 4 · 避开装修套餐陷阱','装修公司打来电话：“全屋整装只要3万9！”记住：低价套餐永远是钩子，增项才是利润。','凡是“先交定金再出方案”的，一律三思。'],
+  ['Day 5 · 自己动手也很香','不是所有东西都要买新的。刷墙可以自己来，二手家具淘一淘，省钱又有温度。','攒钱不是苦行，是把钱花在真正重要的地方。'],
+  ['Day 6 · 应急金很重要','装修到一半水管爆了？别怕，你留了一笔“以防万一的钱”。','应急金=3-6个月生活费，这是你的底气。'],
+  ['Day 7 · 第一周小结','一周过去了，你的小家有了第一面墙。回头看，原来不知不觉已经走了这么远。','每周复盘，比埋头攒钱更重要。'],
+  ['Day 8 · 积累：一件一件添家具','第二周开始，我们给小家添第一件家具——沙发。每天攒一点，沙发基金慢慢涨。','心愿定投：为每个小目标开一个专属账户。'],
+  ['Day 9 · 买家电不踩坑','大促来了，各种满减看花眼。记住：需求第一，优惠第二。为了省钱买不需要的，才是最贵的。','价格锚点是商家的套路，你只看自己的预算。'],
+  ['Day 10 · 两个人攒更快','和TA一起攒钱，进度翻倍。设立共同账户，每一笔都是家的样子。','情侣攒钱：公开透明，目标一致。'],
+  ['Day 11 · 物业费也是一笔钱','以前没注意，物业费、取暖费、宽带费……固定支出也要提前留好。','固定支出提前划出来，就不会突然没钱。'],
+  ['Day 12 · 旧物置换','把不用的东西卖掉，换成小家的基金。断舍离的同时，还能回血。','每一笔小钱，都是未来的大钱。'],
+  ['Day 13 · 装修贷怎么选','差一点钱装修？银行装修分期了解一下。看清利率和手续费，别被套路。','年化利率才是真实成本，不要只看每月还多少。'],
+  ['Day 14 · 第二周小结','沙发有了，电视有了，小家越来越像样子了。','积累的力量：每天一点点，时间会给你答案。'],
+  ['Day 15 · 守护：装修防骗指南','第三周，我们学保护自己。“免费设计”背后是高价材料，“熟人介绍”可能更坑。','凡事留合同，口头承诺不算数。'],
+  ['Day 16 · 定金还是订金','一字之差，天差地别。定金不能退，订金可以退。签合同前看清楚。','法律常识也是理财的一部分。'],
+  ['Day 17 · 空气质量不能省','装修可以省，除醛不能省。健康是最大的财富。','有些钱省了，未来会花更多。'],
+  ['Day 18 · 家财险了解一下','房子装好了，给它一份保障。家财险不贵，安心很贵。','保险是兜底，不是消费。'],
+  ['Day 19 · 入住前的准备','终于要入住了。算一算搬家成本，安排好时间。','凡事提前规划，就不会临时慌乱花钱。'],
+  ['Day 20 · 小家的意义','站在自己装修的小家里，你会明白：攒钱不是目的，生活才是。','钱是工具，幸福才是目标。'],
+  ['Day 21 · 我们的家','21天，从毛坯到温馨小家。第一只扑满满了，你们的故事才刚开始。','恭喜完成第一条剧本！解锁“小家守护者”徽章。']]},
+{name:'宝贝计划', icon:'👶', desc:'迎接新生命，为宝宝攒好第一笔成长基金',
+ days:[
+  ['Day 1 · 觉醒：迎接新生命','得知宝宝要来的那一刻，你开始想：我准备好当爸妈了吗？先从钱开始准备吧。','育儿是长期工程，早准备早轻松。'],
+  ['Day 2 · 算一算生娃要多少钱','产检、生产、月子、奶粉、尿不湿……列个清单，心里有底。','把大目标拆成小数字，就不那么可怕了。'],
+  ['Day 3 · 第一笔宝宝基金','今天存入第一笔宝宝基金。小小的一笔，是给TA的第一份礼物。','儿童账户：从小给宝宝攒钱，培养财商。'],
+  ['Day 4 · 生育保险别浪费','生育险能报多少钱？产假工资怎么发？这些福利先搞清楚。','社保里藏着很多福利，别白白错过。'],
+  ['Day 5 · 母婴用品不是越贵越好','进口奶粉、高端婴儿车……商家总说“给宝宝最好的”，但适合的才是最好的。','消费主义最爱绑架父母的爱。'],
+  ['Day 6 · 待产包清单','准备待产包，只买刚需，不买焦虑。很多东西生完才发现根本没没用。','清单购物法：列好再买，不逛不囤。'],
+  ['Day 7 · 第一周小结','一周过去，宝宝基金有了第一笔积累。期待和TA见面的日子。','等待的过程也是一种幸福。'],
+  ['Day 8 · 积累：每月固定存一点','第二周，养成每月发工资先存宝宝基金的习惯。','教育金：越早开始，复利越给力。'],
+  ['Day 9 · 警惕“育儿神药”','朋友圈的“增高药”“补脑神药”全是智商税。宝宝健康，靠科学不靠玄学。','凡是包治百病的，全是骗子。'],
+  ['Day 10 · 儿童医保一定要办','宝宝出生第一件事：办医保。小病小痛都能报，花不了多少钱。','国家福利，人手一份。'],
+  ['Day 11 · 月嫂还是月子中心','怎么选？看预算，也看需求。没有标准答案，适合自己就好。','最贵的不一定是最好的。'],
+  ['Day 12 · 二手母婴也很香','婴儿床、安全座椅、绘本……很多东西用不久，买二手性价比超高。','宝宝长得快，不必追求全新。'],
+  ['Day 13 · 教育金怎么存','想让宝宝以后读书无忧？教育金提前规划。强制储蓄，专款专用。','年金险、定期定投，都是教育金的好工具。'],
+  ['Day 14 · 第二周小结','两周了，宝宝基金越来越厚实。你也越来越像个靠谱的爸妈。','父母的规划，是孩子的起跑线。'],
+  ['Day 15 · 守护：儿童防骗指南','第三周，学保护宝宝。“免费测微量元素”“上门拍满月照”都是套路。','凡是免费的，往往最贵。'],
+  ['Day 16 · 疫苗怎么选','一类苗必打，二类苗看预算。不是越贵越好，也不是越便宜越省。','健康投资，该花就花。'],
+  ['Day 17 · 少儿医保+商业险','社保是基础，商业险做补充。大病小病都有兜底。','保险先保大人，再保小孩。'],
+  ['Day 18 · 产后恢复不踩坑','产后修复机构套路多，几万块的套餐未必有用。听医生的，别听销售的。','医疗消费，认准正规机构。'],
+  ['Day 19 · 带娃出行准备','第一次带宝宝出门，东西一大堆。提前列清单，从容不慌乱。','有准备，就不焦虑。'],
+  ['Day 20 · 为人父母的意义','看着宝宝熟睡的脸，你会明白：所有的辛苦和攒钱，都值得。','爱是最大的财富。'],
+  ['Day 21 · 你好，宝贝','21天，从得知消息到做好准备。第一只扑满满了，你们的三口之家才刚开始。','恭喜完成！解锁“超级爸妈”徽章。']]},
+{name:'说走就走', icon:'✈️', desc:'装满行李箱，去看想看的世界',
+ days:[
+  ['Day 1 · 觉醒：想去看世界','你盯着手机里的风景照，突然想：为什么不能说走就走？先从攒旅行基金开始。','所有的“说走就走”，背后都有准备。'],
+  ['Day 2 · 选目的地','海边还是雪山？大城市还是小众村落？先定目的地，再算预算。','目标明确，攒钱才有方向。'],
+  ['Day 3 · 第一笔旅行基金','今天存入第一笔旅行基金。每一块钱，都离目的地更近一步。','旅行钱包：专门账户，专款专用。'],
+  ['Day 4 · 机票套路多','“99元飞全国”？别信。低价票要么退改费巨贵，要么藏着捆绑消费。','机票总价才是真价格，别只看票面。'],
+  ['Day 5 · 住宿怎么选','酒店、民宿、青旅各有各的好。安全第一，舒适第二，价格第三。','多看真实评价，别被网图骗。'],
+  ['Day 6 · 旅行预算表','交通、住宿、吃饭、门票、购物……把预算拆细，心里有数不超支。','预算不是束缚，是让你玩得更安心。'],
+  ['Day 7 · 第一周小结','一周过去，旅行基金有了第一笔。地图上的那个点，越来越近了。','期待也是旅行的一部分。'],
+  ['Day 8 · 积累：每天攒一点','第二周，每天往旅行基金里存一点。积少成多。','积存金：1克起投，灵活存取，小钱也能投。'],
+  ['Day 9 · 警惕低价旅游团','“599元云南双飞6日”？购物点比景点多，不买不让走。低价团都是坑。','明显低于成本的，一定有诈。'],
+  ['Day 10 · 外币怎么换','出国旅行，换外币有讲究。银行换比机场划算，提前关注汇率。','外汇预约：手机银行就能办，不用跑网点。'],
+  ['Day 11 · 旅行保险别忘买','几十块钱的旅行险，航班延误、行李丢失都能赔。买个安心。','出门在外，保障先行。'],
+  ['Day 12 · 免票/半价攻略','学生证、教师资格证、老年证……很多景点有优惠，别忘带。','该省的省，该花的花。'],
+  ['Day 13 · 行李打包技巧','断舍离式打包：只带必需品。行李越轻，玩得越爽。','旅行的意义，不是带更多东西回来。'],
+  ['Day 14 · 第二周小结','两周了，旅行基金差不多够了。开始做攻略吧！','努力攒钱，然后好好享受。'],
+  ['Day 15 · 守护：旅行防骗','第三周，学保护自己。“老乡带路”“免费拍照”“特色体验”都是宰客套路。','景区里的“热心人”，多半是生意人。'],
+  ['Day 16 · 住宿安全','住酒店反锁门，检查摄像头。女生独自出行更要小心。','安全永远是第一位的。'],
+  ['Day 17 · 银行卡防盗刷','出门带一张专用卡，别把所有钱都放一张卡里。开通交易提醒。','工银信使：账户变动实时通知。'],
+  ['Day 18 · 购物陷阱多','旅游特产、玉石珠宝、当地药材……很多都是专门宰游客的。','不懂的东西，别乱买。'],
+  ['Day 19 · 出发前检查','证件、机票、酒店、行李……最后检查一遍。','提前准备，从容出发。'],
+  ['Day 20 · 旅行的意义','站在向往已久的风景里，你会明白：攒钱的辛苦，在这一刻都值了。','世界那么大，值得去看看。'],
+  ['Day 21 · 出发！','21天，从念头到出发。第一只扑满满了，你的下一站在哪里？','恭喜完成！解锁“世界玩家”徽章。']]},
+{name:'自由Gap', icon:'💼', desc:'给自己一段gap期，攒够底气再出发',
+ days:[
+  ['Day 1 · 觉醒：想停下来歇歇','上班上累了，想gap一段时间？先别急着辞职，算一算你能歇多久。','裸辞之前，先算好你的“fire数字”。'],
+  ['Day 2 · 你的底气有多少','存款多少？每月固定支出多少？没有收入能撑几个月？','应急金是gap期的底气。'],
+  ['Day 3 · 第一笔Gap基金','今天存入第一笔Gap基金。这是你的自由准备金。','天天盈：随存随取，收益比活期高。'],
+  ['Day 4 · 别信“躺赚项目”','gap期刷到“足不出户月入过万”“被动收入”？全是割韭菜的。','你贪的是利息，人家图的是本金。'],
+  ['Day 5 · 社保别断缴','辞职了社保怎么办？可以自己交，也可以找过渡。断缴影响很多。','社保是基础保障，尽量别断。'],
+  ['Day 6 · Gap期预算','gap期间不上班，消费也要降级。做一份“待业预算”。','收入降，支出也跟着降，就不会慌。'],
+  ['Day 7 · 第一周小结','一周过去，Gap基金有了第一笔。你离自由又近了一步。','真正的自由，是有选择的权利。'],
+  ['Day 8 · 积累：为自由攒底气','第二周，继续为gap期攒底气。每多存一块，就多一天的自由。','强制储蓄：发工资先存一部分，剩下的再花。'],
+  ['Day 9 · 副业不是那么好做的','人人都在说副业赚钱，但大多数人都是交学费。主业做不好，副业也白搭。','先把主业做到极致，再考虑副业。'],
+  ['Day 10 · 学习也是投资','gap期不是纯躺平，学个新技能，回来更好找工作。','投资自己，永远不会亏。'],
+  ['Day 11 · 医保怎么自己交','居民医保、灵活就业社保……搞清楚哪种适合你。','手机银行就能缴社保，不用跑大厅。'],
+  ['Day 12 · 降低生活成本','自己做饭比外卖省，取消没用的会员。gap期省钱就是赚钱。','小钱积累起来，就是大数目。'],
+  ['Day 13 · 公积金怎么用','辞职了公积金怎么办？可以提取，也可以转移。','公积金是隐形存款，别浪费。'],
+  ['Day 14 · 第二周小结','两周了，Gap基金越来越厚实。你可以更从容地做决定了。','钱给你说“不”的权利。'],
+  ['Day 15 · 守护：避坑指南','第三周，学保护自己。gap期最容易遇到的坑：培训贷、加盟骗局、刷单。','凡是让你先交钱的工作，全是骗子。'],
+  ['Day 16 · 培训贷套路深','“先学习后付费”“包就业”？最后工作没找到，还背了一身债。','求职遇到贷款，直接走。'],
+  ['Day 17 · 加盟都是坑','奶茶店、便利店……加盟90%都是亏的。别被“轻松当老板”忽悠。','当老板没那么容易。'],
+  ['Day 18 · 刷单违法','“足不出户日赚300”？刷单是违法行为，而且全是诈骗。','贪小便宜吃大亏。'],
+  ['Day 19 · 重新出发的准备','gap期快结束了，更新简历，调整状态。','休息是为了更好地出发。'],
+  ['Day 20 · 自由的意义','这段gap期，你想清楚了很多事。钱不是目的，是让你有选择权。','真正的富有，是时间的自由。'],
+  ['Day 21 · 新的开始','21天，从焦虑到从容。第一只扑满满了，你有底气选择自己想要的生活。','恭喜完成！解锁“自由玩家”徽章。']]},
+{name:'第一次独居', icon:'🛏️', desc:'离开家的第一个出租屋，也是自己的小天地',
+ days:[
+  ['Day 1 · 觉醒：一个人的生活','终于要搬出去住了。自由的代价是，所有事都要自己扛。先从管钱开始。','独居是最好的理财实习。'],
+  ['Day 2 · 房租占比多少合适','房租太贵会吃掉所有工资。建议房租不超过月收入的30%。','收入的分配：房租30%，生活40%，储蓄30%。'],
+  ['Day 3 · 第一笔独居基金','今天存入第一笔独居基金。押金、中介费、首月房租，都是要准备的。','工银薪管家：工资到账自动分配。'],
+  ['Day 4 · 租房黑中介套路','“房源已租，我给你推荐别的”“押金不退”“各种杂费”……黑中介套路多。','找房走正规渠道，别信路边小广告。'],
+  ['Day 5 · 看房要注意什么','采光、隔音、水电、家电、邻居……看房别只看装修。','住得舒服，比好看重要。'],
+  ['Day 6 · 合同一定要看','租房合同别乱签。租期、押金、维修责任、违约条款，一条条看清楚。','口头承诺不算数，写在合同里才作数。'],
+  ['Day 7 · 第一周小结','一周过去，房子找好了，独居生活即将开始。','第一步总是最难的。'],
+  ['Day 8 · 积累：布置你的小窝','第二周，开始布置出租屋。一点点添置，慢慢有家的感觉。','生活是自己的，房子是租的。'],
+  ['Day 9 · 二手家具真香','衣柜、书桌、椅子……买二手的，搬家时也不心疼。','能用就行，不必追求全新。'],
+  ['Day 10 · 水电费也是钱','以前在家没感觉，自己交电费才知道：空调、热水器都是电老虎。','养成随手关灯的习惯，小钱也是钱。'],
+  ['Day 11 · 自己做饭省钱又健康','外卖一顿30块，自己做饭10块钱搞定。一个月能省不少。','吃饭是最大的隐形支出。'],
+  ['Day 12 · 宽带怎么选','三大运营商对比，别办捆绑套餐。单宽带最划算。','捆绑套餐看起来便宜，其实绑了很多没用的。'],
+  ['Day 13 · 物业费网费公摊','和室友合租，费用算清楚。亲兄弟明算账，关系才长久。','谈钱不伤感情，不谈钱才伤。'],
+  ['Day 14 · 第二周小结','两周了，小窝越来越温馨。你也越来越会过日子了。','生活的技能，都是钱堆出来的经验。'],
+  ['Day 15 · 守护：独居安全','第三周，学保护自己。独居女生尤其要注意安全。','安全意识，是最好的保镖。'],
+  ['Day 16 · 门锁一定要换','入住第一件事：换锁芯。不知道之前有多少人有钥匙。','几十块钱，买个安心。'],
+  ['Day 17 · 快递外卖注意','外卖不要写详细门牌号，快递收件用昵称。保护好个人信息。','隐私也是一种安全。'],
+  ['Day 18 · 备用钥匙放哪里','备用钥匙放靠谱朋友那，或者藏在安全的地方。别把自己锁门外。','凡事留一手。'],
+  ['Day 19 · 一个人生病','独居最怕生病。常备常用药，知道附近的医院。','健康是独居的本钱。'],
+  ['Day 20 · 独居的意义','一个人生活，你学会了自己照顾自己，也学会了和自己相处。','独立，是最大的成长。'],
+  ['Day 21 · 你好，新生活','21天，从陌生到习惯。第一只扑满满了，你的独居生活才刚刚开始。','恭喜完成！解锁“独立生活家”徽章。']]}
+];
+
+/* ================= 旅行纪念品库 ================= */
+const SOUVENIRS = [
+  {emoji:'🏔️', name:'雪山的存钱罐', from:'北方的雪山', story:'在雪山脚下，我学会了：钱要慢慢攒，路要慢慢走。雪再厚，也是千片万片积出来的。'},
+  {emoji:'🌊', name:'海边的贝壳', from:'南方的海岸', story:'海浪教会我：潮起潮落，钱也要有涨有跌的平常心。贝壳虽小，却是海送给我的礼物。'},
+  {emoji:'🍜', name:'一碗热汤面', from:'市井小巷', story:'最暖的不是贵，是刚刚好的温度。省钱也能很幸福，一碗面就够。'},
+  {emoji:'🎐', name:'夏日的风铃', from:'古镇小巷', story:'风吹铃响，像极了复利悄悄生长的声音——不喧哗，却一直在积累。'},
+  {emoji:'🌾', name:'麦田的麦穗', from:'金色麦田', story:'一颗麦穗是谷粒，千颗麦穗是丰收。攒钱，也是一穗一穗捡起来的。'},
+  {emoji:'🏮', name:'元宵的灯笼', from:'花灯夜市', story:'灯亮一盏，路就亮一段。应急金，就是人生路上的那盏灯。'},
+  {emoji:'🍁', name:'秋天的枫叶', from:'红叶山', story:'枫叶红了又落，资产配置也要四季轮换。落下的，是为了明年更红。'},
+  {emoji:'🎿', name:'雪地护目镜', from:'滑雪场', story:'看清路，才能滑得稳。投资先看风险，再看收益，别被雪景迷了眼。'},
+  {emoji:'🌸', name:'春天的花瓣', from:'樱花道', story:'花会再开，钱会再攒。耐心，是最好的复利。'},
+  {emoji:'📮', name:'远方的明信片', from:'世界各地', story:'世界那么大，先从小目标开始看。明信片上的风景，都是攒出来的。'},
+  {emoji:'🧭', name:'指南针', from:'荒野营地', story:'迷路时指南针最重要——就像人生，要有自己的财务规划方向。'},
+  {emoji:'🌟', name:'流星许愿石', from:'星空营地', story:'把愿望写下来，把存钱坚持下来，都会实现的。我替你许了一个。'}
+];
+
+/* ================= 随机存钱挑战 ================= */
+const CHALLENGES = [
+  {amount:5.20, desc:'今天存下 5.20 元，谐音“我爱你”——给未来的自己一点爱。'},
+  {amount:13.14, desc:'13.14 = 一生一世。坚持攒钱，就是对自己最长情的告白。'},
+  {amount:52.0, desc:'52.0 = 我爱你。把今天的爱，投给以后那个更有底气的你。'},
+  {amount:6.66, desc:'6.66 谐音“顺顺”，祝你的钱包一路顺风。'},
+  {amount:8.88, desc:'8.88 谐音“发发”，小目标也要讨个好彩头。'},
+  {amount:9.99, desc:'9.99 谐音“久久”，长长久久，慢慢变富。'},
+  {amount:20.20, desc:'20.20 谐音“爱你爱你”，攒钱也是爱自己的方式。'},
+  {amount:66.6, desc:'66.6 = 顺顺顺。今天就把这份顺利存进扑满里。'}
+];
+
+/* ================= 理财答题库（零黑话） ================= */
+const QUIZ = [
+  {q:'小明每月工资6000元，想开始攒钱。第一个月最该先做什么？', opts:['买最新款手机犒劳自己','把收入和支出记下来，看看钱去哪了','听朋友推荐买一只股票','辞职去创业'], ans:1, exp:'理财第一步：不是赚更多，而是先看清钱从哪来、到哪去。'},
+  {q:'以下哪种做法更容易存下钱？', opts:['工资一到账就先存一部分，剩下的再花','月底剩多少存多少','办一张高额度信用卡随便刷','等涨工资再存'], ans:0, exp:'“先储蓄、后消费”是攒钱第一法则。'},
+  {q:'银行定期存款和活期存款的区别，正确的是？', opts:['定期利率更高，但提前取会损失利息','活期利率更高','定期可以随时取且不损失利息','两者没区别'], ans:0, exp:'定期收益更高，但提前支取按活期计息，所以要用好规划再存。'},
+  {q:'朋友推荐你一款“稳赚不赔”的高收益理财，你应该？', opts:['马上把全部存款投进去','拉上家人一起投','警惕：高收益往往伴随高风险，先了解清楚','借钱也要投'], ans:2, exp:'凡是“保本高息”，基本都要打个问号。收益和风险总是相伴的。'},
+  {q:'“零存整取”是什么意思？', opts:['每个月存一笔固定金额，到期一起取','存一次随便取','贷款产品','信用卡积分'], ans:0, exp:'像零存宝这类产品：每月存一点，到期一次拿回本息，特别适合攒小钱。'},
+  {q:'遇到“刷单兼职，日赚300”的广告，你应该？', opts:['马上加入试试','这是违法+诈骗，直接拉黑举报','先交保证金看看','让朋友先试水'], ans:1, exp:'刷单违法且基本都是诈骗，千万别碰。'},
+  {q:'应急金一般建议准备多少？', opts:['够花3-6个月的钱','够花3天','越多越好，全存起来','不用准备'], ans:0, exp:'3-6个月生活费，是应对意外的底气，也是安心生活的底气。'},
+  {q:'租房“押一付三”里的押金，退租时应该？', opts:['没违约就应该退还','房东可以随便扣','一定不退','看房东心情'], ans:0, exp:'押金在无违约情况下必须退还，签好合同写清楚最安心。'},
+  {q:'“年化收益率”是什么？', opts:['把钱放一年大概能赚多少','一天赚多少','保证永远不亏','手续费'], ans:0, exp:'年化收益率把收益换算成一年的比例，方便不同产品之间比较。'},
+  {q:'以下哪个是正规攒钱渠道？', opts:['街边“理财大师”','银行的零存宝、智存宝','微信群红包投资群','朋友介绍的民间平台'], ans:1, exp:'正规渠道才靠谱，银行产品受严格监管，资金有保障。'},
+  {q:'想攒一笔“梦想基金”，最好的方式是？', opts:['开个专门账户专款专用','和日常花销混在一起','放枕头底下','先花掉，以后再想'], ans:0, exp:'专款专用+强制储蓄，梦想基金才攒得起来。'},
+  {q:'“复利”是什么？', opts:['利息也能再生利息，像滚雪球','利息一次性结清','贷款的利息','手续费'], ans:0, exp:'复利就是“利滚利”，时间越长威力越大，越早开始越划算。'},
+  {q:'接到“客服”电话说你中奖了，要先交税才能领奖，你应该？', opts:['转账交税领奖','挂断并核实——正规领奖不会先收钱','把银行卡号告诉对方','按对方指引操作'], ans:1, exp:'凡是先要钱的中奖，都是诈骗。直接挂断，别转账。'},
+  {q:'记账的意义是什么？', opts:['看清钱花在哪，减少冲动消费','让生活更麻烦','没什么用','只记大钱就行'], ans:0, exp:'记账不是为了记，是为了看清和调整自己的消费习惯。'},
+  {q:'朋友组队一起攒钱打卡，你觉得？', opts:['互相监督更容易坚持','没意义','会互相攀比，不好','只适合有钱人'], ans:0, exp:'同伴支持是坚持习惯的有效方法——这正是扑满计划的初心。'}
+];
+
+/* ================= 拼豆徽章（8枚经典 + 4枚旅行） ================= */
+const BADGES = [
+  {name:'起步', color:'#FFC93C', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,0,1,1,0,1,1],[1,1,1,1,1,1,1,1],[0,1,0,1,1,0,1,0],[0,1,0,0,0,0,1,0],[0,0,0,0,0,0,0,0]]},
+  {name:'坚持', color:'#4CAF50', pixels:[[0,0,1,0,0,1,0,0],[0,0,1,0,0,1,0,0],[0,0,1,1,1,1,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0]]},
+  {name:'守护', color:'#3498DB', pixels:[[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,1,0,1,1,0,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
+  {name:'金珠', color:'#FFD700', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,0,0,1,1,1],[1,1,1,0,0,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
+  {name:'小家', color:'#C7000B', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,0,1,1,1,1,0,1],[1,0,1,0,0,1,0,1],[1,0,1,0,0,1,0,1],[1,1,1,1,1,1,1,1]]},
+  {name:'成长', color:'#9B59B6', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,0,0,0,0,0,0]]},
+  {name:'勇气', color:'#E74C3C', pixels:[[0,1,0,0,0,0,1,0],[1,1,1,0,0,1,1,1],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,0,0,0,0,0,0]]},
+  {name:'结业', color:'#FFC93C', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,0,0,1,1,1],[1,1,0,0,0,0,1,1],[0,1,1,0,0,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
+  {name:'旅行家', color:'#FF8C00', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,0,1,0,0,1,0,1],[0,1,0,0,0,0,1,0],[0,0,1,1,1,1,0,0]]},
+  {name:'探索者', color:'#00BCD4', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,0,1,1,0,1,1],[0,1,0,1,1,0,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
+  {name:'收藏家', color:'#8E44AD', pixels:[[1,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1]]},
+  {name:'环球玩家', color:'#FFD700', pixels:[[0,1,1,1,1,1,1,0],[1,0,0,0,0,0,0,1],[1,0,1,0,0,1,0,1],[1,0,0,1,1,0,0,1],[1,0,0,1,1,0,0,1],[1,0,1,0,0,1,0,1],[1,0,0,0,0,0,0,1],[0,1,1,1,1,1,1,0]]}
+];
+
+/* ================= 小队数据 ================= */
+const TEAM = [
+  {name:'阿珍', avatar:'🐰', offset:6},
+  {name:'小杜', avatar:'🐻', offset:3},
+  {name:'球球', avatar:'🐱', offset:9}
+];
+
+/* ================= 全局状态 ================= */
+const LS_KEY = 'icbc-puman-v2';
+let S = loadState();
+let audioCtx = null, musicOn = false, bgmTimer = null;
+
+function defaultState(){ return {
+  story:0, day:0, doneDays:[], gold:0, records:[],
+  quizDone:[], challengeDone:0, souvenirs:[], newSou:null,
+  atHome:true, travelStart:null, travelDur:45000, started:false
+};}
+function loadState(){
+  try { const raw = localStorage.getItem(LS_KEY); if (raw) return Object.assign(defaultState(), JSON.parse(raw)); } catch(e){}
+  return defaultState();
+}
+function saveState(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+}
+
+/* ================= 页面切换 ================= */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  const nav = document.getElementById('nav-bar');
+  const tab = id.replace('-screen','');
+  if (['home','bag','gift','task','team'].includes(tab)) nav.classList.add('on');
+  else nav.classList.remove('on');
+  if (id==='home'){ updateHome(); }
+  if (id==='bag'){ renderBag(); }
+  if (id==='gift'){ renderGift(); }
+  if (id==='task'){ renderTask(); }
+  if (id==='team'){ renderTeam(); }
+}
+function goTab(tab){ showScreen(tab+'-screen'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.tab===tab)); }
+
+function toast(msg, ms){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.style.display='block';
+  clearTimeout(t._h); t._h = setTimeout(()=>t.style.display='none', ms||2500);
+}
+
+/* ================= 启动 & 选线 ================= */
+function startGame(){
+  initAudio();
+  S.started = true; saveState();
+  showScreen('select-screen');
+}
+function renderStoryList(){
+  const box = document.getElementById('storyList');
+  box.innerHTML = '';
+  STORIES.forEach((s,i)=>{
+    const d = document.createElement('div');
+    d.className = 'story-card';
+    d.innerHTML = `<div class="story-icon">${s.icon}</div>
+      <div><div class="story-name">${s.name}</div><div class="story-desc">${s.desc}</div></div>`;
+    d.onclick = ()=>selectStory(i);
+    box.appendChild(d);
+  });
+}
+function selectStory(i){
+  S.story = i;
+  if (S.doneDays.length===0) S.day = 0;
+  saveState();
+  goTab('home');
+  setTimeout(showExclaim, 600);
+}
+
+/* ================= 小屋主界面 ================= */
+const SEASONS = [
+  {key:'spring', name:'🌸 春日小屋', days:[0,1,2,3,4,5]},
+  {key:'summer', name:'☀️ 夏日小屋', days:[6,7,8,9,10]},
+  {key:'autumn', name:'🍁 秋日小屋', days:[11,12,13,14,15]},
+  {key:'winter', name:'❄️ 冬日小屋', days:[16,17,18,19,20]}
+];
+function seasonOf(day){
+  return SEASONS.find(s => s.days.includes(day)) || SEASONS[0];
+}
+function updateHome(){
+  const st = STORIES[S.story];
+  document.getElementById('hStory').textContent = st.icon+' '+st.name;
+  document.getElementById('hDay').textContent = '第 '+(S.day+1)+' 天';
+  document.getElementById('hGoldNum').textContent = S.gold;
+  const sea = seasonOf(S.day);
+  const room = document.getElementById('roomImg');
+  room.className = 'room-img room-'+sea.key;
+  document.getElementById('seasonTag').textContent = sea.name;
+  const done = S.doneDays.length;
+  document.getElementById('progressText').textContent = done+' / 21';
+  document.getElementById('progressFill').style.width = (done/21*100)+'%';
+  document.getElementById('quickTask').textContent = S.doneDays.includes(S.day) ? '✓ 今日已完成' : '还有任务等着你';
+  document.getElementById('quickSou').textContent = '已收集 '+S.souvenirs.length+' / 12 件';
+  document.getElementById('quickTeam').textContent = '你已完成 '+S.doneDays.length+' / 21 天';
+  updatePig();
+}
+/* ================= 扑满（表情/三幕/对话/旅行） ================= */
+const PIG_EMO = { default:'pig-default.webp', happy:'pig-happy.webp', surprised:'pig-surprised.webp', plead:'pig-plead.webp', full:'pig-full.webp', sleep:'pig-sleep.webp' };
+
+function pigStage(){
+  const done = S.doneDays.length;
+  if (done>=15) return 3;
+  if (done>=8) return 2;
+  return 1;
+}
+function updatePig(){
+  const stageEl = document.getElementById('pigStage');
+  const stage = pigStage();
+  stageEl.className = 'pig-stage stage'+stage;
+  const travel = document.getElementById('travelSign');
+  if (!S.atHome){
+    stageEl.style.display='none'; travel.style.display='block';
+    document.getElementById('pigExclaim').style.display='none';
+    updateTravelCountdown();
+  } else {
+    stageEl.style.display='block'; travel.style.display='none';
+  }
+}
+function setPigFace(name){
+  document.querySelectorAll('.pig-face').forEach(im=>im.classList.toggle('on', im.dataset.face===name));
+}
+const BUBBLES = [
+  '今天也要喂我一颗金珠！',
+  '完成副本，我会出门旅行哦！',
+  '坚持21天，一起攒成小金库！',
+  '别着急，金珠是一颗一颗攒起来的。',
+  '喂我喂我！我要吃金珠~',
+  '你今天攒钱了吗？',
+  '积少成多，就是这个道理~',
+  '扑满会陪你一起成长的！',
+  '攒够了，我就替你去远方看看！'
+];
+function sayBubble(text, face){
+  const b = document.getElementById('pigBubble');
+  b.textContent = text; b.style.display='block';
+  if (face) setPigFace(face);
+  clearTimeout(b._h);
+  b._h = setTimeout(()=>{ b.style.display='none'; setPigFace('default'); }, 3000);
+}
+function pigTalk(){
+  if (!S.atHome){ toast('扑满正在旅行中，等它回来吧'); return; }
+  const faces = ['happy','surprised','plead'];
+  const f = faces[Math.floor(Math.random()*faces.length)];
+  sayBubble(BUBBLES[Math.floor(Math.random()*BUBBLES.length)], f);
+  playBlip();
+}
+function showExclaim(){
+  document.getElementById('pigExclaim').style.display='block';
+  setTimeout(()=>document.getElementById('pigExclaim').style.display='none', 5000);
+}
+
+/* ---- 旅行系统（仿旅行青蛙） ---- */
+function checkTravel(){
+  if (!S.atHome){
+    const left = S.travelStart + S.travelDur - Date.now();
+    if (left <= 0) returnHome();
+  }
+}
+function updateTravelCountdown(){
+  const left = Math.max(0, S.travelStart + S.travelDur - Date.now());
+  const sec = Math.ceil(left/1000);
+  document.getElementById('travelCountdown').textContent = '预计 '+sec+' 秒后带着礼物回来';
+}
+function startTravel(reason){
+  if (!S.atHome) return;
+  S.atHome = false;
+  S.travelStart = Date.now();
+  const msgs = ['它正替你去看雪','它正替你去看海','它正替你去看星空','它正替你去看麦田'];
+  document.getElementById('travelMsg').textContent = msgs[Math.floor(Math.random()*msgs.length)];
+  saveState();
+  updatePig();
+  updateHome();
+  toast('🧳 扑满出发旅行啦！回来会带纪念品～');
+}
+function returnHome(){
+  S.atHome = true;
+  S.travelStart = null;
+  // 抽纪念品：优先未收集
+  const pool = SOUVENIRS.map((_,i)=>i).filter(i=>!S.souvenirs.includes(i));
+  const idx = pool.length>0 ? pool[Math.floor(Math.random()*pool.length)] : Math.floor(Math.random()*SOUVENIRS.length);
+  S.souvenirs.push(idx);
+  S.newSou = idx;
+  saveState();
+  updateHome();
+  const s = SOUVENIRS[idx];
+  toast('🎁 扑满回来了！带回：'+s.emoji+' '+s.name);
+  setTimeout(()=>showSouDetail(idx), 800);
+}
+
+/* ================= 行囊窗 ================= */
+function renderBag(){
+  document.getElementById('bagGoldNum').textContent = S.gold;
+  const list = document.getElementById('recordList');
+  if (S.records.length===0){ list.innerHTML = '<div class="mini">还没有记录，去完成任务吧</div>'; return; }
+  list.innerHTML = '';
+  [...S.records].reverse().forEach(r=>{
+    const d = document.createElement('div');
+    d.className = 'record-item';
+    d.innerHTML = `<span>第 ${r.day+1} 天 · ${r.from}</span><span class="amt">${Number(r.amount).toFixed(2)} 元</span>`;
+    list.appendChild(d);
+  });
+}
+function quickSave(){
+  const v = parseFloat(document.getElementById('saveInput').value);
+  if (isNaN(v) || v<=0){ toast('请输入一个大于0的金额'); return; }
+  addSave(v, '随手存');
+  document.getElementById('saveInput').value = '';
+}
+function addSave(amount, from){
+  S.records.push({day:S.day, amount, from});
+  S.gold += 1;
+  saveState();
+  renderBag(); updateHome();
+  playCoin();
+  flyCoin();
+  toast('已存入 '+Number(amount).toFixed(2)+' 元 · 金珠 +1');
+}
+
+/* ================= 任务窗 ================= */
+function renderTask(){
+  const st = STORIES[S.story];
+  const d = st.days[S.day];
+  const done = S.doneDays.includes(S.day);
+  const card = document.getElementById('taskStoryCard');
+  card.innerHTML = `<div class="task-card">
+    <div class="t-title">${d[0]}</div>
+    <div class="t-content">${d[1]}</div>
+    <div class="t-knowledge">💡 ${d[2]}</div>
+    <button class="btn green" id="storyBtn" ${done?'disabled':''}>${done?'✓ 今日已完成':'喂扑满一颗金珠 · 完成今日任务'}</button>
+  </div>`;
+  document.getElementById('storyBtn').onclick = completeDay;
+
+  renderChallenge();
+  renderQuiz();
+  renderCalendar();
+}
+function completeDay(){
+  if (S.doneDays.includes(S.day)) return;
+  S.doneDays.push(S.day);
+  S.gold += 1;
+  S.records.push({day:S.day, amount:0, from:'每日剧情任务'});
+  saveState();
+  playCoin(); flyCoin();
+  sayBubble('嗝~ 金珠真好吃！', 'full');
+  renderTask(); updateHome();
+  toast('🎉 今日任务完成 · 金珠 +1');
+  // 每完成3天，扑满出发旅行
+  if (S.doneDays.length % 3 === 0){
+    setTimeout(()=>startTravel(), 1600);
+  }
+  // 结业
+  if (S.doneDays.length >= 21){
+    setTimeout(()=>{ finishGame(); }, 2500);
+  }
+}
+/* 随机存钱挑战 */
+function renderChallenge(){
+  const box = document.getElementById('challengeCard');
+  // 每天按天+剧情线确定性取一个挑战，也可每天换（用 day 取模）
+  const ch = CHALLENGES[(S.day + S.story*3) % CHALLENGES.length];
+  const done = S.challengeDone === S.day;
+  box.innerHTML = `<div class="challenge-card">
+    <div class="c-title">🎲 今日存钱挑战</div>
+    <div class="c-desc">${ch.desc}</div>
+    ${done
+      ? `<div class="mini" style="color:var(--green);font-weight:700;">✓ 今日挑战已完成，明天再战！</div>`
+      : `<div class="c-form">
+          <input type="number" id="challengeInput" value="${ch.amount}" step="0.01" min="0">
+          <button class="btn" id="challengeBtn">确认存钱</button>
+        </div>`}
+  </div>`;
+  if (!done){
+    document.getElementById('challengeBtn').onclick = ()=>{
+      const v = parseFloat(document.getElementById('challengeInput').value);
+      if (isNaN(v) || v<0){ toast('请输入有效金额（可以改成任意你想存的数）'); return; }
+      S.challengeDone = S.day;
+      addSave(v, '存钱挑战');
+      renderChallenge();
+    };
+  }
+}
+/* 理财答题 */
+function renderQuiz(){
+  const box = document.getElementById('quizCard');
+  // 每日一题：按天数取题
+  const qIdx = (S.day + S.story) % QUIZ.length;
+  const q = QUIZ[qIdx];
+  const done = S.quizDone.includes(qIdx);
+  box.innerHTML = `<div class="quiz-card">
+    <div class="q-title">🧠 每日理财一问${done?'（已答过）':''}</div>
+    <div class="q-text">${q.q}</div>
+    ${done ? '' : q.opts.map((o,i)=>`<button class="quiz-opt" data-i="${i}">${'ABCD'[i]}. ${o}</button>`).join('')}
+    <div class="quiz-explain" id="quizExplain">${q.exp}</div>
+  </div>`;
+  if (!done){
+    box.querySelectorAll('.quiz-opt').forEach(btn=>{
+      btn.onclick = ()=>{
+        const i = parseInt(btn.dataset.i);
+        box.querySelectorAll('.quiz-opt').forEach(b=>{
+          b.disabled = true;
+          if (parseInt(b.dataset.i)===q.ans) b.classList.add('correct');
+          else if (parseInt(b.dataset.i)===i) b.classList.add('wrong');
+        });
+        document.getElementById('quizExplain').style.display='block';
+        if (i===q.ans){
+          S.quizDone.push(qIdx);
+          S.gold += 1;
+          saveState();
+          toast('✅ 答对啦！金珠 +1 · '+q.exp, 3500);
+          playCoin();
+        } else {
+          toast('❌ 答错啦，看看解释，明天再来！', 3500);
+          playBlip();
+        }
+        updateHome();
+      };
+    });
+  }
+}
+/* 日历 */
+function renderCalendar(){
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+  for (let i=0;i<21;i++){
+    const d = document.createElement('div');
+    d.className = 'cal-day';
+    d.textContent = i+1;
+    if (i===S.day) d.classList.add('active');
+    if (S.doneDays.includes(i)) d.classList.add('done');
+    d.onclick = ()=>{ S.day = i; saveState(); renderTask(); updateHome(); };
+    grid.appendChild(d);
+  }
+}
+
+/* ================= 纪念品窗 ================= */
+function renderGift(){
+  const grid = document.getElementById('souGrid');
+  grid.innerHTML = '';
+  SOUVENIRS.forEach((s,i)=>{
+    const got = S.souvenirs.includes(i);
+    const d = document.createElement('div');
+    d.className = 'sou-item' + (got?'':' locked') + (S.newSou===i?' new':'');
+    d.innerHTML = `<div class="s-emoji">${got?s.emoji:'❓'}</div><div class="s-name">${got?s.name:'？？？'}</div>`;
+    d.onclick = ()=>{ if (got) showSouDetail(i); };
+    grid.appendChild(d);
+  });
+  renderBadges();
+}
+function showSouDetail(i){
+  const s = SOUVENIRS[i];
+  const d = document.getElementById('souDetail');
+  d.innerHTML = `<div class="d-emoji">${s.emoji}</div>
+    <div class="d-name">${s.name}</div>
+    <div class="d-from">来自 · ${s.from}</div>
+    <div class="d-story">${s.story}</div>
+    <button class="btn red" onclick="closeSouDetail()">收下它</button>`;
+  d.style.display='block';
+}
+function closeSouDetail(){
+  S.newSou = null; saveState();
+  document.getElementById('souDetail').style.display='none';
+  renderGift();
+}
+function renderBadges(){
+  const grid = document.getElementById('badgeGrid');
+  grid.innerHTML = '';
+  const done = S.doneDays.length;
+  const unlockClassic = Math.min(8, Math.floor(done/3) + (done>0?1:0));
+  const travelCount = S.souvenirs.length;
+  const unlockTravel = travelCount>=3 ? 1 : 0; // 旅行家
+  const unlockTravel2 = travelCount>=6 ? 1 : 0; // 探索者
+  const unlockTravel3 = travelCount>=9 ? 1 : 0; // 收藏家
+  const unlockTravel4 = travelCount>=12 ? 1 : 0; // 环球玩家
+  BADGES.forEach((b, idx)=>{
+    let unlocked = false;
+    if (idx<8) unlocked = idx < unlockClassic;
+    else if (idx===8) unlocked = unlockTravel===1;
+    else if (idx===9) unlocked = unlockTravel2===1;
+    else if (idx===10) unlocked = unlockTravel3===1;
+    else unlocked = unlockTravel4===1;
+    const item = document.createElement('div');
+    item.className = 'badge-item' + (unlocked?' unlocked':'');
+    const bean = document.createElement('div');
+    bean.className = 'badge-bean';
+    for (let y=0;y<8;y++) for (let x=0;x<8;x++){
+      const px = document.createElement('div');
+      px.className='bean-pixel';
+      if (b.pixels[y][x]) px.style.background = unlocked ? b.color : '#555';
+      bean.appendChild(px);
+    }
+    const name = document.createElement('div');
+    name.textContent = b.name;
+    item.appendChild(bean); item.appendChild(name);
+    grid.appendChild(item);
+  });
+}
+
+/* ================= 小队窗 ================= */
+function renderTeam(){
+  const teamTotal = TEAM.reduce((a,m)=>a+Math.min(21,S.doneDays.length+m.offset),0) + S.doneDays.length;
+  const goal = 84;
+  document.getElementById('teamFill').style.width = Math.min(100, teamTotal/goal*100)+'%';
+  document.getElementById('teamProgress').textContent = teamTotal+' / '+goal;
+  const list = document.getElementById('teamList');
+  let html = '';
+  TEAM.forEach(m=>{
+    const prog = Math.min(21, S.doneDays.length + m.offset);
+    html += `<div class="team-member"><div class="m-name"><div class="m-avatar">${m.avatar}</div>${m.name}</div>
+      <div><div class="m-progress">${prog}/21 天</div><div class="m-bar"><div class="m-fill" style="width:${prog/21*100}%"></div></div></div></div>`;
+  });
+  list.innerHTML = html;
+}
+
+/* ================= 结业 ================= */
+function finishGame(){
+  showScreen('finish-screen');
+  const box = document.getElementById('finishSou');
+  box.innerHTML = `<div class="panel" style="text-align:left;">
+    <div class="panel-title">🎁 扑满替你带回了这些</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
+      ${S.souvenirs.map(i=>`<span style="font-size:22px;" title="${SOUVENIRS[i].name}">${SOUVENIRS[i].emoji}</span>`).join('') || '<span class="mini">扑满还在路上……下次再出发！</span>'}
+    </div>
+  </div>`;
+  setPigFace('happy');
+}
+
+/* ================= 音频（Web Audio 8-bit） ================= */
+function initAudio(){
+  try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch(e){}
+}
+function toggleMusic(){
+  if (!audioCtx) initAudio();
+  if (musicOn){ musicOn=false; document.getElementById('musicBtn').textContent='♪'; clearTimeout(bgmTimer); }
+  else { musicOn=true; document.getElementById('musicBtn').textContent='♫'; bgmLoop(); }
+}
+function bgmLoop(){
+  if (!musicOn || !audioCtx) return;
+  const melody = [261.63,329.63,392.00,523.25,392.00,329.63,440.00,523.25];
+  const t = audioCtx.currentTime;
+  melody.forEach((f,i)=>{
+    const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+    osc.type='square'; osc.frequency.value=f;
+    gain.gain.setValueAtTime(0.06,t+i*0.22);
+    gain.gain.exponentialRampToValueAtTime(0.005,t+i*0.22+0.2);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(t+i*0.22); osc.stop(t+i*0.22+0.22);
+  });
+  const bass = audioCtx.createOscillator(), bg = audioCtx.createGain();
+  bass.type='square'; bass.frequency.value=130.81;
+  bg.gain.setValueAtTime(0.04,t); bg.gain.exponentialRampToValueAtTime(0.004,t+1.6);
+  bass.connect(bg); bg.connect(audioCtx.destination);
+  bass.start(t); bass.stop(t+1.7);
+  bgmTimer = setTimeout(bgmLoop, 1800);
+}
+function playCoin(){
+  if (!audioCtx) return;
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type='square'; o.frequency.setValueAtTime(1000,audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1600,audioCtx.currentTime+0.15);
+  g.gain.setValueAtTime(0.12,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.15);
+  o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.15);
+}
+function playBlip(){
+  if (!audioCtx) return;
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type='square'; o.frequency.setValueAtTime(700,audioCtx.currentTime);
+  o.frequency.exponentialRampToValueAtTime(1100,audioCtx.currentTime+0.1);
+  g.gain.setValueAtTime(0.08,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+0.1);
+  o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.1);
+}
+/* 投币动画 */
+function flyCoin(){
+  const pig = document.querySelector('.pig-face.on') || document.querySelector('.pig-face');
+  if (!pig) return;
+  const rect = pig.getBoundingClientRect();
+  const coin = document.createElement('div');
+  coin.className='coin-fly';
+  coin.style.left = (rect.left+rect.width/2-10)+'px';
+  coin.style.top = (rect.top-10)+'px';
+  document.body.appendChild(coin);
+  setTimeout(()=>coin.remove(), 900);
+}
+
+/* ================= 重启 ================= */
+function restart(){
+  S = defaultState(); saveState();
+  location.reload();
+}
+
+/* ================= 定时器 & 初始化 ================= */
+setInterval(()=>{
+  checkTravel();
+  if (!S.atHome) updateTravelCountdown();
+}, 1000);
+
+function init(){
+  renderStoryList();
+  // 已开始过 → 直接进小屋；否则启动页
+  if (S.started){
+    showScreen('home-screen');
+    document.getElementById('nav-bar').classList.add('on');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.tab==='home'));
+  } else {
+    showScreen('start-screen');
+  }
+  updateHome();
+  document.addEventListener('click', function initAudioOnce(){ if(!audioCtx) initAudio(); }, {once:true});
+}
+init();
+</script>
+</body>
+</html>

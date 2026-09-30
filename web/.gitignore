@@ -1,0 +1,14 @@
+puman.sqlite3
+puman.sqlite3-*
+__pycache__/
+.env
+.env.*
+!.env.example
+*.local.json
+*.secret
+*.key
+*.pem
+deepseek.json
+.secrets/
+secrets/
+*.log

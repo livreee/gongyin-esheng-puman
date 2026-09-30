@@ -1,0 +1,22 @@
+# Private configuration is stored outside this project; these are backup guards.
+.env
+.env.*
+!.env.example
+*.local.json
+*.secret
+*.key
+*.pem
+deepseek.json
+.secrets/
+secrets/
+
+# Local runtime data and caches are not source files.
+*.sqlite3
+*.sqlite3-*
+__pycache__/
+*.py[cod]
+*.log
+~$*
+
+# Generated sharing packages
+dist/
