@@ -29,6 +29,23 @@ python web/server.py
 
 也可直接双击 `web/index.html` 体验本地模式：进度保存在浏览器 `localStorage`，答题后会生成基础分析。真实 AI 生成、服务端存档和时序行为推断需要启动后端。字体使用外部样式链接，断网时会使用浏览器的备用字体。
 
+### GitHub Pages + Render 部署
+
+GitHub Pages 只运行静态页面，Python API 由 Render Web Service 运行。本仓库已经提供 `render.yaml`；创建云端服务仍需仓库拥有者登录 Render 并授权 GitHub 仓库。配置文件中没有真实密钥，也没有预填一个尚未创建的后端地址。
+
+1. 确认部署文件已提交至 [项目仓库](https://github.com/livreee/gongyin-esheng-puman) 的 `main` 分支。
+2. 打开 [从本仓库创建 Render 服务](https://render.com/deploy?repo=https://github.com/livreee/gongyin-esheng-puman)，登录 Render，授权访问该仓库，按 `render.yaml` 创建 Blueprint。也可在 Render 使用 **New → Blueprint** 选择该仓库。
+3. 要启用 DeepSeek，在 Render 服务的 **Environment → Add Environment Variable** 中添加 `LLM_API_KEY`，保存并重新部署。它用于后端调用模型，不应填写到 GitHub 源码、前端配置或 README。可以先不添加密钥来验证连接；未配置时自动使用规则画像。本机 Windows 加密配置不会自动上传到 Render。
+4. 等待服务显示 **Live**，复制 Render 分配的实际 HTTPS 地址。先访问 `实际地址/api/health`，应返回 `ok: true`；访问 `实际地址/` 即可使用同源完整版本。`/api/ai/status` 中的 `configured` 仅表示配置齐全，需要实际生成一次画像才能确认模型调用成功。
+5. 在 GitHub 编辑 **`web/config.js`**，将 `apiBaseUrl` 的空字符串替换为上一步的地址，例如 `https://你的实际服务名.onrender.com`，不要追加 `/api`、`/index.html` 或仓库路径。提交至 `main`。此文件只存公开后端网址，不能放任何密钥。
+6. GitHub **Settings → Pages** 保持从 `main` 分支的根目录发布。等待 Pages 部署完成后打开 [当前网页](https://livreee.github.io/gongyin-esheng-puman/)，根入口会跳转到 `web/` 主版本。页面应显示“后端已连接”，完成任务后可保存进度、查询参与节奏，并在配置有效时生成 AI 画像。
+
+Render 默认自动部署所连接分支的后续提交，提交前应运行本文的本地回归测试。若使用 Fork，需将 `render.yaml` 中的 `ALLOWED_ORIGINS` 改为自己的 Pages 来源，例如 `https://你的用户名.github.io`，不含仓库路径。CORS 以域名来源区分，无法只允许同一 Pages 域名下的某一个仓库；它也不能代替用户身份认证。
+
+默认 Blueprint 使用免费实例，不会配置付费磁盘。免费服务空闲后会休眠，首次访问需要等待唤醒；其 SQLite 位于临时磁盘，**重启、重新部署或休眠后可能丢失服务端存档与行为记录**。浏览器已有本地进度仍可保留，但不能恢复完整的历史行为事件。需要稳定保留数据时，在 Render 升级为支持持久磁盘的付费实例，挂载路径设为 `/var/data`，并将 `DB_PATH` 改为 `/var/data/puman.sqlite3`；同时更新 `render.yaml` 中的计划、磁盘及变量配置，避免以后同步 Blueprint 时覆盖设置。只改 `DB_PATH` 而未挂载磁盘不具备持久性。SQLite 版本保持单实例运行。
+
+本方案沿用比赛原型的 Python HTTP 服务和匿名用户标识，适合小规模演示。公开 AI 接口尚未提供正式登录鉴权与调用额度控制，填写真实模型密钥前应在供应商侧设置用量预算；正式运营前需完成文末所列的上线改造。
+
 ## 2. 产品内容与体验
 
 ### 五条生活剧情线
@@ -66,8 +83,12 @@ python web/server.py
 工银e生-21天扑满计划/
 ├─ README.md                         全项目唯一说明文档
 ├─ .gitignore                        私有配置、运行数据和交付产物排除规则
+├─ .nojekyll                         GitHub Pages 直接发布静态文件
+├─ index.html                        GitHub Pages 根入口，跳转至 web/ 主版本
+├─ render.yaml                       Render 后端部署与环境变量模板
 ├─ web/                              当前主版本
 │  ├─ index.html                     页面、样式、交互与本地存档
+│  ├─ config.js                      公开后端网址；不存放密钥
 │  ├─ server.py                      本地 HTTP 服务、API 与 SQLite 持久化
 │  ├─ ai_service.py                  答题解释、画像/陪伴生成、模型请求与降级
 │  ├─ behavior_model.py              时序行为特征和 HMM-Lite 前向推断
@@ -75,6 +96,7 @@ python web/server.py
 │  ├─ test_ai_profile.py             答题画像与模型降级测试
 │  ├─ test_behavior.py               行为建模和接口测试
 │  ├─ test_private_config.py         加密、配置隔离和访问边界测试
+│  ├─ test_deployment.py             云端域名、跨域与存档联通测试
 │  ├─ .env.example                   无真实密钥的配置示例
 │  ├─ .gitignore                     单独分享 web 时的排除规则
 │  └─ assets/                        主版本使用的小猪表情、四季房间等素材
@@ -92,7 +114,7 @@ python web/server.py
 
 ## 4. 技术架构与数据流
 
-前端使用原生 HTML、CSS、JavaScript，主页面内联样式和业务脚本，适配手机宽度。后端使用 Python 标准库 `ThreadingHTTPServer` 和 SQLite，静态页面与 API 同源运行。浏览器生成匿名演示用户 ID，通过 `X-User-ID` 请求头区分状态；该标识不属于生产级身份认证。
+前端使用原生 HTML、CSS、JavaScript，主页面内联样式和业务脚本，适配手机宽度。后端使用 Python 标准库 `ThreadingHTTPServer` 和 SQLite。本地和 Render 完整版本采用同源 API；GitHub Pages 主版本通过 `web/config.js` 指向 Render API，并由服务端校验来源、处理跨域预检。浏览器生成匿名演示用户 ID，通过 `X-User-ID` 请求头区分状态；该标识不属于生产级身份认证。Pages 与 Render 页面的浏览器存储属于不同来源，不会自动共享存档。
 
 | 环节 | 处理方式 | 保存位置 |
 | --- | --- | --- |
@@ -138,6 +160,17 @@ python web/server.py
 | `LLM_TIMEOUT` | 请求等待秒数，代码限定为 1—60 秒 | 私有配置为 `40`，通用适配器缺省为 `15` |
 
 显式环境变量优先于私有文件。`web/.env.example` 仅为配置参考，不含真实密钥；服务不会自动加载项目目录中的 `.env`。不要把实际密钥粘贴到 HTML、README、共享脚本或截图中。
+
+后端部署还支持以下非秘密环境变量：
+
+| 变量 | 用途 | 默认或配置方式 |
+| --- | --- | --- |
+| `HOST` | 监听地址 | 本地 `127.0.0.1`；Render 模板设为 `0.0.0.0` |
+| `PORT` | HTTP 端口 | 本地 `8000`；云端采用 Render 分配值 |
+| `DB_PATH` | SQLite 文件位置 | 本地 `web/puman.sqlite3`；云端按临时或持久磁盘配置 |
+| `PUBLIC_ORIGIN` | 自定义后端域名来源 | 可选，例如 `https://api.example.com`，不含路径 |
+| `RENDER_EXTERNAL_URL` | Render 后端公网来源 | 由 Render 自动提供，无需手动填写 |
+| `ALLOWED_ORIGINS` | 可跨域调用 API 的前端来源 | 逗号分隔的完整来源；本项目为 `https://livreee.github.io`；不支持 `*` |
 
 ### 画像如何依据答案产生
 
@@ -195,7 +228,7 @@ API 与页面同源，默认地址为 `http://127.0.0.1:8000`。用户接口需�
 | `daily_behavior_features` | 每个用户每天的聚合特征 |
 | `behavior_states` | 每个用户每天的阶段、概率、摘要与模型版本 |
 
-数据库属于本机运行数据，不随分享包提供。接收者运行后会自行创建空数据库。本地开发服务只公开主 HTML 和允许的静态资源，配置、Python 文件、SQLite 数据库及目录列表不可通过 HTTP 下载；接口限制同源请求，模型请求不转发重定向中的鉴权头。
+数据库属于运行数据，不随分享包提供。接收者运行后会自行创建空数据库。后端只公开主 HTML、公开网址配置 `config.js` 和允许的静态资源；私有配置、Python 文件、SQLite 数据库及目录列表不可通过后端 HTTP 下载。API 默认同源，可为部署显式允许指定前端来源；模型请求不转发重定向中的鉴权头。GitHub 仓库及 Pages 中的源文件仍是公开的，因此秘密只放在项目外的本机私有配置或 Render 环境变量中。
 
 ## 8. 测试与常见问题
 
@@ -205,12 +238,14 @@ API 与页面同源，默认地址为 `http://127.0.0.1:8000`。用户接口需�
 python -m unittest discover -s web -p "test_*.py" -v
 ```
 
-现有 28 项回归测试覆盖答题校验、规则与模型输出、模型异常降级、时序特征、缓存更新、用户隔离、DPAPI 加密、Git 外配置路径及 HTTP 访问边界。测试使用临时数据库和虚构密钥，不调用付费模型；Windows 专属的加密测试在其他系统上跳过。
+回归测试覆盖答题校验、规则与模型输出、模型异常降级、时序特征、缓存更新、用户隔离、DPAPI 加密、Git 外配置路径、HTTP 访问边界，以及 Render 域名与 Pages 跨域存档。测试使用临时数据库和虚构密钥，不调用付费模型；Windows 专属的加密测试在其他系统上跳过。
 
 | 现象 | 处理方式 |
 | --- | --- |
 | `python` 命令不可用 | 安装 Python 并加入 PATH；Windows 也可将命令中的 `python` 换成可用的 `py` |
-| 8000 端口被占用 | 先结束旧的本项目服务；若是其他程序占用，可修改 `web/server.py` 中的 `PORT` 后按新端口访问 |
+| 8000 端口被占用 | 先结束旧的本项目服务；若是其他程序占用，设置环境变量 `PORT` 后按新端口访问，例如 PowerShell 先执行 `$env:PORT='8001'` |
+| Pages 显示本地模式 | 检查 `web/config.js` 是否填写真实 Render HTTPS 地址、Pages 是否完成部署；再检查 Render 服务是否已唤醒 |
+| 云端接口返回 403 | 检查 `ALLOWED_ORIGINS` 是否与页面来源一致；自定义后端域名还需配置 `PUBLIC_ORIGIN` |
 | 只显示答题分析 | 检查 `/api/ai/status`；配置密钥后重启服务，再点击“更新画像” |
 | 已配置但 AI 暂不可用 | 检查 DeepSeek 账户余额、密钥有效性和网络；页面会保留规则分析 |
 | 双击 HTML 没有行为模型或 AI | 使用 `python web/server.py` 启动完整服务，不要用普通静态服务器代替 |

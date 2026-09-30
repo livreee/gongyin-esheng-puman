@@ -14,7 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = "工银e生-21天扑满计划"
 SOURCE_DIRS = {"web", "21day-wealth-script", "picture_copy", "tools"}
-ROOT_FILES = {"README.md", ".gitignore"}
+ROOT_FILES = {"README.md", ".gitignore", ".nojekyll", "index.html", "render.yaml"}
 EXCLUDED_DIRS = {".git", ".agents", ".codex", "__pycache__", ".pytest_cache", ".venv", "venv", "node_modules", "dist", ".secrets", "secrets"}
 KEY_PATTERN = re.compile(rb"(?<![A-Za-z0-9])sk-[A-Za-z0-9_-]{20,}")
 

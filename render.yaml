@@ -1,0 +1,27 @@
+# Free demo service. SQLite resets when this instance restarts or redeploys.
+# For durable storage, upgrade in Render and mount a disk; see README.md.
+services:
+  - type: web
+    name: gongyin-esheng-puman
+    runtime: python
+    plan: free
+    branch: main
+    buildCommand: python -m compileall -q web
+    startCommand: python -u web/server.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: HOST
+        value: 0.0.0.0
+      - key: DB_PATH
+        value: /tmp/puman/puman.sqlite3
+      - key: ALLOWED_ORIGINS
+        value: https://livreee.github.io
+      - key: LLM_BASE_URL
+        value: https://api.deepseek.com
+      - key: LLM_MODEL
+        value: deepseek-flash
+      - key: LLM_TIMEOUT
+        value: "40"
+      # Add LLM_API_KEY privately in Render > Environment after deployment.

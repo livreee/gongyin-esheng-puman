@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<script src="./config.js"></script>
 <title>工银e生 · 21天财富剧本 — 网页版Demo</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3Crect width='32' height='32' fill='%2323283C'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%23C7000B'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='16' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='10' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3Crect x='16' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap">
@@ -694,7 +695,19 @@ const QUIZ = [
 /* ========== 状态（持久化前置，避免 TDZ） ========== */
 const LS_KEY = 'icbc-puman-v2';
 const USER_ID_KEY = 'icbc-puman-user-id';
-const API_ENABLED = location.protocol !== 'file:';
+const ON_GITHUB_PAGES = location.hostname.endsWith('.github.io');
+const API_BASE_URL = (()=>{
+  // The Render page always uses its own API. Only the Pages copy needs a URL.
+  if(!ON_GITHUB_PAGES) return '';
+  const configured = String(window.PUMAN_CONFIG?.apiBaseUrl || '').trim();
+  if(!configured) return '';
+  try{
+    const url = new URL(configured);
+    if(url.protocol!=='https:' || url.username || url.password || url.search || url.hash || url.pathname!=='/') throw new Error('invalid backend origin');
+    return url.origin;
+  }catch(e){ console.warn('Invalid public backend URL in config.js'); return ''; }
+})();
+const API_ENABLED = /^https?:$/.test(location.protocol) && (!ON_GITHUB_PAGES || Boolean(API_BASE_URL));
 const PROFILE_VERSION = 'answers-v1';
 function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, atHome:true, travelStart:null, travelDur:45000, quizDone:[], challengeDone:0, idou:0, lastAmount:0, aiProfile:null, aiCoach:null, behavior:null}; }
 const S = {
@@ -761,10 +774,10 @@ function setBackendStatus(mode, text){
   el.textContent = text;
 }
 async function apiRequest(path, options){
-  if(!API_ENABLED) throw new Error('file protocol');
+  if(!API_ENABLED) throw new Error('backend unavailable');
   const opts = options || {};
   opts.headers = Object.assign({'Content-Type':'application/json','X-User-ID':getUserId()}, opts.headers || {});
-  const response = await fetch(path, opts);
+  const response = await fetch(API_BASE_URL+path, {...opts, credentials:'omit'});
   if(!response.ok) throw new Error('API '+response.status);
   return response.json();
 }
@@ -805,7 +818,7 @@ function trackEvent(eventType, payload){
   }).catch(()=>{});
 }
 async function hydrateFromBackend(){
-  if(!API_ENABLED){ setBackendStatus('offline','本地模式 · 直接打开网页'); return; }
+  if(!API_ENABLED){ setBackendStatus('offline',ON_GITHUB_PAGES?'本地模式 · 进度保存在此浏览器':'本地模式 · 直接打开网页'); return; }
   setBackendStatus('syncing','正在连接后端');
   try{
     const result = await apiRequest('/api/state', {method:'GET'});

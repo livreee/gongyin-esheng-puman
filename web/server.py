@@ -7,6 +7,7 @@ The server hosts the static frontend and a small SQLite API on one origin.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sqlite3
 import threading
@@ -24,12 +25,41 @@ from private_config import load_private_config
 
 
 ROOT = Path(__file__).resolve().parent
-DB_PATH = ROOT / "puman.sqlite3"
-HOST = "127.0.0.1"
-PORT = 8000
+DB_PATH = Path(os.environ.get("DB_PATH") or ROOT / "puman.sqlite3").expanduser().resolve()
+HOST = os.environ.get("HOST", "127.0.0.1")
+PORT = int(os.environ.get("PORT", "8000"))
 MAX_BODY = 1024 * 1024
 USER_ID_RE = re.compile(r"^[A-Za-z0-9_.:-]{8,80}$")
 DB_LOCK = threading.Lock()
+
+
+def normalize_origin(value: str) -> str:
+    """Accept exact HTTP(S) origins, never wildcards, paths or credentials."""
+    parsed = urlparse(value.strip())
+    if (parsed.scheme not in {"http", "https"} or not parsed.hostname
+            or parsed.username is not None or parsed.password is not None
+            or parsed.path not in {"", "/"} or parsed.query or parsed.fragment
+            or "*" in parsed.netloc):
+        raise ValueError("Expected an HTTP(S) origin without a path or credentials")
+    port = parsed.port
+    host = parsed.hostname.lower()
+    if ":" in host:
+        host = f"[{host}]"
+    if port and port != {"http": 80, "https": 443}[parsed.scheme]:
+        host += f":{port}"
+    return f"{parsed.scheme}://{host}"
+
+
+# Render provides its own public URL; custom domains can use PUBLIC_ORIGIN.
+PUBLIC_ORIGINS = {
+    normalize_origin(value) for value in (
+        os.environ.get("PUBLIC_ORIGIN", ""), os.environ.get("RENDER_EXTERNAL_URL", ""),
+    ) if value.strip()
+}
+ALLOWED_ORIGINS = {
+    normalize_origin(value) for value in os.environ.get("ALLOWED_ORIGINS", "").split(",")
+    if value.strip()
+}
 
 
 def now_iso() -> str:
@@ -58,6 +88,7 @@ def db_session():
 
 
 def init_db() -> None:
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     with DB_LOCK, db_session() as connection:
         connection.executescript(
             """
@@ -145,15 +176,27 @@ class AppHandler(SimpleHTTPRequestHandler):
     def end_headers(self) -> None:
         self.send_header("X-Backend-Version", "1.0")
         self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("Vary", "Origin")
+        if getattr(self, "cors_origin", None):
+            self.send_header("Access-Control-Allow-Origin", self.cors_origin)
+        if urlparse(self.path).path.startswith("/api/") or urlparse(self.path).path == "/config.js":
+            self.send_header("Cache-Control", "no-store")
         super().end_headers()
 
     def same_origin_request(self) -> bool:
+        self.cors_origin = None
         port = self.server.server_port
         allowed_hosts = {f"127.0.0.1:{port}", f"localhost:{port}"}
+        local_origins = {f"http://{host}" for host in allowed_hosts}
+        allowed_hosts.update(urlparse(origin).netloc for origin in PUBLIC_ORIGINS)
         origin = self.headers.get("Origin")
-        if self.headers.get("Host") not in allowed_hosts or (origin and origin not in {f"http://{host}" for host in allowed_hosts}):
-            self.send_json(HTTPStatus.FORBIDDEN, {"error": "same-origin requests only"})
+        is_api = urlparse(self.path).path.startswith("/api/")
+        allowed_origins = local_origins | PUBLIC_ORIGINS | (ALLOWED_ORIGINS if is_api else set())
+        if self.headers.get("Host", "").lower() not in allowed_hosts or (origin and origin not in allowed_origins):
+            self.send_json(HTTPStatus.FORBIDDEN, {"error": "request host or origin is not allowed"})
             return False
+        if is_api and origin in ALLOWED_ORIGINS:
+            self.cors_origin = origin
         return True
 
     def send_head(self):
@@ -168,7 +211,7 @@ class AppHandler(SimpleHTTPRequestHandler):
         )
         if path == root:
             self.path = "/index.html"
-        elif path != root / "index.html" and not allowed_asset:
+        elif path not in {root / "index.html", root / "config.js"} and not allowed_asset:
             self.send_error(HTTPStatus.NOT_FOUND)
             return None
         return super().send_head()
@@ -176,8 +219,23 @@ class AppHandler(SimpleHTTPRequestHandler):
     def do_OPTIONS(self) -> None:
         if not self.same_origin_request():
             return
+        if not urlparse(self.path).path.startswith("/api/"):
+            self.send_json(HTTPStatus.NOT_FOUND, {"error": "not found"})
+            return
+        method = self.headers.get("Access-Control-Request-Method", "GET").upper()
+        headers = {value.strip().lower() for value in self.headers.get("Access-Control-Request-Headers", "").split(",") if value.strip()}
+        if method not in {"GET", "POST", "PUT"} or not headers.issubset({"content-type", "x-user-id"}):
+            self.send_json(HTTPStatus.FORBIDDEN, {"error": "preflight method or headers are not allowed"})
+            return
         self.send_response(HTTPStatus.NO_CONTENT)
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-User-ID")
+        self.send_header("Access-Control-Max-Age", "600")
         self.end_headers()
+
+    def do_HEAD(self) -> None:
+        if self.same_origin_request():
+            super().do_HEAD()
 
     def do_GET(self) -> None:
         if not self.same_origin_request():
