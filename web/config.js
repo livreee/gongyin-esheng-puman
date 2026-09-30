@@ -1,6 +1,6 @@
 // Public configuration only. Never put an API key here.
-// After Render deploys, paste its actual HTTPS URL between the quotes.
+// Render backend for this project's GitHub Pages frontend.
 // Empty: use the same server locally/on Render; GitHub Pages stays in local mode.
 window.PUMAN_CONFIG = Object.freeze({
-  apiBaseUrl: ""
+  apiBaseUrl: "https://gongyin-esheng-puman.onrender.com"
 });

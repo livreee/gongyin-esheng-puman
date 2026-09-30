@@ -31,13 +31,15 @@ python web/server.py
 
 ### GitHub Pages + Render 部署
 
-GitHub Pages 只运行静态页面，Python API 由 Render Web Service 运行。本仓库已经提供 `render.yaml`；创建云端服务仍需仓库拥有者登录 Render 并授权 GitHub 仓库。配置文件中没有真实密钥，也没有预填一个尚未创建的后端地址。
+GitHub Pages 只运行静态页面，Python API 由 Render Web Service 运行。本项目后端地址为 [Render 服务](https://gongyin-esheng-puman.onrender.com)，`web/config.js` 已配置此公开网址；配置文件中没有真实密钥。[GitHub Pages](https://livreee.github.io/gongyin-esheng-puman/) 通过该地址调用 API。
+
+如需重新部署或部署自己的副本，可使用仓库中的 `render.yaml`，按以下步骤操作：
 
 1. 确认部署文件已提交至 [项目仓库](https://github.com/livreee/gongyin-esheng-puman) 的 `main` 分支。
 2. 打开 [从本仓库创建 Render 服务](https://render.com/deploy?repo=https://github.com/livreee/gongyin-esheng-puman)，登录 Render，授权访问该仓库，按 `render.yaml` 创建 Blueprint。也可在 Render 使用 **New → Blueprint** 选择该仓库。
 3. 要启用 DeepSeek，在 Render 服务的 **Environment → Add Environment Variable** 中添加 `LLM_API_KEY`，保存并重新部署。它用于后端调用模型，不应填写到 GitHub 源码、前端配置或 README。可以先不添加密钥来验证连接；未配置时自动使用规则画像。本机 Windows 加密配置不会自动上传到 Render。
 4. 等待服务显示 **Live**，复制 Render 分配的实际 HTTPS 地址。先访问 `实际地址/api/health`，应返回 `ok: true`；访问 `实际地址/` 即可使用同源完整版本。`/api/ai/status` 中的 `configured` 仅表示配置齐全，需要实际生成一次画像才能确认模型调用成功。
-5. 在 GitHub 编辑 **`web/config.js`**，将 `apiBaseUrl` 的空字符串替换为上一步的地址，例如 `https://你的实际服务名.onrender.com`，不要追加 `/api`、`/index.html` 或仓库路径。提交至 `main`。此文件只存公开后端网址，不能放任何密钥。
+5. 在 GitHub 编辑 **`web/config.js`**，将 `apiBaseUrl` 更新为上一步的实际地址，例如 `https://你的实际服务名.onrender.com`，不要追加 `/api`、`/index.html` 或仓库路径。提交至 `main`。此文件只存公开后端网址，不能放任何密钥。
 6. GitHub **Settings → Pages** 保持从 `main` 分支的根目录发布。等待 Pages 部署完成后打开 [当前网页](https://livreee.github.io/gongyin-esheng-puman/)，根入口会跳转到 `web/` 主版本。页面应显示“后端已连接”，完成任务后可保存进度、查询参与节奏，并在配置有效时生成 AI 画像。
 
 Render 默认自动部署所连接分支的后续提交，提交前应运行本文的本地回归测试。若使用 Fork，需将 `render.yaml` 中的 `ALLOWED_ORIGINS` 改为自己的 Pages 来源，例如 `https://你的用户名.github.io`，不含仓库路径。CORS 以域名来源区分，无法只允许同一 Pages 域名下的某一个仓库；它也不能代替用户身份认证。
