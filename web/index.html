@@ -4,22 +4,23 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <script src="./config.js"></script>
-<title>工银e生 · 21天财富剧本 — 网页版Demo</title>
+<title>工银e生 · 21天扑满计划</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3Crect width='32' height='32' fill='%2323283C'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%23C7000B'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='16' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='10' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3Crect x='16' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap">
 <style>:root{
-  --red:#C7000B;          /* 工银红 品牌锚点 */
-  --red-deep:#9E0008;
+  --red:#B30C22;          /* 工银红与深红主色 */
+  --red-deep:#780E22;
+  --red-soft:#F8E9E9;
   --ink:#23283C;          /* 深墨蓝 描边/主字 */
   --cream:#FFF8EC;        /* 暖奶白 页面底 */
   --paper:#FFFFFF;
   --yellow:#FFD23F;       /* 像素黄 */
-  --green:#7BC950;        /* 像素绿 */
+  --green:#B4424F;        /* 完成态：暖红，配合勾选标识 */
   --blue:#4EA8DE;         /* 像素蓝 */
   --purple:#9B5DE5;       /* 像素紫 */
   --orange:#F4845F;       /* 像素橙 */
   --gold:#F5A623;         /* 暖金 */
-  --teal:#0E9C8E;
+  --teal:#94243A;         /* 兼容既有强调色变量 */
   --line:#DDD3BE;
   --ink-soft:#6B6575;
   --px:3px;
@@ -175,7 +176,7 @@ body{
 .story-label{font-size:11px;font-weight:700;color:var(--red);letter-spacing:.14em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 .story-label::before{content:"";width:10px;height:10px;background:var(--red);border:2px solid var(--ink);border-radius:3px}
 .story-text{font-size:16px;font-weight:700;line-height:1.65;margin-bottom:10px}
-.story-idea{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--teal);background:#E2F4E2;border:2px solid var(--teal);border-radius:20px;padding:4px 12px;font-weight:700}
+.story-idea{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--red-deep);background:var(--red-soft);border:2px solid var(--red);border-radius:20px;padding:4px 12px;font-weight:700}
 
 .task-card{background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:16px;margin-top:14px;box-shadow:var(--shadow-sm)}
 .task-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;margin-bottom:4px;color:var(--ink-soft)}
@@ -192,14 +193,14 @@ body{
 .result-badge{background:var(--green);color:#fff;border:3px solid var(--ink);border-radius:14px;padding:14px 20px;text-align:center;box-shadow:5px 5px 0 var(--ink);animation:fadeIn .25s steps(3)}
 .result-badge b{font-size:22px;display:block;text-shadow:2px 2px 0 rgba(35,40,60,.3)}
 .result-badge span{font-size:12.5px}
-.task-done{background:#E2F4E2;border:2.5px solid var(--green);border-radius:14px;padding:14px;text-align:center;font-size:14px;color:var(--teal);font-weight:700}
+.task-done{background:var(--red-soft);border:1px solid #DFAEB4;border-radius:14px;padding:14px;text-align:center;font-size:14px;color:var(--red-deep);font-weight:700}
 .milestone{background:#FFF1D6;border:2.5px solid var(--gold);border-radius:14px;padding:13px 16px;margin-top:14px;font-size:13.5px;color:#8A5A14;line-height:1.7;box-shadow:3px 3px 0 rgba(245,166,35,.4)}
 
 /* ===== 攒钱进度卡片 ===== */
 .scene-card{background:#FFFDF8;border:1px solid #E9DFC9;border-radius:18px;padding:15px 16px;margin-top:16px;box-shadow:0 8px 22px rgba(73,58,35,.08)}
 .scene-label{display:flex;align-items:center;gap:9px;margin-bottom:12px;color:var(--ink)}
 .scene-label>span:first-child{font-size:15px;font-weight:800}
-.scene-label .stage-name{font-size:11px;color:var(--teal);background:#E7F3F0;border-radius:999px;padding:4px 9px;font-weight:700}
+.scene-label .stage-name{font-size:11px;color:var(--red-deep);background:var(--red-soft);border-radius:999px;padding:4px 9px;font-weight:700}
 .scene-label .pct{margin-left:auto;color:var(--red);font-size:14px;font-weight:800}
 .scene-visual{height:118px;border:1px solid #F0E6D4;border-radius:14px;position:relative;overflow:hidden;background:linear-gradient(135deg,#FFF8E9 0%,#F8F1E5 100%)}
 .scene-visual::after{content:"";position:absolute;inset:auto 16px 10px;height:1px;background:rgba(216,198,163,.55)}
@@ -256,7 +257,7 @@ body{
 .grad-stat{background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;padding:14px 8px;text-align:center;box-shadow:3px 3px 0 var(--ink)}
 .grad-stat b{display:block;font-size:21px;color:var(--red);font-weight:700}
 .grad-stat span{font-size:12px;color:var(--ink-soft)}
-.next-card{background:#E2F4E2;border:2.5px solid var(--teal);border-radius:14px;padding:16px 16px;margin-top:14px}
+.next-card{background:var(--red-soft);border:2.5px solid var(--red-deep);border-radius:14px;padding:16px 16px;margin-top:14px}
 .next-card h4{font-size:15px;font-weight:700;color:var(--teal);margin-bottom:6px}
 .next-card p{font-size:13px;color:var(--ink-soft);line-height:1.7}
 .next-card .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
@@ -288,10 +289,10 @@ body{
 .hidden{display:none!important}/* ===== 新增：四季小屋卡片 ===== */
 .room-card{position:relative;border:3px solid var(--ink);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);margin:14px 0 0;background:var(--cream)}
 .room-frame{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center}
-.room-r-spring{background-image:url('assets/room-spring.webp')}
-.room-r-summer{background-image:url('assets/room-summer.webp')}
-.room-r-autumn{background-image:url('assets/room-autumn.webp')}
-.room-r-winter{background-image:url('assets/room-winter.webp')}
+.room-r-spring{background-image:url('assets/room_spring.png')}
+.room-r-summer{background-image:url('assets/room_summer.png')}
+.room-r-autumn{background-image:url('assets/room_automn.png')}
+.room-r-winter{background-image:url('assets/room_winter.png')}
 .room-veil2{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 55%,rgba(35,40,60,.38));pointer-events:none;border-radius:13px}
 .room-tag{position:absolute;left:10px;bottom:10px;background:var(--ink);color:#fff;border:2px solid var(--yellow);padding:3px 10px;font-size:12px;font-weight:700;border-radius:8px;z-index:4}
 .room-gold{position:absolute;right:10px;top:10px;background:rgba(255,248,236,.94);border:2.5px solid var(--ink);color:var(--red);font-weight:800;font-size:13px;padding:3px 10px;border-radius:8px;box-shadow:2px 2px 0 var(--ink);z-index:4}
@@ -323,9 +324,9 @@ body{
 .c-form input{flex:1;background:var(--cream);border:3px solid var(--ink);border-radius:8px;padding:9px 12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)}
 .q-text{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:10px;line-height:1.6}
 .quiz-opt{display:block;width:100%;text-align:left;background:var(--cream);border:2.5px solid var(--ink);border-radius:8px;padding:9px 12px;margin-bottom:8px;font-size:13px;font-family:inherit;color:var(--ink);cursor:pointer;font-weight:600}
-.quiz-opt.correct{background:#E3F5DF;border-color:var(--green)}
+.quiz-opt.correct{background:var(--red-soft);border-color:var(--red)}
 .quiz-opt.wrong{background:#FFE3E3;border-color:#E07A3F}
-.quiz-explain{display:none;margin-top:8px;font-size:12.5px;color:var(--teal);background:#E6F2F1;border-radius:8px;padding:8px 10px;line-height:1.6}
+.quiz-explain{display:none;margin-top:8px;font-size:12.5px;color:var(--red-deep);background:var(--red-soft);border-radius:8px;padding:8px 10px;line-height:1.6}
 /* ===== 新增：旅行纪念品图鉴 ===== */
 .sou-grid2{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
 .sou2{aspect-ratio:1;background:#fff;border:3px solid var(--ink);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);padding:2px}
@@ -357,13 +358,13 @@ body{
 .backend-status.ready::before{background:var(--green);box-shadow:0 0 0 2px rgba(123,201,80,.22)}
 .backend-status.syncing::before{background:var(--yellow);box-shadow:0 0 0 2px rgba(255,210,63,.22)}
 .backend-status.offline::before{background:var(--orange);box-shadow:0 0 0 2px rgba(244,132,95,.22)}
-.ai-profile-card,.ai-coach-card{background:#F7FBFA;border:2.5px solid var(--teal);border-radius:14px;padding:14px 16px;margin-top:14px;box-shadow:3px 3px 0 rgba(14,156,142,.35)}
+.ai-profile-card,.ai-coach-card{background:#FFF9F7;border:2px solid #C58089;border-radius:14px;padding:14px 16px;margin-top:14px;box-shadow:3px 3px 0 rgba(120,14,34,.12)}
 .ai-profile-card .ai-label,.ai-coach-card .ai-label{font-size:11px;color:var(--teal);font-weight:700;letter-spacing:.08em;margin-bottom:6px}
 .ai-profile-card h3,.ai-coach-card h3{font-size:16px;margin-bottom:5px;color:var(--ink)}
 .ai-profile-card p,.ai-coach-card p{font-size:13px;line-height:1.7;color:var(--ink-soft);margin:4px 0}
-.ai-profile-card .ai-chip{display:inline-block;background:#E2F4E2;color:var(--teal);border-radius:14px;padding:3px 9px;margin:4px 4px 0 0;font-size:11px;font-weight:700}
+.ai-profile-card .ai-chip{display:inline-block;background:var(--red-soft);color:var(--red-deep);border-radius:14px;padding:3px 9px;margin:4px 4px 0 0;font-size:11px;font-weight:700}
 .ai-profile-card .ai-foot,.ai-coach-card .ai-foot{font-size:10.5px;color:#8A8578;margin-top:8px}
-.ai-profile-card details{margin-top:12px;padding-top:10px;border-top:1px solid #D5E8E2;font-size:12px;color:var(--ink-soft)}
+.ai-profile-card details{margin-top:12px;padding-top:10px;border-top:1px solid #ECD1D2;font-size:12px;color:var(--ink-soft)}
 .ai-profile-card summary{cursor:pointer;color:var(--teal);font-weight:700}
 .ai-profile-card .answer-evidence{margin:9px 0;line-height:1.7}
 .ai-profile-card .answer-evidence span{display:block;color:var(--ink)}
@@ -380,6 +381,199 @@ body{
 .behavior-card .behavior-stat{background:#FFF1D6;border:1.5px solid #E8C06B;border-radius:12px;padding:3px 8px;font-size:11px;color:#8A5A14}
 .behavior-card .behavior-foot{font-size:10.5px;color:#8A8578;margin-top:8px}
 
+/* ===== 页面分区与渐进展开 ===== */
+#homeContent{display:grid;gap:14px;padding-top:14px}
+.workspace-tools{margin-top:14px;border:1px solid #DDD3BE;border-radius:14px;background:#FFFDF8;overflow:hidden}
+.workspace-tools>summary{list-style:none;display:flex;align-items:center;gap:9px;padding:12px 14px;cursor:pointer;font-size:13px;font-weight:700}
+.workspace-tools>summary::-webkit-details-marker,.feature-card>summary::-webkit-details-marker{display:none}
+.workspace-tools>summary svg{width:18px;height:18px;color:var(--teal)}
+.workspace-location{margin-left:auto;font-size:11px;font-weight:500;color:var(--ink-soft)}
+.disclosure-arrow{width:7px;height:7px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin:0 3px 4px 8px;flex:none;transition:transform .18s}
+[open]>summary .disclosure-arrow{transform:rotate(225deg);margin-bottom:0}
+.quick-links{display:flex;gap:8px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:#D0C4AF transparent;padding:0 12px 12px;scroll-padding:12px}
+.quick-links button{flex:none;display:flex;align-items:center;gap:6px;min-height:38px;padding:7px 12px;background:#F5F0E6;border:1px solid #E5DBCA;border-radius:10px;font:inherit;font-size:12px;color:var(--ink);cursor:pointer;white-space:nowrap}
+.quick-links button:hover,.quick-links button[aria-current="page"]{background:var(--red-deep);color:#FFF5ED;border-color:var(--red-deep)}
+.view-intro{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:5px 2px 1px}
+.view-intro h3{font-size:20px;line-height:1.4;margin-bottom:3px}
+.view-intro p{font-size:12px;color:var(--ink-soft);line-height:1.7}
+.view-index{font-size:11px;color:#8D826F;background:#F0E9DA;border-radius:9px;padding:6px 9px;white-space:nowrap}
+.feature-card{min-width:0;border:1px solid #E3D9C8;border-radius:16px;background:#FFFDF9;box-shadow:0 3px 10px rgba(73,58,35,.035);scroll-margin-top:90px}
+.feature-card>summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:88px;padding:16px;cursor:pointer;border-radius:16px}
+.feature-card>summary:hover{background:#FAF5E9}
+.feature-icon{display:grid;place-items:center;width:40px;height:40px;flex:none;border:1px solid #E8DCC3;border-radius:12px;background:#F5EDDA;color:#9B722A}
+.feature-icon svg{width:20px;height:20px}
+.feature-copy{min-width:0;flex:1}
+.feature-copy strong{display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:1.5}
+.feature-copy small{display:block;font-size:11.5px;color:var(--ink-soft);font-weight:400;line-height:1.7;margin-top:3px}
+.feature-card>summary .disclosure-arrow{color:#9C927F}
+.feature-card[open]{border-color:#C98991;background:#fff}
+.feature-card[open]>.feature-body{border-top:1px solid #EEE7DA;margin:0 16px;padding:14px 0 16px}
+.feature-body>:first-child{margin-top:0!important}
+.feature-body>.task-card,.feature-body>.challenge-card,.feature-body>.quiz-card,.feature-body>.ai-coach-card,.feature-body>.behavior-card,.feature-body>.scene-card,.feature-body>.squad-card,.feature-body>.team-goal{margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:transparent}
+.feature-body .task-head,.feature-body .c-title,.feature-body .q-title,.feature-body .ai-coach-card>.ai-label,.feature-body .behavior-label,.feature-body .tg-title{display:none}
+.feature-body .scene-label{flex-wrap:wrap;gap:7px}
+.feature-body .scene-label .stage-name{font-size:11px;font-weight:600}
+.feature-body .scene-label>span:not([class]){display:none}
+.feature-body .badge-grid{border:0;box-shadow:none;padding:0;gap:20px 12px}
+.feature-body .sou-grid2{margin-top:0;gap:8px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.feature-body .sou2{min-width:0;min-height:82px;aspect-ratio:auto;padding:6px 3px;box-shadow:none;border:1px solid #E0CDBE}
+.feature-body .sou2 .sn{width:100%;overflow-wrap:anywhere}
+.feature-body .section-title{font-size:13px;margin-top:0!important}
+.feature-body .section-title::after{display:none}
+.feature-body p.card-note{font-size:12px;color:var(--ink-soft);line-height:1.8;margin-bottom:12px}
+.feature-body .line-tip{margin-bottom:12px}
+.feature-body .btn{font-size:13px}
+.c-form{align-items:stretch;flex-wrap:wrap}
+.c-form input{min-width:0;width:100%;flex:1 1 130px}
+.c-form .btn{width:auto;flex:1 1 100px;background:var(--teal);color:#fff;padding:10px 12px;border-radius:9px}
+.custom-line-editor{margin-top:18px;padding:15px;border:1px solid #DDBFC2;border-radius:15px;background:#FFF7F3}
+.custom-line-editor h3{font-size:16px;color:var(--red-deep);margin-bottom:5px}
+.custom-line-editor p{font-size:12px;color:var(--ink-soft);line-height:1.7;margin-bottom:11px}
+.custom-form{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.custom-form label{display:grid;gap:4px;font-size:11px;color:var(--ink-soft)}
+.custom-form label:first-child,.custom-form label:nth-child(4),.custom-form .custom-form-actions{grid-column:1/-1}
+.custom-form input,.custom-form textarea{box-sizing:border-box;width:100%;background:#FFFDF9;border:1px solid #D7AEB1;border-radius:9px;padding:9px 10px;font:inherit;font-size:13px;color:var(--ink)}
+.custom-form textarea{min-height:54px;resize:vertical;line-height:1.6}
+.custom-form .btn{width:100%;margin-top:2px}
+.custom-diary{display:grid;gap:8px;padding:10px;background:#FFF7F0;border:1px solid #E3C8B9;border-radius:11px}
+.custom-diary label{display:grid;gap:4px;font-size:11px;color:var(--ink-soft);line-height:1.5}
+.custom-diary input,.custom-diary textarea{box-sizing:border-box;width:100%;background:#FFFDF9;border:1px solid #D7AEB1;border-radius:8px;padding:8px;font:inherit;color:var(--ink)}
+.custom-diary textarea{min-height:62px;resize:vertical;line-height:1.6}
+.custom-target{font-size:11px;color:#8C562B;background:#FBF0D7;border-radius:8px;padding:7px 8px;line-height:1.7}
+.custom-progress{font-size:11px;color:var(--ink-soft);line-height:1.7;margin-top:8px}
+.line-switcher{display:flex;gap:7px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:thin}
+.line-switcher button{flex:none;font:inherit;font-size:11px;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border:1px solid #D8B4B9;border-radius:20px;padding:8px 11px;background:#FFFBF7;color:var(--red-deep);cursor:pointer}
+.line-switcher button[aria-pressed="true"]{background:var(--red-deep);color:#fff}
+.line-card.current{border-color:var(--red-deep);box-shadow:3px 3px 0 #DFC0C0}
+.line-card h3{min-width:0;overflow-wrap:anywhere;font-size:16px}
+.portfolio-summary{font-size:12px;line-height:1.8;padding:12px;border:1px solid #E1C7BC;border-radius:12px;background:#FBF0E5;margin:14px 0}
+.portfolio-summary small{display:block;color:var(--ink-soft);font-size:11px}
+.goal-meter{margin:10px 0;font-size:12px;line-height:1.8;color:var(--red-deep)}
+.goal-meter progress{display:block;width:100%;height:8px;margin:5px 0;accent-color:var(--red-deep)}
+.diary-history{list-style:none;padding:0;display:grid;gap:10px}
+.diary-history li{border-bottom:1px solid #E7D3C9;padding-bottom:10px;font-size:12px;line-height:1.8}
+.diary-history p{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink-soft)}
+.diary-history button{font:inherit;border:1px solid #D5A9AE;color:var(--red-deep);background:#FFF8F4;border-radius:8px;padding:5px 9px;margin-top:5px;cursor:pointer}
+.custom-diary .diary-date{font-size:11px;color:#8C562B}
+.journey-hero{margin:0;border:1px solid #DAD2C1;border-radius:20px;background:#fff;color:var(--ink);box-shadow:0 6px 22px rgba(63,51,31,.07)}
+.journey-hero .hero-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 18px 14px;background:#FFFCF5}
+.hero-heading .journey-line{background:none;color:var(--teal);padding:0;margin:0 0 5px;font-size:11px;letter-spacing:.08em}
+.hero-heading h3{font-size:19px;line-height:1.4}
+.hero-heading .journey-day{color:var(--ink-soft);text-align:right;flex:none;line-height:1.3;font-size:11px}
+.hero-heading .journey-day b{display:block;font-size:30px;color:var(--ink);font-family:"Segoe UI",sans-serif;font-weight:700;letter-spacing:-1px}
+.journey-hero .room-frame{display:block;width:100%;height:auto;aspect-ratio:auto;object-fit:contain;border-top:1px solid #EEE4D1;border-bottom:1px solid #EEE4D1}
+.hero-footer{padding:14px 18px 17px}
+.room-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;color:var(--ink-soft);margin-bottom:11px}
+.room-meta b{font-weight:600;color:#967126}
+.hero-footer .journey-act{font-size:14px;line-height:1.75;text-shadow:none;margin-bottom:10px;font-weight:500}
+.hero-footer .story-idea{font-size:11px;border:0;padding:4px 10px;background:var(--red-soft);color:var(--red-deep)}
+.hero-footer .acts{margin-top:13px;gap:5px}
+.hero-footer .acts span{color:#928A7B;background:#F3F0E8;border:0;padding:5px 3px;font-size:11px}
+.hero-footer .acts span.on{color:#fff;background:var(--red-deep)}
+.journey-hero .travel-sign{position:static;margin:12px 0 0;background:#FBF0ED;border:1px solid #E9C5C4;box-shadow:none;text-align:left;padding:10px 12px}
+.journey-hero .travel-sign .t1{color:var(--red-deep);font-size:12px}
+.journey-hero .travel-sign .t2,.journey-hero .travel-sign .t3{color:var(--ink-soft);font-size:11px}
+.journey-hero .hero-note{font-size:11px;color:var(--ink-soft);margin:10px 0 0;line-height:1.7}
+.cal-grid{gap:7px;padding:11px;border:1px solid #DED6C5;box-shadow:none}
+.cal-cell{font-family:inherit;margin:0;padding:0;box-shadow:none;border:1px solid #DDD4C2;min-width:0}
+.cal-cell.milestone{background:#FFF1D6;color:#8A5A14;font-size:13px;line-height:1}
+.cal-cell.done{background:var(--green);color:#fff}
+.cal-cell.current{outline:2px solid var(--red);outline-offset:1px}
+.cal-legend{font-size:10px;gap:8px 12px}
+.calendar-preview{margin-top:14px;padding:12px;border-radius:10px;background:#F6F2E9}
+.calendar-preview b{font-size:12px}
+.calendar-preview p{font-size:12px;color:var(--ink-soft);line-height:1.7;margin-top:4px}
+.feature-body .squad-name{width:52px;font-size:12px}
+.feature-body .squad-row{gap:8px}
+.feature-body .squad-ava{width:32px;height:32px;box-shadow:none}
+.feature-body .squad-num{width:42px;font-size:11px}
+.feature-body .squad-bar{min-width:0}
+.view-home-active .bgm-btn{display:none}
+.view-home-active .pig-stage{position:fixed;right:max(12px,calc((100vw - 430px)/2 + 10px));bottom:82px;width:84px;height:84px}
+.view-home-active .pig-img{width:84px;height:84px;animation:pigBob 2.6s ease-in-out infinite}
+.view-home-active .pig-bubble{bottom:104px;top:auto;left:auto;right:0;transform:none;width:190px;font-size:12px;text-align:left}
+.view-home-active .pig-bubble::after{left:auto;right:27px;transform:none}
+.view-home-active .crown{font-size:23px;top:-24px}
+.view-home-active .pig-exclaim{font-size:20px;top:-12px;right:0}
+@media(min-width:520px){.view-home-active .pig-stage{bottom:106px}}
+summary:focus-visible,.quick-links button:focus-visible,.cal-cell:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+@media(max-width:360px){.feature-card>summary{padding:13px;gap:10px}.feature-card[open]>.feature-body{margin:0 13px}.hero-heading h3{font-size:17px}.cal-grid{gap:6px;padding:9px}.cal-cell{font-size:12px}.feature-body .sou-grid2{grid-template-columns:repeat(3,minmax(0,1fr))}.sou2 .sn{font-size:10px}.sou2 .se{font-size:21px}}
+@media(prefers-reduced-motion:reduce){.disclosure-arrow{transition:none}.feature-card{scroll-behavior:auto}}
+
+/* 深红与暖金：主卡、导航、操作入口保持同一品牌层级。 */
+.stage{background:radial-gradient(circle,rgba(120,14,34,.07) 1px,transparent 1px),#F1E8E0;background-size:16px 16px}
+.phone{border-color:#6E2635}
+.app-head{border-bottom:2px solid var(--red-deep);background:rgba(255,248,240,.97)}
+.app-head h2{color:var(--red-deep)}
+.app-head .back{color:var(--red-deep);border:1px solid #DAB6B6;box-shadow:none;background:#FFF9F5}
+.workspace-tools{border-color:#E5C4C5;background:#FFFAF6}
+.workspace-tools>summary{color:var(--red-deep)}
+.workspace-tools[open]>summary{background:#F8ECE9;margin-bottom:10px}
+.workspace-location{color:#9A5C65}
+.feature-icon{background:#F7E6E5;border-color:#EBD0D1;color:var(--red-deep)}
+.feature-card>summary:hover{background:#FFF4EF}
+.feature-copy strong{color:#712333}
+.feature-card[open]>summary .feature-icon{background:var(--red-deep);border-color:var(--red-deep);color:#FFECD0}
+.view-intro h3{color:var(--red-deep)}
+.view-index{color:var(--red-deep);background:#F4E2DE}
+.journey-hero{border-color:#C99A9D}
+.journey-hero .hero-heading{background:linear-gradient(120deg,#790D23,#A41A30);color:#FFF5E9}
+.hero-heading .journey-line{color:#EFCAA8}
+.hero-heading .journey-day{color:#F2CCC7}
+.hero-heading .journey-day b{color:#FFF1D9}
+.journey-hero .room-frame{border-color:#E9CEC0}
+.hero-footer .acts span{background:#F4E9E3;color:#8F6967}
+.hero-footer .acts span.on{background:var(--red-deep);color:#FFF6E9}
+.bottom-nav{border-color:var(--red-deep);background:rgba(255,250,245,.98)}
+.nav-btn{color:#937E78}
+.nav-btn.on{background:#F6E4E1;color:var(--red-deep)}
+.nav-btn.on svg{stroke:var(--red-deep)}
+.bottom-nav{overflow:hidden}
+.btn-primary{background:var(--red-deep);border-color:#641425;box-shadow:3px 3px 0 #D8BAB5}
+.btn-line{border:1px solid #D8A6AB;box-shadow:2px 2px 0 #ECD6D0;color:var(--red-deep)}
+.btn-line:hover{background:var(--red-soft)}
+.grad-hero{background:linear-gradient(145deg,#84132A,#491222)}
+/* 首页恢复深蓝星空，旅程及其他页面继续使用工银深红。 */
+#view-start,#view-start .start-bottom{background:#23283C}
+#view-start .start-brand,#view-start .start-cards span{color:#D6DFEF}
+#view-start .title-box p{color:#CCD6E8}
+#view-start .title-box h1{text-shadow:3px 3px 0 #465883,6px 6px 0 rgba(13,23,48,.45)}
+#view-start .start-bottom .note{color:#B6C4DA}
+.c-form .btn{background:var(--red-deep)}
+.behavior-card .behavior-stat{background:#FAEFE7;color:#814538;border-color:#DFBBA3}
+.team-goal .tg-fill{background:linear-gradient(90deg,var(--red-deep),#C87954)}
+.line-card .line-icon,.line-card .tag{box-shadow:2px 2px 0 rgba(120,14,34,.2)}
+
+/* 今日四宫格：题目、操作和建议始终可见。 */
+.daily-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;align-items:stretch}
+.daily-panel{min-width:0;padding:13px 11px;background:#FFFDF9;border:1px solid #E2C6C6;border-radius:15px;scroll-margin-top:90px;overflow-wrap:anywhere}
+.daily-panel h3{font-size:14px;color:var(--red-deep);line-height:1.5;margin-bottom:11px;padding-bottom:9px;border-bottom:1px solid #EEDFD8}
+.daily-panel>.task-card,.daily-panel>.challenge-card,.daily-panel>.quiz-card,.daily-panel>.ai-coach-card{background:none;border:0;box-shadow:none;margin:0;padding:0;border-radius:0}
+.daily-panel .c-title,.daily-panel .q-title{display:none}
+.daily-panel .ai-label{font-size:11px;line-height:1.7;margin-bottom:7px}
+.daily-panel .task-title,.daily-panel .ai-coach-card h3{font-size:13px;line-height:1.6;padding:0;border:0}
+.daily-panel .task-sub,.daily-panel .c-desc,.daily-panel .q-text,.daily-panel .ai-coach-card p{font-size:12px;line-height:1.75}
+.daily-panel .task-zone{display:block;min-height:0}
+.daily-panel .box-item{width:100%;padding:11px 8px;background:#F8EBDE;border:1px solid #D7ABA4;box-shadow:2px 2px 0 #E9D7CC;border-radius:10px}
+.daily-panel .box-item b{font-size:13px;line-height:1.6;color:var(--red-deep)}
+.daily-panel .box-item span{display:block;font-size:11px;margin-top:5px}
+.daily-panel .btn{font-size:12px;padding:11px 8px;line-height:1.6}
+.daily-panel .c-form{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.daily-panel .c-form input{padding:8px;min-width:0;border-width:1px;font-size:14px}
+.daily-panel .c-form .btn{width:100%}
+.daily-panel .quiz-opt{padding:8px 7px;font-size:11.5px;line-height:1.65;border-width:1px;box-shadow:none;transform:none}
+.daily-panel .quiz-opt:disabled{cursor:default;opacity:1}
+.daily-panel .quiz-opt.correct::before{content:'✓ ';font-weight:700}
+.daily-panel .quiz-opt.wrong::before{content:'× ';font-weight:700}
+.daily-panel .quiz-explain{padding:8px;font-size:11px;line-height:1.8}
+.quiz-reward{font-size:11px;line-height:1.7;color:#8C562B;background:#FBF0D7;border-radius:8px;padding:6px 8px;margin-bottom:9px}
+.quiz-feedback{font-size:11px;line-height:1.7;color:var(--red-deep);margin:8px 0}
+.daily-panel .task-done{padding:10px 7px;font-size:12px}
+.daily-panel .result-badge{padding:10px 7px;border-width:1px;box-shadow:none}
+.daily-panel .result-badge b{font-size:19px}
+.daily-panel .ai-foot{font-size:10px;line-height:1.7}
+@media(max-width:360px){.daily-grid{gap:9px}.daily-panel{padding:11px 8px}.daily-panel h3{font-size:13px}.daily-panel .quiz-opt{font-size:11px;padding:7px 5px}}
+
 </style>
 </head>
 <body>
@@ -393,24 +587,24 @@ body{
     <div class="cloud c1"></div><div class="cloud c2"></div>
     <div class="start-brand">
       <svg viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true"><rect width="32" height="32" fill="#23283C"/><rect x="6" y="6" width="20" height="20" fill="#C7000B"/><rect x="10" y="10" width="4" height="4" fill="#FFD23F"/><rect x="16" y="10" width="4" height="4" fill="#FFD23F"/><rect x="10" y="16" width="4" height="4" fill="#FFFFFF"/><rect x="16" y="16" width="4" height="4" fill="#FFFFFF"/></svg>
-      <span class="fx">ICBC · MONEY RPG</span>
+      <span class="fx">ICBC · 工银e生</span>
     </div>
     <div class="title-box">
-      <div class="kicker fx">21-DAY MONEY RPG</div>
+      <div class="kicker fx">ONE SMALL STEP A DAY</div>
       <h1 class="fz">工银e生</h1>
       <div class="sub-line">21 天扑满计划</div>
-      <p>我的小家 · 宝贝计划 · 说走就走 · 自由Gap · 第一次独居<br>选一条人生剧情线，每天 5 分钟，把理财养成一场游戏。</p>
+      <p>每天留一点，离心愿近一点。<br>选一个目标，和扑满一起记录 21 天的小进步。</p>
     </div>
     <div class="start-cards">
-      <div><b class="fx">21</b><span>天完整剧本</span></div>
-      <div><b class="fx">5</b><span>分钟 / 天</span></div>
-      <div><b class="fx">5</b><span>条剧情线</span></div>
+      <div><b class="fx">21</b><span>天小步积累</span></div>
+      <div><b class="fx">5</b><span>条主题旅程</span></div>
+      <div><b class="fx">1</b><span>个自定目标</span></div>
     </div>
   </div>
   <div class="start-bottom">
-    <button class="btn btn-start" onclick="go('#/quiz')"><span class="fx">▶ START</span>　开始我的 21 天</button>
-    <div class="note">DEMO v1.0 · 演示数据不连接真实账户 · 正式版理财跳转均走标准风险测评</div>
-    <div class="backend-status" id="backendStatus">正在检测后端</div>
+    <button class="btn btn-start" onclick="go('#/quiz')">开始我的攒钱计划</button>
+    <div class="note">体验版 · 金额为模拟记录，不连接银行账户，不产生实际扣款。金币与 i 豆为体验奖励，不可提现。</div>
+    <div class="backend-status" id="backendStatus" role="status">正在连接进度服务…</div>
   </div>
 </section>
 
@@ -420,14 +614,14 @@ body{
     <button class="back" onclick="go('#/start')" aria-label="返回">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <h2>测测你的财富人格</h2>
+    <h2>了解你的攒钱习惯</h2>
     <span class="spacer"></span>
   </div>
   <div class="quiz-progress"><i id="quizBar" style="width:0%"></i></div>
-  <div class="quiz-step" id="quizStep">第 1 / 4 题</div>
+  <div class="quiz-step" id="quizStep">第 1 / 4 题 · 按真实想法选择就好</div>
   <div class="quiz-q" id="quizQ"></div>
   <div id="quizOpts"></div>
-  <button class="quiz-skip" onclick="skipQuiz()">跳过测试，直接选剧情线</button>
+  <button class="quiz-skip" onclick="skipQuiz()">先选目标，稍后再测</button>
 </section>
 
 <!-- ===== 视图：剧情线选择 ===== -->
@@ -436,13 +630,25 @@ body{
     <button class="back" onclick="restartProfileQuiz()" aria-label="重新答题">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <h2>选择你的剧情线</h2>
+    <h2>选一个想实现的心愿</h2>
     <span class="spacer"></span>
   </div>
-  <p style="font-size:13.5px;color:var(--ink-soft);margin-top:14px">从你的生活愿望出发，选一条想开启的旅程。</p>
+  <p style="font-size:13.5px;color:var(--ink-soft);margin-top:14px">从在意的小心愿开始。也可以同时开启多个目标，随时切换，进度各自保留。</p>
   <div id="aiProfileBox" aria-live="polite"></div>
+  <div id="portfolioSummary" class="portfolio-summary"></div>
   <div id="lineList" style="margin-top:16px"></div>
-  <div class="line-tip">测试建议：<b id="quizSuggest" style="color:var(--red)">未测试</b>　·　小队规则：只比坚持，不比金额，不公开账户。</div>
+  <section class="custom-line-editor" aria-labelledby="customLineTitle">
+    <h3 id="customLineTitle">我的心愿，自己定义</h3>
+    <p>想攒多少钱、每天攒多少，都由你决定。保存后，从上方的目标卡片进入，用日记记下每一笔积累。</p>
+    <form class="custom-form" onsubmit="saveCustomLine(event)">
+      <label>我想为它攒钱<input id="customNameInput" maxlength="30" placeholder="例如：考研资料基金" required></label>
+      <label>想攒到的金额（元）<input id="customGoalInput" type="number" min="0.01" max="1000000" step="0.01" required></label>
+      <label>每日计划（元，可按天调整）<input id="customDailyInput" type="number" min="0.01" max="1000000" step="0.01" required></label>
+      <label>给未来的自己一句话<textarea id="customIntroInput" maxlength="80" placeholder="例如：一点点攒下报名费，离想学的东西更近一点"></textarea></label>
+      <div class="custom-form-actions"><button class="btn btn-primary" type="submit">保存自定义目标</button></div>
+    </form>
+  </section>
+  <div class="line-tip">答题推荐：<b id="quizSuggest" style="color:var(--red)">还没测试</b>。推荐仅供参考，选你喜欢的就好。</div>
 </section>
 
 <!-- ===== 视图：主旅程 ===== -->
@@ -454,6 +660,25 @@ body{
     <h2 id="headLineName">我的小家</h2>
     <span class="spacer"></span>
   </div>
+  <details class="workspace-tools" id="workspaceTools">
+    <summary><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="#FFFDF8"/><circle cx="15" cy="17" r="3" fill="#FFFDF8"/></svg>功能与设置<span class="workspace-location" id="workspaceLocation">旅程</span><i class="disclosure-arrow" aria-hidden="true"></i></summary>
+    <nav class="quick-links" aria-label="功能快捷入口，可横向滑动">
+      <button data-destination="journey" onclick="jumpFeature('journey')">小屋旅程</button>
+      <button onclick="jumpFeature('journey','daily-task')">今日玩法</button>
+      <button onclick="jumpFeature('journey','saving-challenge')">存钱挑战</button>
+      <button onclick="jumpFeature('journey','daily-quiz')">理财一问</button>
+      <button onclick="jumpFeature('journey','ai-companion')">AI 陪伴</button>
+      <button data-destination="calendar" onclick="jumpFeature('calendar','calendar-days')">21 天日历</button>
+      <button onclick="jumpFeature('calendar','savings-progress')">攒钱进度</button>
+      <button onclick="jumpFeature('calendar','participation')">参与节奏</button>
+      <button data-destination="squad" onclick="jumpFeature('squad')">我的小队</button>
+      <button data-destination="badge" onclick="jumpFeature('badge','badge-collection')">拼豆徽章</button>
+      <button onclick="jumpFeature('badge','souvenir-collection')">旅行纪念品</button>
+      <button onclick="go('#/choose')">管理我的目标</button>
+      <button id="quickMusic" onclick="toggleBgm()" aria-pressed="false">开启音乐</button>
+    </nav>
+  </details>
+  <nav id="lineSwitcher" class="line-switcher" aria-label="切换目标，各目标进度独立保留"></nav>
   <div id="homeContent"></div>
 </section>
 
@@ -463,7 +688,7 @@ body{
     <button class="back" onclick="go('#/home')" aria-label="返回">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <h2>结业典礼</h2>
+    <h2>我的旅程回顾</h2>
     <span class="spacer"></span>
   </div>
   <div id="gradContent"></div>
@@ -513,85 +738,91 @@ body{
 <div class="sou-detail" id="souDetail"></div>
 
 <div class="toast" id="toast"></div>
-<div class="compliance hidden" id="compliance">演示环境：模拟数据，不连接真实账户，不产生真实交易。正式版中，任何理财、存款、保险跳转均走工商银行标准风险测评，收益表述受合规白名单约束。</div>
+<div class="compliance hidden" id="compliance">体验版：所有金额均为模拟记录，不连接银行账户，不产生真实交易。金币与 i 豆为体验奖励，不可提现。AI 内容仅供知识学习与习惯参考，不构成投资建议。</div>
 
 </div>
 </div>
 
 <script>
-/* ========== 数据：五条剧情线 × 21天（来源：项目计划书附录A-E） ========== */
+/* ========== 数据：六条剧情线 × 21天（含一条可自定义线路） ========== */
+function makeCustomDays(){
+  return Array.from({length:21},(_,index)=>{
+    const d=index+1;
+    return {d,story:'把自己的目标拆成今天的一小步',task:'记录今天存下多少，也写下这一笔的理由',idea:'目标拆小，今天就能开始',mode:'custom'};
+  });
+}
 const LINES = {
   home:{
-    id:'home', name:'我的小家', tagline:'从毛坯到温馨，每天添一件家具',
+    id:'home', name:'我的小家', tagline:'为理想中的小家，慢慢攒下生活的底气',
     color:'#C7000B', scene:['毛坯房，一切从零开始','能住的小房间','像样的小家','温馨小家'],
     goal:'攒下第一笔装修基金', products:['定期存款','装修分期'], icon:'home',
     days:[
-      {d:1,story:'AI问几个问题，画出你小家的“毛坯房”现状',task:'完成财务画像问答',idea:'认识自己的收支',mode:'answer'},
+      {d:1,story:'理想的小家是什么样？先想想现在的收支和最想添置的东西',task:'想一想小家的第一份预算',idea:'认识自己的收支',mode:'answer'},
       {d:2,story:'存第一笔，铺上第一块地板',task:'先存下第一笔',idea:'开始比不开始强',mode:'save'},
       {d:3,story:'昨天消费凑整，小家有了床',task:'把昨天消费的零头存下来',idea:'小钱的力量',mode:'round'},
       {d:4,story:'盲盒抽个数字存一笔，添个冰箱',task:'打开盲盒，抽一个数字存下',idea:'不确定中的期待',mode:'blind'},
       {d:5,story:'取消一个不再用的订阅，退掉“漏水的装修合同”',task:'找出一个闲置订阅并取消',idea:'看见隐性成本',mode:'cancel'},
-      {d:6,story:'猜昨天花了多少，差额存下',task:'猜一猜，猜错多少存多少',idea:'建立预算感',mode:'guess'},
+      {d:6,story:'回想昨天花了多少，再看看记录，慢慢认识自己的消费节奏',task:'估一估，再回看开销',idea:'建立预算感',mode:'guess'},
       {d:7,story:'第一幕结算：毛坯房变成能住的小房间',task:'回顾第一周，点亮里程碑',idea:'坚持的成就感',mode:'answer'},
       {d:8,story:'剧情事件：水管爆了，你家有没有备用钱',task:'算一算你需要多少备用钱',idea:'以防万一的钱',mode:'calc'},
-      {d:9,story:'放一笔小钱看它30年后变成多少',task:'放一笔钱，看雪球怎么滚',idea:'钱生钱的雪球',mode:'save'},
+      {d:9,story:'小家的预算不必一次备齐，今天再留下一小笔',task:'为小家再记一笔',idea:'让积累慢慢发生',mode:'save'},
       {d:10,story:'今天不花非必要的钱，省下的存下',task:'今天忍住一笔非必要消费',idea:'对抗冲动消费',mode:'freeze'},
-      {d:11,story:'每月存一小笔，体验慢慢滚雪球',task:'设一笔“每月自动存”',idea:'定投的意义',mode:'save'},
+      {d:11,story:'想一个适合每月重复的小金额，让小家计划更容易继续',task:'想一想下个月的小家预算',idea:'找到自己的储蓄节奏',mode:'save'},
       {d:12,story:'算算某笔分期贷款真实的价格',task:'算一算分期的真实价格',idea:'看清真实成本',mode:'calc'},
       {d:13,story:'按今天的气温存一笔',task:'今天几度，就存几块钱',idea:'让存钱有仪式感',mode:'temp'},
       {d:14,story:'第二幕结算：小家像个家了',task:'回顾第二周，点亮里程碑',idea:'阶段复盘',mode:'answer'},
       {d:15,story:'剧情事件：门口有人推销“神奇理财”',task:'识别一个典型的理财骗局',idea:'识别诈骗',mode:'answer'},
       {d:16,story:'认识你的“经济名片”',task:'认识个人信用记录',idea:'个人信用',mode:'answer'},
-      {d:17,story:'算算身上每个月压着的石头',task:'盘一盘每月固定支出',idea:'负债成本',mode:'calc'},
+      {d:17,story:'把每月固定支出放在一起看看，给小家计划留一点空间',task:'盘一盘每月固定支出',idea:'负债成本',mode:'calc'},
       {d:18,story:'先顾保障，再谈理财',task:'认识保障的先后顺序',idea:'保险的作用',mode:'answer'},
       {d:19,story:'掷个骰子，按点数存一笔',task:'掷骰子，1点存10块',idea:'趣味存钱',mode:'roll'},
-      {d:20,story:'AI生成“你的小家21天故事”',task:'回顾你的21天旅程',idea:'综合复盘',mode:'answer'},
-      {d:21,story:'小家装修完成，获得结业证书',task:'点亮结业证书',idea:'理财习惯养成',mode:'answer'}
+      {d:20,story:'翻翻小家的打卡和记账记录，看看哪些小行动最适合自己',task:'回顾这段积累',idea:'综合复盘',mode:'answer'},
+      {d:21,story:'走到这段旅程的最后一天，为小家的每一份积累留个纪念',task:'完成打卡，查看旅程回顾',idea:'回看习惯的起点',mode:'answer'}
     ]
   },
   baby:{
-    id:'baby', name:'宝贝计划', tagline:'婴儿房每天布置一件用品',
+    id:'baby', name:'宝贝计划', tagline:'从一笔小积累开始，为宝贝的到来做准备',
     color:'#E07A3F', scene:['空空的婴儿房','有了婴儿床','有了模样','布置完成的婴儿房'],
     goal:'攒下第一笔育儿基金', products:['儿童账户','教育金','保险'], icon:'baby',
     days:[
-      {d:1,story:'AI问你们的家庭计划，画出婴儿房现在的空房间',task:'完成家庭财务画像问答',idea:'认识家庭现状',mode:'answer'},
+      {d:1,story:'想想家庭接下来的计划，从最在意的一项开支开始梳理',task:'想一想家庭的准备清单',idea:'认识家庭现状',mode:'answer'},
       {d:2,story:'存第一笔，给婴儿房挂上婴儿床',task:'存下第一笔，挂上婴儿床',idea:'开始比犹豫强',mode:'save'},
       {d:3,story:'算一笔产检与生产账单，凑整存下',task:'把账单的零头存下来',idea:'看清真实开销',mode:'round'},
       {d:4,story:'盲盒抽个数字存，添一台奶瓶消毒器',task:'打开盲盒，抽一个数字存下',idea:'不确定中的期待',mode:'blind'},
       {d:5,story:'列一个“不买清单”，退掉过度囤货',task:'列出不买清单，省下囤货钱',idea:'理性消费',mode:'cancel'},
-      {d:6,story:'猜这个月育儿开支，差额存下',task:'猜一猜，猜错多少存多少',idea:'建立预算感',mode:'guess'},
+      {d:6,story:'估一估这个月的育儿开支，再回看记录，不必一次就算准',task:'估一估，再回看开销',idea:'建立预算感',mode:'guess'},
       {d:7,story:'第一幕结算：婴儿房有了床',task:'回顾第一周，点亮里程碑',idea:'坚持的成就感',mode:'answer'},
       {d:8,story:'剧情事件：宝宝用品突然涨价，家里有没有备用钱',task:'算一算应急备用钱',idea:'以防万一的钱',mode:'calc'},
-      {d:9,story:'算一笔0-3岁育儿基金放着不动会怎样',task:'放一笔钱，看雪球怎么滚',idea:'钱生钱的雪球',mode:'save'},
-      {d:10,story:'今天不买网红母婴用品，省下的存下',task:'今天忍住一笔智商税',idea:'拒绝智商税',mode:'freeze'},
+      {d:9,story:'照顾宝贝的计划可以慢慢准备，今天再留下一小笔',task:'为宝贝计划再记一笔',idea:'给未来留一点准备',mode:'save'},
+      {d:10,story:'看到心动的母婴用品，先想想家里是否已经够用',task:'给非必要购买留点考虑时间',idea:'按需要做选择',mode:'freeze'},
       {d:11,story:'每月固定存一小笔教育金',task:'设一笔“每月教育金”',idea:'长期定投',mode:'save'},
       {d:12,story:'算算“母婴年卡”到底贵不贵',task:'算一算年卡的真实价格',idea:'看清真实价格',mode:'calc'},
       {d:13,story:'按今天气温存一笔，给宝宝添件应季衣物',task:'今天几度，就存几块钱',idea:'存钱的仪式感',mode:'temp'},
       {d:14,story:'第二幕结算：婴儿房有了模样',task:'回顾第二周，点亮里程碑',idea:'阶段复盘',mode:'answer'},
       {d:15,story:'剧情事件：有人推销“神童早教班”“育儿神药”',task:'识别一个典型的育儿骗局',idea:'识别诈骗',mode:'answer'},
       {d:16,story:'认识家庭的“经济名片”',task:'认识家庭信用记录',idea:'个人与家庭信用',mode:'answer'},
-      {d:17,story:'算算家里每月固定开支压得有多重',task:'盘一盘家庭每月固定支出',idea:'家庭预算',mode:'calc'},
+      {d:17,story:'整理家里每月的固定开支，看看哪些安排更适合现在的生活',task:'盘一盘家庭每月固定支出',idea:'家庭预算',mode:'calc'},
       {d:18,story:'先给大人保障，再给孩子谈理财',task:'认识保障的先后顺序',idea:'保险的顺序',mode:'answer'},
       {d:19,story:'掷个骰子，按点数存一笔',task:'掷骰子，1点存10块',idea:'趣味存钱',mode:'roll'},
-      {d:20,story:'AI生成“你们的育儿基金故事”',task:'回顾你的21天旅程',idea:'综合复盘',mode:'answer'},
-      {d:21,story:'婴儿房布置完成，生成育儿储蓄计划',task:'点亮结业证书',idea:'理财习惯养成',mode:'answer'}
+      {d:20,story:'回看为宝贝留下的每一笔记录，想想哪些小习惯可以继续',task:'回顾这段积累',idea:'综合复盘',mode:'answer'},
+      {d:21,story:'为这一阶段画个小句号，照顾宝贝的心愿仍可以慢慢积累',task:'完成打卡，查看旅程回顾',idea:'回看习惯的起点',mode:'answer'}
     ]
   },
   travel:{
-    id:'travel', name:'说走就走', tagline:'每天往行李箱装一件出行装备',
+    id:'travel', name:'说走就走', tagline:'把想去的远方，拆成今天的一点积累',
     color:'#2A7FB8', scene:['空行李箱','第一件装备','越来越满','装满的行李箱'],
     goal:'攒下第一笔旅行基金', products:['旅行钱包','外币兑换'], icon:'travel',
     days:[
-      {d:1,story:'AI问你梦想去哪，画出你的目的地地图',task:'完成旅行梦想清单问答',idea:'明确存钱目标',mode:'answer'},
+      {d:1,story:'想一个一直想去的地方，再想想路费、住宿和旅途里的小期待',task:'想一想目的地和出行预算',idea:'明确存钱目标',mode:'answer'},
       {d:2,story:'存第一笔，先攒下机票钱的零头',task:'存下第一笔机票钱',idea:'开始',mode:'save'},
       {d:3,story:'昨天消费凑整存，往行李箱里装了相机',task:'把昨天消费的零头存下来',idea:'小钱的力量',mode:'round'},
       {d:4,story:'盲盒抽个数字存，装了泳衣',task:'打开盲盒，抽一个数字存下',idea:'不确定中的期待',mode:'blind'},
       {d:5,story:'退掉一个用不上的会员，钱进旅行基金',task:'退掉闲置会员，钱进旅行基金',idea:'看见隐性成本',mode:'cancel'},
-      {d:6,story:'猜这个月能存多少，差额补上',task:'猜一猜，猜错多少存多少',idea:'建立预算感',mode:'guess'},
+      {d:6,story:'估一估这个月能留多少旅行预算，和已有记录对照看看',task:'估一估，再回看开销',idea:'建立预算感',mode:'guess'},
       {d:7,story:'第一幕：行李箱有了第一件装备',task:'回顾第一周，点亮里程碑',idea:'坚持的成就感',mode:'answer'},
       {d:8,story:'剧情事件：特价机票突然抢光，你有没有备用钱',task:'算一算旅行备用金',idea:'以防万一的钱',mode:'calc'},
-      {d:9,story:'算旅行基金放着不动会怎样',task:'放一笔钱，看雪球怎么滚',idea:'钱生钱的雪球',mode:'save'},
-      {d:10,story:'这周少点一次外卖，钱进旅行基金',task:'今天忍住一次外卖',idea:'不消费',mode:'freeze'},
+      {d:9,story:'不必一下准备好整趟旅费，今天再为远方留下一小笔',task:'为旅行再记一笔',idea:'给出发留一点准备',mode:'save'},
+      {d:10,story:'想想本周哪笔开支可以缓一缓，给旅行留一点空间',task:'为心愿调整一笔小预算',idea:'按需要做选择',mode:'freeze'},
       {d:11,story:'每月固定存一笔旅行基金',task:'设一笔“每月旅行基金”',idea:'定投的意义',mode:'save'},
       {d:12,story:'算算“低价团”背后真实的价格',task:'算一算低价团的真实成本',idea:'看清真实成本',mode:'calc'},
       {d:13,story:'按目的地今天的气温存一笔',task:'目的地几度，就存几块钱',idea:'存钱的仪式感',mode:'temp'},
@@ -601,21 +832,21 @@ const LINES = {
       {d:17,story:'算算穷游与舒适游的真实差价',task:'算一算两种玩法的差价',idea:'预算对比',mode:'calc'},
       {d:18,story:'旅行险到底保什么',task:'认识旅行险的保障范围',idea:'出行保障',mode:'answer'},
       {d:19,story:'掷个骰子，按点数存一笔',task:'掷骰子，1点存10块',idea:'趣味存钱',mode:'roll'},
-      {d:20,story:'AI生成“你的旅行故事”',task:'回顾你的21天旅程',idea:'综合复盘',mode:'answer'},
-      {d:21,story:'行李箱装满，结业并生成旅行预算',task:'点亮结业证书',idea:'理财习惯养成',mode:'answer'}
+      {d:20,story:'回看一路的打卡和记账记录，想想自己离出发又近了多少',task:'回顾这段积累',idea:'综合复盘',mode:'answer'},
+      {d:21,story:'为这段旅程留个纪念，下一步的旅行安排由你决定',task:'完成打卡，查看旅程回顾',idea:'回看习惯的起点',mode:'answer'}
     ]
   },
   gap:{
-    id:'gap', name:'自由Gap', tagline:'请假条从“不敢停”到“已批准”',
+    id:'gap', name:'自由Gap', tagline:'为想要的休息，提前留一份从容',
     color:'#6A5ACD', scene:['不敢停的请假条','有了第一个角','厚了一点','“已批准”'],
     goal:'攒下Gap安全垫', products:['活期理财','薪资管家'], icon:'gap',
     days:[
-      {d:1,story:'AI问你为什么想停，算你离“敢辞职”还差多少',task:'完成Gap安全垫画像问答',idea:'现状盘点',mode:'answer'},
+      {d:1,story:'如果想给自己一段休息，先想想这段时间需要安排哪些开支',task:'想一想休息期间的生活预算',idea:'现状盘点',mode:'answer'},
       {d:2,story:'存第一笔，请假条写下第一笔“勇气值”',task:'存下第一笔勇气值',idea:'开始',mode:'save'},
       {d:3,story:'昨天消费凑整存，勇气值加一点',task:'把昨天消费的零头存下来',idea:'小钱的力量',mode:'round'},
       {d:4,story:'盲盒抽个数字存，勇气值再加',task:'打开盲盒，抽一个数字存下',idea:'不确定中的期待',mode:'blind'},
-      {d:5,story:'砍掉一个“为撑面子”的开销',task:'砍掉一项面子开销',idea:'理性消费',mode:'cancel'},
-      {d:6,story:'猜这个月能省多少，差额补上',task:'猜一猜，猜错多少存多少',idea:'建立预算感',mode:'guess'},
+      {d:5,story:'看看有没有不再需要的开销，把预算留给自己真正在意的事',task:'找一笔可以调整的开销',idea:'理性消费',mode:'cancel'},
+      {d:6,story:'估一估这个月能留多少预算，不必勉强，适合自己最重要',task:'估一估，再回看开销',idea:'建立预算感',mode:'guess'},
       {d:7,story:'第一幕：请假条有了第一个角',task:'回顾第一周，点亮里程碑',idea:'坚持的成就感',mode:'answer'},
       {d:8,story:'剧情事件：辞职前突然生病，你有没有备用钱',task:'算一算生病应急金',idea:'以防万一的钱',mode:'calc'},
       {d:9,story:'算“裸辞安全垫”能撑几个月',task:'算一算安全垫能撑多久',idea:'安全垫思维',mode:'calc'},
@@ -629,44 +860,50 @@ const LINES = {
       {d:17,story:'算算Gap期间每月最低开支',task:'算一算每月最低开销',idea:'预算规划',mode:'calc'},
       {d:18,story:'Gap期间医疗保障怎么办',task:'认识Gap期间的保障',idea:'保障意识',mode:'answer'},
       {d:19,story:'掷个骰子，按点数存一笔',task:'掷骰子，1点存10块',idea:'趣味存钱',mode:'roll'},
-      {d:20,story:'AI生成“你的Gap计划”',task:'回顾你的21天旅程',idea:'综合复盘',mode:'answer'},
-      {d:21,story:'请假条变“已批准”，生成Gap财务计划',task:'点亮结业证书',idea:'理财习惯养成',mode:'answer'}
+      {d:20,story:'回看为休息留下的记录，看看自己的准备和期待有没有变化',task:'回顾这段积累',idea:'综合复盘',mode:'answer'},
+      {d:21,story:'这段积累值得纪念，是否出发、何时休息，继续按自己的实际情况安排',task:'完成打卡，查看旅程回顾',idea:'回看习惯的起点',mode:'answer'}
     ]
   },
   solo:{
-    id:'solo', name:'第一次独居', tagline:'空出租屋逐步布置成温馨小屋',
-    color:'#3E8E7E', scene:['空荡荡的出租屋','有了光','越来越像家','温馨小屋'],
-    goal:'攒下第一笔独居基金', products:['工资卡','储蓄卡'], icon:'solo',
+    id:'solo', name:'攒一笔学习基金', tagline:'为想学的东西，留下一份专属预算',
+    color:'#8A5A14', scene:['一份学习心愿','选定学习方向','持续积累中','回看学习旅程'],
+    goal:'攒下一笔学习基金', products:['教育金','定期存款'], icon:'solo',
     days:[
-      {d:1,story:'AI问你现在的出租屋什么样，画出来',task:'完成独居画像问答',idea:'认识现状',mode:'answer'},
-      {d:2,story:'存第一笔，给自己买一盏台灯',task:'存下第一笔，买盏台灯',idea:'开始',mode:'save'},
-      {d:3,story:'昨天消费凑整存，添一套舒服床品',task:'把昨天消费的零头存下来',idea:'小钱的力量',mode:'round'},
-      {d:4,story:'盲盒抽个数字存，添一盆小绿植',task:'打开盲盒，抽一个数字存下',idea:'不确定中的期待',mode:'blind'},
-      {d:5,story:'找出合租账单里的“隐形收费”',task:'找出账单里的隐形收费',idea:'看清账单',mode:'cancel'},
-      {d:6,story:'猜这个月水电网一共多少',task:'猜一猜，猜错多少存多少',idea:'建立预算感',mode:'guess'},
-      {d:7,story:'第一幕：出租屋有了光',task:'回顾第一周，点亮里程碑',idea:'坚持的成就感',mode:'answer'},
-      {d:8,story:'剧情事件：房东突然要涨租，你有没有备用钱',task:'算一算涨租应急金',idea:'以防万一的钱',mode:'calc'},
-      {d:9,story:'算“搬家基金”放着不动会怎样',task:'放一笔钱，看雪球怎么滚',idea:'钱生钱的雪球',mode:'save'},
-      {d:10,story:'这周少点一次外卖，自己做一顿',task:'今天自己做饭，省下外卖钱',idea:'不消费与生活技能',mode:'freeze'},
-      {d:11,story:'每月固定存一笔“独居基金”',task:'设一笔“每月独居基金”',idea:'定投',mode:'save'},
-      {d:12,story:'算算押一付三加中介费的真实成本',task:'算一算租房真实成本',idea:'看清真实成本',mode:'calc'},
-      {d:13,story:'按今天气温存一笔，给房间添件应季小物',task:'今天几度，就存几块钱',idea:'存钱的仪式感',mode:'temp'},
-      {d:14,story:'第二幕结算：房间越来越像家',task:'回顾第二周，点亮里程碑',idea:'阶段复盘',mode:'answer'},
-      {d:15,story:'剧情事件：遇到二房东或虚假房源',task:'识别一个典型的租房骗局',idea:'识别租房诈骗',mode:'answer'},
-      {d:16,story:'开始自己交水电煤，认识信用记录',task:'认识你的第一份信用记录',idea:'个人信用',mode:'answer'},
-      {d:17,story:'算算每月固定开支占收入的比例',task:'算一算收支比例',idea:'收支比例',mode:'calc'},
-      {d:18,story:'一个人住，财产与意外怎么保障',task:'认识独居的保障',idea:'保障意识',mode:'answer'},
-      {d:19,story:'掷个骰子，按点数存一笔',task:'掷骰子，1点存10块',idea:'趣味存钱',mode:'roll'},
-      {d:20,story:'AI生成“你的独居生活账本”',task:'回顾你的21天旅程',idea:'综合复盘',mode:'answer'},
-      {d:21,story:'空房间变成温馨小屋，结业',task:'点亮结业证书',idea:'理财习惯养成',mode:'answer'}
+      {d:1,story:'先问清楚：你想学什么，为什么现在开始',task:'写下学习目标和预计费用',idea:'先把愿望说清楚',mode:'answer'},
+      {d:2,story:'为课程、考试或证书建立第一笔学习基金',task:'存下第一笔学习基金',idea:'开始比等待更重要',mode:'save'},
+      {d:3,story:'把一笔日常消费凑整，变成学习资料费',task:'把昨天消费的零头存下来',idea:'小钱也能支持成长',mode:'round'},
+      {d:4,story:'盲盒抽一个学习金额，为目标增加一点期待',task:'打开盲盒，抽一个数字存下',idea:'给坚持留一点趣味',mode:'blind'},
+      {d:5,story:'取消一个用不上的订阅，把钱转进学习基金',task:'找出一个闲置订阅并取消',idea:'把隐性开销换成成长投入',mode:'cancel'},
+      {d:6,story:'估算学习计划的总费用，看看还差多少',task:'估一估，再回看学习预算',idea:'先有预算，才好行动',mode:'guess'},
+      {d:7,story:'第一幕结算：学习方向和基金目标都清楚了',task:'回顾第一周，点亮里程碑',idea:'明确目标就是进步',mode:'answer'},
+      {d:8,story:'课程临时涨价或考试延期，准备金够不够',task:'算一算学习应急金',idea:'为变化留余地',mode:'calc'},
+      {d:9,story:'课程、资料和报名费不必一次备齐，今天再留下一小笔',task:'为学习目标再记一笔',idea:'时间也能帮你积累',mode:'save'},
+      {d:10,story:'今天少买一件冲动消费，把钱留给更重要的学习',task:'今天忍住一笔非必要消费',idea:'为长期目标延迟满足',mode:'freeze'},
+      {d:11,story:'想一个适合每月重复的小金额，为学习计划留出固定预算',task:'想一想下个月的学习预算',idea:'固定动作更容易坚持',mode:'save'},
+      {d:12,story:'比较课程、资料和考试费用的真实价格',task:'算一算学习计划的真实成本',idea:'看清成本再做选择',mode:'calc'},
+      {d:13,story:'按今天的气温存一笔，给未来的自己添一份学习预算',task:'今天几度，就存几块钱',idea:'让积累有一点仪式感',mode:'temp'},
+      {d:14,story:'第二幕结算：学习基金已经有了稳定的节奏',task:'回顾第二周，点亮里程碑',idea:'稳定比一时冲刺更重要',mode:'answer'},
+      {d:15,story:'有人推销“交钱就包过”的课程，先停下来核实',task:'识别一个典型的学习培训骗局',idea:'学习投入也要防骗',mode:'answer'},
+      {d:16,story:'报名之前看清课程内容、退费约定并保留凭据',task:'认识培训合同与消费权益',idea:'保护自己的每一笔钱',mode:'answer'},
+      {d:17,story:'算算学习计划每月能承受多少固定支出',task:'盘一盘每月可用于学习的金额',idea:'不让目标压垮生活',mode:'calc'},
+      {d:18,story:'先留好生活应急金，再安排长期学习投入',task:'认识学习基金与应急金的顺序',idea:'先稳住，再成长',mode:'answer'},
+      {d:19,story:'掷个骰子，按点数存一笔学习基金',task:'掷骰子，1点存10块',idea:'把坚持变成小挑战',mode:'roll'},
+      {d:20,story:'回看学习基金的打卡和记账记录，看看哪些小行动值得继续',task:'回顾这段积累',idea:'把过程写成自己的经验',mode:'answer'},
+      {d:21,story:'完成这一阶段的记录，再看看学习目标还需要怎样的准备',task:'完成打卡，查看学习旅程回顾',idea:'回看习惯的起点',mode:'answer'}
     ]
+  },
+  custom:{
+    id:'custom', name:'我的自定义目标', tagline:'由你写下目标、金额和每天的存钱日记',
+    color:'#9A2438', scene:['一份自己的心愿','有了第一笔','积累正在发生','回看这一程'],
+    goal:'为自己的目标存钱', products:['目标储蓄','每日记账'], icon:'custom',
+    days:makeCustomDays()
   }
 };
 
 /* ========== 财富人格测试题库 ========== */
 const QUIZ = [
   {q:'最近三个月，你最大的心愿是？', opts:[
-    {t:'把租来的小窝布置成家', s:['home','solo']},
+    {t:'把租来的小窝布置成家', s:['home']},
     {t:'为宝宝或未来的宝宝存一笔钱', s:['baby']},
     {t:'来一次说走就走的旅行', s:['travel']},
     {t:'给自己一段停下来喘口气的时间', s:['gap']}
@@ -678,7 +915,7 @@ const QUIZ = [
     {t:'没想过，花完再说', s:['travel']}
   ]},
   {q:'哪种生活场景最让你心动？', opts:[
-    {t:'下班回家，灯是暖的，房间是自己的', s:['home','solo']},
+    {t:'学会一项新技能，让未来多一种选择', s:['solo']},
     {t:'收到孩子的小礼物', s:['baby']},
     {t:'拖着行李箱在机场看日出', s:['travel']},
     {t:'工作日也能躺在公园长椅上晒太阳', s:['gap']}
@@ -708,14 +945,19 @@ const API_BASE_URL = (()=>{
   }catch(e){ console.warn('Invalid public backend URL in config.js'); return ''; }
 })();
 const API_ENABLED = /^https?:$/.test(location.protocol) && (!ON_GITHUB_PAGES || Boolean(API_BASE_URL));
-const PROFILE_VERSION = 'answers-v1';
-function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, atHome:true, travelStart:null, travelDur:45000, quizDone:[], challengeDone:0, idou:0, lastAmount:0, aiProfile:null, aiCoach:null, behavior:null}; }
+const PROFILE_VERSION = 'answers-v2-learning';
+function emptyRewards(){ return {provider:'local',gold:0,quizzes:{},trips:[],active_trips:[],active_trip:null,revision:0}; }
+function defaultCustomLine(){ return {name:'我的自定义目标', goal:1000, dailyTarget:20, intro:'由你设定目标金额，并用每天一篇小日记记录积累', entries:{}}; }
+function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, atHome:true, travelStart:null, travelDur:45000, quizDone:[], challengeDone:0, idou:0, lastAmount:0, aiProfile:null, aiCoach:null, behavior:null, customLine:defaultCustomLine(), lineDays:{}, lineRecords:{}, lineGold:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0, rewards:emptyRewards()}; }
 const S = {
+  rewards:emptyRewards(),
   line:'home', day:1,
-  completed:{home:[],baby:[],travel:[],gap:[],solo:[]},
+  completed:{home:[],baby:[],travel:[],gap:[],solo:[],custom:[]},
   gold:0, idou:0, records:[], souvenirs:[], newSou:null,
   atHome:true, travelStart:null, travelDur:45000,
   quizDone:[], challengeDone:0, lastAmount:0,
+  customLine:defaultCustomLine(), lineDays:{},
+  lineRecords:{}, lineGold:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0,
   quizStep:0, quizSel:[], quizScore:{home:0,baby:0,travel:0,gap:0,solo:0}, quizPersonDone:false,
   tab:'journey'
 };
@@ -725,16 +967,78 @@ let backendOnline = false;
 let syncTimer = null;
 let syncInFlight = false;
 let syncPending = false;
+let hydrationPending = API_ENABLED;
+let localEditVersion = 0;
 let profileRequestToken = 0;
 let profilePendingKey = '';
+let rewardsReady = !API_ENABLED;
+let rewardClockOffset = 0;
+const tripRequests = new Set();
+const tripRetryAt = new Map();
+const coachRequests = new Set();
+const quizRequests = new Set();
+const quizErrors = new Map();
 
 function normalizeState(){
-  S.completed = Object.assign({home:[],baby:[],travel:[],gap:[],solo:[]}, S.completed || {});
+  const wasLegacy=S.multiLineVersion!==1;
+  if(!Object.hasOwn(LINES,S.line)) S.line='home';
+  const object=value=>value && typeof value==='object' && !Array.isArray(value) ? value : {};
+  const validDays=days=>Array.isArray(days)?[...new Set(days.filter(day=>Number.isInteger(day)&&day>=1&&day<=TOTAL_DAYS))].sort((a,b)=>a-b):[];
+  const money=(value,fallback=0)=>Number.isFinite(Number(value)) && Number(value)>=0 && Number(value)<=1000000 ? Math.round(Number(value)*100)/100 : fallback;
+  S.completed = Object.assign({home:[],baby:[],travel:[],gap:[],solo:[],custom:[]}, S.completed || {});
+  S.records=Array.isArray(S.records)?S.records:[];
+  S.lineRecords=object(S.lineRecords);
+  S.lineDays=object(S.lineDays);
+  S.lineGold=object(S.lineGold);
+  S.challenges=object(S.challenges);
+  S.aiCoaches=object(S.aiCoaches);
+  Object.keys(LINES).forEach(id=>{
+    S.completed[id]=validDays(S.completed[id]);
+    const next=Array.from({length:21},(_,i)=>i+1).find(day=>!S.completed[id].includes(day)) || 21;
+    const oldDay=Number(S.lineDays[id] ?? (id===S.line?S.day:next));
+    S.lineDays[id]=Number.isInteger(oldDay)?Math.max(1,Math.min(21,oldDay)):next;
+    if(!Array.isArray(S.lineRecords[id])) S.lineRecords[id]=S.records.filter(item=>item?.line===id);
+    S.lineRecords[id]=S.lineRecords[id].filter(item=>item && Number.isInteger(item.day) && item.day>=1 && item.day<=21 && Number.isFinite(Number(item.amount)) && Number(item.amount)>=0)
+      .map(item=>({...item,line:id,amount:money(item.amount)}));
+    S.lineGold[id]=Number.isFinite(Number(S.lineGold[id])) ? Math.max(0,Number(S.lineGold[id])) : S.lineRecords[id].length;
+    S.challenges[id]=validDays(S.challenges[id]);
+    if(wasLegacy){
+      const oldChallenge=Number(S.challengeDoneByLine?.[id] ?? (id===S.line?S.challengeDone:0));
+      if(oldChallenge>=1 && oldChallenge<=21 && !S.challenges[id].includes(oldChallenge)) S.challenges[id].push(oldChallenge);
+    }
+    const oldCoach=S.aiCoaches[id] || (wasLegacy && id===S.line ? S.aiCoach : null);
+    S.aiCoaches[id]=oldCoach?.day ? {[oldCoach.day]:{...oldCoach,line:id}} : object(oldCoach);
+  });
+  S.customLine = Object.assign(defaultCustomLine(), object(S.customLine));
+  S.customLine.name = String(S.customLine.name || '我的自定义目标').slice(0,30);
+  S.customLine.goal = Math.max(0.01,money(S.customLine.goal,1000));
+  S.customLine.dailyTarget = Math.max(0.01,money(S.customLine.dailyTarget,20));
+  S.customLine.intro=String(S.customLine.intro || '').slice(0,80);
+  S.customLine.entries=Object.fromEntries(Object.entries(object(S.customLine.entries)).filter(([d,entry])=>/^(?:[1-9]|1\d|2[01])$/.test(d) && entry && typeof entry==='object').map(([d,entry])=>[d,{
+    target:money(entry.target,S.customLine.dailyTarget),amount:money(entry.amount),note:String(entry.note || '').slice(0,240),createdAt:String(entry.createdAt || '').slice(0,40),completed:S.completed.custom.includes(Number(d))
+  }]));
+  S.challengeDoneByLine=object(S.challengeDoneByLine);
+  S.lastAmountByLine=object(S.lastAmountByLine);
+  syncCustomLine();
+  S.day=S.lineDays[S.line];
+  S.multiLineVersion=1;
   S.quizDone = Array.isArray(S.quizDone) ? S.quizDone : [];
+  S.rewards = Object.assign(emptyRewards(),S.rewards || {});
+  S.rewards.quizzes = S.rewards.quizzes && typeof S.rewards.quizzes==='object' ? S.rewards.quizzes : {};
+  S.rewards.trips = Array.isArray(S.rewards.trips) ? S.rewards.trips : [];
+  // Trip history is authoritative; the former single active_trip remains a compatibility view.
+  if(S.rewards.active_trip && !S.rewards.trips.some(trip=>trip.id===S.rewards.active_trip.id)) S.rewards.trips.push(S.rewards.active_trip);
+  S.rewards.active_trips=S.rewards.trips.filter(trip=>trip.claimed_at===null);
+  syncActiveTripForLine();
   S.quizSel = Array.isArray(S.quizSel) ? S.quizSel : [];
   S.records = Array.isArray(S.records) ? S.records : [];
   S.souvenirs = Array.isArray(S.souvenirs) ? S.souvenirs : [];
   S.quizScore = Object.assign({home:0,baby:0,travel:0,gap:0,solo:0}, S.quizScore || {});
+  if(S.quizVersion!==PROFILE_VERSION && S.quizSel.length){
+    // The preference question changed: never reinterpret answers to the old wording.
+    S.quizSel=[]; S.quizPersonDone=false; S.aiProfile=null; S.quizResult=null;
+  }
+  S.quizVersion=PROFILE_VERSION;
   const answered = [];
   for(let i=0;i<QUIZ.length;i++){
     const choice = S.quizSel[i];
@@ -749,6 +1053,31 @@ function normalizeState(){
     S.quizScore = context.scores;
     S.quizResult = context.line;
   }
+}
+function syncCustomLine(){
+  const c=S.customLine || defaultCustomLine();
+  LINES.custom.name=c.name;
+  LINES.custom.goal='攒下 '+Number(c.goal).toFixed(2)+' 元';
+  LINES.custom.tagline=c.intro || '由你设定目标金额，并用每天一篇小日记记录积累';
+  LINES.custom.days=makeCustomDays();
+}
+function lineRecords(id=S.line){
+  if(!Array.isArray(S.lineRecords[id])) S.lineRecords[id]=[];
+  return S.lineRecords[id];
+}
+function setCurrentLineDay(day){
+  S.day=Math.max(1,Math.min(TOTAL_DAYS,Number(day)||1));
+  S.lineDays[S.line]=S.day;
+}
+function activeTripForLine(line=S.line){
+  return S.rewards.trips.find(trip=>trip.line===line && trip.claimed_at===null) || null;
+}
+function syncActiveTripForLine(){
+  const trip=activeTripForLine(S.line);
+  S.rewards.active_trip=trip || null;
+  S.atHome=!trip;
+  S.travelStart=trip ? trip.started_at-rewardClockOffset : null;
+  S.travelDur=trip ? trip.ready_at-trip.started_at : 45000;
 }
 function loadState(){
   try{
@@ -784,59 +1113,103 @@ async function apiRequest(path, options){
 function queueStateSync(){
   if(!API_ENABLED) return;
   clearTimeout(syncTimer);
+  if(hydrationPending){syncPending=true;return;}
   syncTimer = setTimeout(syncState, 180);
 }
 async function syncState(){
   if(!API_ENABLED) return;
+  if(hydrationPending){syncPending=true;return;}
   if(syncInFlight){ syncPending = true; return; }
   syncInFlight = true;
   setBackendStatus('syncing','正在同步进度');
   try{
-    await apiRequest('/api/state', {method:'PUT', body:JSON.stringify({state:S})});
+    const result = await apiRequest('/api/state', {method:'PUT', body:JSON.stringify({state:S})});
+    if(result.rewards) applyRewardSnapshot(result.rewards);
     backendOnline = true;
-    setBackendStatus('ready','后端已连接 · 进度已保存');
+    setBackendStatus('ready','进度已同步');
   }catch(e){
     backendOnline = false;
-    setBackendStatus('offline','后端未连接 · 使用本地模式');
+    setBackendStatus('offline','暂未连接 · 当前使用离线体验');
   }finally{
     syncInFlight = false;
     if(syncPending){ syncPending = false; queueStateSync(); }
   }
 }
 function saveState(){
+  localEditVersion++;
   try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){}
   queueStateSync();
+}
+function goldBalance(){ return Math.max(0,Number(S.gold)||0)+Math.max(0,Number(S.rewards.gold)||0); }
+function lineGoldBalance(line=S.line){
+  const quizGold=Object.entries(S.rewards.quizzes).filter(([key,value])=>key.startsWith(line+':') && value.correct).length;
+  const travelGold=S.rewards.trips.filter(trip=>trip.line===line && trip.claimed_at!==null).reduce((sum,trip)=>sum+(Number(trip.coins)||0),0);
+  return (Number(S.lineGold[line])||0)+quizGold+travelGold;
+}
+function refreshGold(){ if($('roomGold')) $('roomGold').textContent='目标金币 '+lineGoldBalance(); }
+function applyRewardSnapshot(snapshot){
+  if(!snapshot || snapshot.provider!=='server') return;
+  if(rewardsReady && S.rewards.provider==='server' && snapshot.revision<S.rewards.revision) return;
+  S.rewards = snapshot;
+  S.rewards.active_trips = Array.isArray(snapshot.active_trips) ? snapshot.active_trips : (snapshot.active_trip ? [snapshot.active_trip] : []);
+  rewardClockOffset = snapshot.server_time-Date.now();
+  rewardsReady = true;
+  syncActiveTripForLine();
+  for(const returned of snapshot.trips){
+    if(returned.claimed_at!==null && Number.isInteger(returned.souvenir) && !S.souvenirs.includes(returned.souvenir)) S.souvenirs.push(returned.souvenir);
+  }
+  // Cache snapshots without creating another debounced state write.
+  try{ localStorage.setItem(LS_KEY,JSON.stringify(S)); }catch(e){}
+  refreshGold();
+  refreshDailyQuiz();
+  updatePig();
+}
+async function rewardRequest(path,payload){
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(),15000);
+  try{
+    const result = await apiRequest(path,{method:'POST',signal:controller.signal,body:JSON.stringify(payload)});
+    if(!result.ok || !result.rewards) throw new Error('invalid reward response');
+    applyRewardSnapshot(result.rewards);
+    return result;
+  }finally{ clearTimeout(timer); }
 }
 function trackEvent(eventType, payload){
   if(!API_ENABLED) return;
   const eventPayload = Object.assign({line:S.line, day:S.day}, payload || {});
   apiRequest('/api/events', {method:'POST', body:JSON.stringify({event_type:eventType, payload:eventPayload})}).then(()=>{
     backendOnline = true;
-    setBackendStatus('ready','后端已连接 · 行为已记录');
+    setBackendStatus('ready','本次活动已同步');
     behaviorRevision++;
     if($('behaviorCard')) requestBehaviorState();
   }).catch(()=>{});
 }
 async function hydrateFromBackend(){
-  if(!API_ENABLED){ setBackendStatus('offline',ON_GITHUB_PAGES?'本地模式 · 进度保存在此浏览器':'本地模式 · 直接打开网页'); return; }
-  setBackendStatus('syncing','正在连接后端');
+  if(!API_ENABLED){ setBackendStatus('offline','离线体验 · 暂不在线同步'); return; }
+  const editVersion=localEditVersion;
+  setBackendStatus('syncing','正在连接进度服务…');
   try{
     const result = await apiRequest('/api/state', {method:'GET'});
-    if(result.state){
-      Object.assign(S, result.state);
+    if(result.state && localEditVersion===editVersion){
+      Object.assign(S, defaultState(), result.state);
       behaviorRequestKey = '';
       normalizeState();
+      if(result.rewards) applyRewardSnapshot(result.rewards);
       try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){}
       render();
       updatePig();
     }else{
-      await syncState();
+      if(result.rewards) applyRewardSnapshot(result.rewards);
+      syncPending=true;
     }
     backendOnline = true;
-    setBackendStatus('ready','后端已连接 · 进度已保存');
+    setBackendStatus('ready','进度已同步');
   }catch(e){
     backendOnline = false;
-    setBackendStatus('offline','后端未连接 · 使用本地模式');
+    setBackendStatus('offline','暂未连接 · 当前使用离线体验');
+  }finally{
+    hydrationPending=false;
+    if(syncPending){syncPending=false;queueStateSync();}
   }
 }
 loadState();
@@ -857,6 +1230,83 @@ function doneCount(line){ return (S.completed[line]||[]).length; }
 function isDone(d){ return S.completed[S.line].indexOf(d) >= 0; }
 function actOf(d){ return d<=7?'觉醒':(d<=14?'积累':'守护'); }
 
+/* 展开状态仅用于当前浏览，不写入账户进度。 */
+const pinnedFeatures = new Set();
+function featureKey(id){ return [S.line,S.day,id].join(':'); }
+function featureCard(id,title,intro,body,icon='note'){
+  const paths = {
+    note:'<rect x="5" y="3" width="14" height="18" rx="3"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+    coin:'<circle cx="12" cy="12" r="8"/><path d="M9 8h5a2 2 0 0 1 0 4h-4a2 2 0 0 0 0 4h5M12 6v12"/>',
+    spark:'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/>',
+    calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 11h18M8 15h1M14 15h1"/>',
+    team:'<circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M17 5a3 3 0 0 1 0 6M18 15a4 4 0 0 1 3 4"/>',
+    badge:'<circle cx="12" cy="9" r="6"/><path d="m8 14-1 7 5-3 5 3-1-7"/>',
+    chart:'<path d="M4 4v16h16M8 15l4-5 4 2 4-7"/>',
+    gift:'<rect x="3" y="8" width="18" height="4" rx="1"/><path d="M5 12v9h14v-9M12 8v13M12 8H8a3 3 0 1 1 3-3zM12 8h4a3 3 0 1 0-3-3z"/>'
+  };
+  return '<details class="feature-card" id="feature-'+id+'" data-feature="'+id+'"'+(pinnedFeatures.has(featureKey(id))?' open':'')+'>'
+    +'<summary><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+(paths[icon]||paths.note)+'</svg></span>'
+    +'<span class="feature-copy"><strong>'+escapeHtml(title)+'</strong><small>'+escapeHtml(intro)+'</small></span><i class="disclosure-arrow" aria-hidden="true"></i></summary>'
+    +'<div class="feature-body">'+body+'</div></details>';
+}
+function viewIntro(title,intro,index){
+  return '<div class="view-intro"><div><h3>'+title+'</h3><p>'+intro+'</p></div><span class="view-index">'+index+' / 04</span></div>';
+}
+document.addEventListener('pointerover',event=>{
+  const card = event.target.closest('.feature-card');
+  if(!card || event.pointerType!=='mouse' || !matchMedia('(hover:hover)').matches || card.contains(event.relatedTarget)) return;
+  card.open = true;
+});
+document.addEventListener('pointerout',event=>{
+  const card = event.target.closest('.feature-card');
+  if(!card || event.pointerType!=='mouse' || card.contains(event.relatedTarget)) return;
+  if(!pinnedFeatures.has(featureKey(card.dataset.feature)) && !card.contains(document.activeElement)) card.open = false;
+});
+document.addEventListener('click',event=>{
+  const summary = event.target.closest('.feature-card>summary');
+  if(!summary) return;
+  event.preventDefault();
+  const card = summary.parentElement, key = featureKey(card.dataset.feature);
+  // A first click pins a hover preview; a second click closes it.
+  if(pinnedFeatures.has(key)){ pinnedFeatures.delete(key); card.open=false; }
+  else { pinnedFeatures.add(key); card.open=true; }
+});
+document.addEventListener('focusin',event=>{
+  const card = event.target.closest('.feature-card');
+  if(card && event.target.closest('.feature-body')) pinnedFeatures.add(featureKey(card.dataset.feature));
+});
+document.addEventListener('focusout',event=>{
+  const card = event.target.closest('.feature-card');
+  if(!card) return;
+  queueMicrotask(()=>{
+    if(!card.contains(document.activeElement) && !card.matches(':hover') && !pinnedFeatures.has(featureKey(card.dataset.feature))) card.open=false;
+  });
+});
+document.addEventListener('keydown',event=>{
+  if(event.key!=='Escape') return;
+  const card = event.target.closest('.feature-card');
+  if(card){ pinnedFeatures.delete(featureKey(card.dataset.feature)); card.open=false; card.querySelector('summary').focus(); }
+  else if($('workspaceTools').open){ $('workspaceTools').open=false; $('workspaceTools').querySelector('summary').focus(); }
+});
+document.querySelector('.quick-links').addEventListener('wheel',event=>{
+  const rail = event.currentTarget;
+  if(Math.abs(event.deltaX)>=Math.abs(event.deltaY)) return;
+  const canScroll = event.deltaY>0 ? rail.scrollLeft+rail.clientWidth<rail.scrollWidth-1 : rail.scrollLeft>0;
+  if(canScroll){ event.preventDefault(); rail.scrollLeft+=event.deltaY; }
+},{passive:false});
+function jumpFeature(tab,id){
+  $('workspaceTools').open=false;
+  if(id) pinnedFeatures.add(featureKey(id));
+  switchTab(tab);
+  requestAnimationFrame(()=>{
+    const target = id ? $('feature-'+id) : $('workspaceTools');
+    if(!target) return;
+    const focusTarget = target.querySelector('summary') || target;
+    focusTarget.focus({preventScroll:true});
+    target.scrollIntoView({block:'start',behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+  });
+}
+
 /* ========== 路由与渲染 ========== */
 function render(){
   const h = location.hash || '#/start';
@@ -868,7 +1318,9 @@ function render(){
   else if(h.startsWith('#/quiz')){ show('view-quiz'); renderQuiz(); }
   else if(h.startsWith('#/choose')){ show('view-choose'); renderChoose(); }
   else if(h.startsWith('#/grad')){ show('view-grad'); renderGrad(); }
-  else { show('view-home'); renderHome(); }
+  else { show('view-home'); switchTab(S.tab || 'journey'); }
+  const homeActive = $('view-home').classList.contains('active');
+  document.body.classList.toggle('view-home-active',homeActive);
   window.scrollTo(0,0);
 }
 function show(id){ $(id).classList.add('active'); }
@@ -880,7 +1332,7 @@ function renderQuiz(){
   if(step >= QUIZ.length){ finishQuiz(); return; }
   const q = QUIZ[step];
   $('quizBar').style.width = (step/QUIZ.length*100)+'%';
-  $('quizStep').textContent = '第 '+(step+1)+' / '+QUIZ.length+' 题';
+  $('quizStep').textContent = '第 '+(step+1)+' / '+QUIZ.length+' 题 · 按真实想法选择就好';
   $('quizQ').textContent = q.q;
   $('quizOpts').innerHTML = q.opts.map((o,i)=>
     '<button class="quiz-opt" onclick="pickQuiz('+i+')">'+o.t+'</button>').join('');
@@ -902,7 +1354,7 @@ function finishQuiz(){
   S.quizResult = context.line;
   saveState();
   requestAIProfile();
-  toast('测试完成，已为你推荐剧情线');
+  toast('答好了，看看适合你的攒钱方向');
   go('#/choose');
 }
 function skipQuiz(){
@@ -947,7 +1399,7 @@ function localProfile(context){
     ['收支盘点型','每周回看一次固定开支，给可自由支配的部分单独留预算。'],
     ['轻松起步型','收入到账后先留下一笔能轻松完成的小额储蓄，再逐步调整。']
   ];
-  const focus = {home:'先建立预算感和应急备用金',baby:'先看清家庭开支，再安排长期目标',travel:'先把旅行目标拆成可执行的小金额',gap:'先建立安全垫，再规划阶段性目标',solo:'先控制固定支出，再建立独居基金'};
+  const focus = {home:'先建立预算感和应急备用金',baby:'先看清家庭开支，再安排长期目标',travel:'先把旅行目标拆成可执行的小金额',gap:'先建立安全垫，再规划阶段性目标',solo:'先明确学习目标和总费用，再拆成稳定的小额储蓄'};
   const surplus = ['把长期目标拆成每周的小进度。','为犒劳自己设置专门的小预算。','先学习收益、风险与流动性的关系。','给暂时不用的钱标记用途和预计使用时间。'];
   const habit = habits[context.answers[1]];
   return {
@@ -966,19 +1418,19 @@ function refreshProfileBox(){
 function aiProviderLabel(provider){ return provider==='llm' ? 'AI 生成' : '基础建议'; }
 function aiProfileHTML(){
   const p = currentProfile();
-  if(!p) return '<div class="ai-profile-card"><div class="ai-label">我的财富画像</div><p>回答四个生活小问题，了解适合自己的攒钱方式。</p><div class="profile-actions"><button class="btn btn-line" onclick="restartProfileQuiz()">开始答题</button></div></div>';
+  if(!p) return '<div class="ai-profile-card"><div class="ai-label">我的财富画像</div><p>4 个生活小问题，帮你找到攒钱的起点。没有标准答案，按自己的想法选就好。</p><div class="profile-actions"><button class="btn btn-line" onclick="restartProfileQuiz()">了解我的攒钱习惯</button></div></div>';
   const busy = profilePendingKey===profileQuizKey();
   const evidence = p.context && p.context.evidence || [];
-  const status = busy ? '正在根据你的答案生成画像…' : p.fallback_reason==='unavailable' ? 'AI 生成暂时不可用，已保留答题分析。' : p.fallback_reason==='offline' ? '当前显示本地答题分析。' : '';
+  const status = busy ? '正在整理你的答案…' : p.fallback_reason==='unavailable' ? 'AI 暂时不可用，先看看基于答题规则的分析。' : p.fallback_reason==='offline' ? '离线答题分析 · 未使用 AI 生成' : '';
   return '<div class="ai-profile-card">'
     +'<div class="ai-label">'+(p.provider==='llm'?'AI 财富画像':'财富画像 · 答题分析')+'</div>'
     +(status?'<p class="profile-status" role="status">'+status+'</p>':'')
     +'<h3>'+escapeHtml(p.title)+'</h3>'
     +'<span class="ai-chip">'+escapeHtml(p.stage)+'</span>'
-    +'<span class="ai-chip">重点：'+escapeHtml(p.focus)+'</span>'
+    +'<span class="ai-chip">可以从这里开始：'+escapeHtml(p.focus)+'</span>'
     +'<p>'+escapeHtml(p.message)+'</p>'
-    +'<p><b>建议习惯：</b>'+escapeHtml(p.habit)+'</p>'
-    +'<details><summary>看看答题依据</summary>'+evidence.map((item,i)=>'<div class="answer-evidence">'+(i+1)+'. '+escapeHtml(item.question)+'<span>'+escapeHtml(item.answer)+'</span></div>').join('')+'</details>'
+    +'<p><b>试试这个小习惯：</b>'+escapeHtml(p.habit)+'</p>'
+    +'<details><summary>这份分析来自哪些答案？</summary>'+evidence.map((item,i)=>'<div class="answer-evidence">'+(i+1)+'. '+escapeHtml(item.question)+'<span>'+escapeHtml(item.answer)+'</span></div>').join('')+'</details>'
     +'<div class="profile-actions"><button class="btn btn-line" onclick="restartProfileQuiz()">重新测一测</button>'
     +(API_ENABLED?'<button class="btn btn-line" onclick="requestAIProfile(true)"'+(busy?' disabled':'')+'>'+(busy?'生成中…':'更新画像')+'</button>':'')+'</div>'
     +'<div class="ai-foot">'+escapeHtml(p.guardrail)+'</div></div>';
@@ -1022,20 +1474,20 @@ let behaviorRevision = 0;
 let behaviorUnavailable = false;
 function behaviorKey(){ return [S.line, S.day, behaviorRevision].join(':'); }
 function behaviorCardHTML(){
-  const b = S.behavior && S.behavior.day === S.day ? S.behavior : null;
+  const b = S.behavior && S.behavior.line===S.line && S.behavior.day === S.day ? S.behavior : null;
   if(!API_ENABLED || !b){
-    const message = !API_ENABLED ? '连接后端后，可查看你的参与节奏。' : behaviorUnavailable ? '参与节奏暂时无法更新，稍后回到旅程可重试。' : '正在整理任务、答题和存钱挑战记录…';
+    const message = !API_ENABLED ? '离线体验暂不提供节奏分析，仍可查看日历和记账记录。' : behaviorUnavailable ? '暂时没能更新，稍后回到旅程再看看。' : '正在整理你的打卡、答题和记账记录…';
     return '<div class="behavior-card" id="behaviorCard"><div class="behavior-label">我的参与节奏</div><p>'+message+'</p></div>';
   }
-  const stateText = b.data_status === 'insufficient' ? '等待行为积累' : b.state_name || '启动期';
+  const stateText = b.data_status === 'insufficient' ? '慢慢了解你的节奏' : b.state_name || '刚刚起步';
   const trendText = b.trend || '建立中';
-  const advice = {activation:'从今天的一项小任务开始，逐步积累参与记录。', trial:'已经迈出第一步，试着把小任务延续到下一天。', stable:'当前参与较连贯，继续保持适合自己的节奏。', fluctuation:'最近的参与有所中断，可以先完成一项轻量任务。', recovery:'欢迎回来，从一项熟悉的小任务重新开始。'};
+  const advice = {activation:'从今天的一件小事开始，不必一下做很多。', trial:'你已经迈出第一步，按自己的节奏继续就好。', stable:'你正保持自己的节奏，每一小步都算数。', fluctuation:'偶尔停一停也没关系，今天从一件轻松的事继续。', recovery:'欢迎回来，之前的积累都还在。'};
   return '<div class="behavior-card" id="behaviorCard">'
     +'<div class="behavior-label">我的参与节奏 · 截至旅程第 '+Number(b.day)+' 天</div>'
     +'<div class="behavior-head"><b>'+escapeHtml(stateText)+'</b><span>趋势：'+escapeHtml(trendText)+'</span></div>'
     +'<p>'+escapeHtml(advice[b.state] || advice.activation)+'</p>'
     +'<div class="behavior-stats"><span class="behavior-stat">连续完成 '+Number(b.streak || 0)+' 天</span><span class="behavior-stat">活跃 '+Number(b.active_days || 0)+' 天</span><span class="behavior-stat">完成 '+Number(b.completed_days || 0)+' 天</span></div>'
-    +'<div class="behavior-foot">'+(behaviorUnavailable ? '更新暂不可用，显示上次结果。' : '依据已记录的旅程日行为估计参与阶段。')+'</div></div>';
+    +'<div class="behavior-foot">'+(behaviorUnavailable ? '暂时无法更新，先显示上次的分析。' : '根据本目标的活动记录估计，仅供习惯回顾，不是信用或投资风险评估。')+'</div></div>';
 }
 async function requestBehaviorState(){
   if(!API_ENABLED || behaviorRequestInFlight) return;
@@ -1043,11 +1495,11 @@ async function requestBehaviorState(){
   if(behaviorRequestKey===key) return;
   behaviorRequestInFlight = true;
   try{
-    const result = await apiRequest('/api/behavior/state?day='+encodeURIComponent(S.day), {method:'GET'});
+    const result = await apiRequest('/api/behavior/state?line='+encodeURIComponent(S.line)+'&day='+encodeURIComponent(S.day), {method:'GET'});
     if(key!==behaviorKey()) return;
     behaviorRequestKey = key;
     behaviorUnavailable = false;
-    S.behavior = result.summary || null;
+    S.behavior = result.summary ? {...result.summary,line:result.line} : null;
     const card = $('behaviorCard');
     if(card) card.outerHTML = behaviorCardHTML();
   }catch(e){
@@ -1068,120 +1520,164 @@ const ICONS = {
   baby:'<circle cx="12" cy="10" r="6.5"/><path d="M12 4c-1.5 2-1.5 4 0 6s1.5 4 0 6"/><path d="M8 16l-1 5 5-2.5L17 21l-1-5"/>',
   travel:'<path d="M4 8l16-4-3 16-5-6-6 1z"/><circle cx="12" cy="13" r="1.6"/>',
   gap:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/><path d="M16 16l2 2 3-4" stroke="#E8A33D" stroke-width="2"/>',
-  solo:'<path d="M12 3v12"/><path d="M8 21h8"/><path d="M12 15c-3 0-5-2.5-5-5 2.5 0 5 2 5 5z"/><path d="M12 15c3 0 5-2.5 5-5-2.5 0-5 2-5 5z"/>'
+  solo:'<path d="M12 6c-3-3-7-3-10-1v15c3-2 7-2 10 1 3-3 7-3 10-1V5c-3-2-7-2-10 1zM12 6v15"/>',
+  custom:'<circle cx="12" cy="12" r="8"/><path d="M12 7v10M8 12h8"/>'
 };
 function renderChoose(){
-  $('quizSuggest').textContent = S.quizPersonDone ? LINES[S.quizResult].name : '未测试';
+  $('quizSuggest').textContent = S.quizPersonDone ? LINES[S.quizResult].name : '还没测试';
   $('lineList').innerHTML = Object.keys(LINES).map(id=>{
     const L = LINES[id];
-    return '<button class="line-card" onclick="chooseLine(\''+id+'\')">'
+    const current = id===S.line ? ' current' : '';
+    const saved = lineSavedAmount(id);
+    return '<button class="line-card'+current+'" onclick="chooseLine(\''+id+'\')">'
       +'<div class="line-card-top">'
       +'<span class="line-icon" style="background:'+L.color+'22;color:'+L.color+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+ICONS[id]+'</svg></span>'
-      +'<h3>'+L.name+'</h3>'
-      +'<span class="tag" style="background:'+L.color+'">'+actOf(1)+'·'+actOf(21)+'</span>'
+      +'<h3>'+escapeHtml(L.name)+'</h3>'
+      +'<span class="tag" style="background:'+L.color+'">'+(id===S.line?'当前目标':doneCount(id)>0?'继续积累':'去开启')+'</span>'
       +'</div>'
-      +'<div class="desc">'+L.tagline+'。目标：'+L.goal+'。</div>'
-      +'<div class="meta"><span>旅程阶段：<b>'+L.scene[0]+' → '+L.scene[3]+'</b></span><span>衔接：'+L.products.join(' / ')+'</span></div>'
+      +'<div class="desc">'+escapeHtml(L.tagline)+'。'+escapeHtml(L.goal)+'，从一小步开始。</div>'
+      +'<div class="meta"><span>从 <b>'+escapeHtml(L.scene[0])+'</b> 开始</span><span>已打卡 '+doneCount(id)+'/21 天 · 已记录 '+saved.toFixed(2)+' 元</span></div>'
       +'</button>';
   }).join('');
+  $('customNameInput').value=S.customLine.name;
+  $('customGoalInput').value=S.customLine.goal;
+  $('customDailyInput').value=S.customLine.dailyTarget;
+  $('customIntroInput').value=S.customLine.intro || '';
+  const total=Object.keys(LINES).reduce((sum,id)=>sum+lineSavedAmount(id),0);
+  const legacy=S.records.filter(item=>!Object.hasOwn(LINES,item.line)).reduce((sum,item)=>sum+(Number(item.amount)||0),0);
+  $('portfolioSummary').innerHTML='累计记录 <b>'+total.toFixed(2)+' 元</b> · 共 '+goldBalance()+' 金币'
+    +'<small>模拟记账，不代表银行余额；每笔金额只计入对应目标。'+(legacy?'另有 '+legacy.toFixed(2)+' 元历史记录未关联目标，仍为你保留。':'')+'</small>';
   $('aiProfileBox').innerHTML = aiProfileHTML();
   if(S.quizPersonDone && !currentProfile()) requestAIProfile();
 }
+function lineSavedAmount(id=S.line){
+  return Math.round(lineRecords(id).reduce((sum,item)=>sum+Math.round((Number(item.amount)||0)*100),0))/100;
+}
+function saveCustomLine(event){
+  event.preventDefault();
+  const name=$('customNameInput').value.trim();
+  const goal=Number($('customGoalInput').value);
+  const daily=Number($('customDailyInput').value);
+  const intro=$('customIntroInput').value.trim();
+  if(!name || !validMoney(goal,false) || !validMoney(daily,false)){ toast('金额需在 0.01—1000000 元之间，最多两位小数'); return; }
+  const previous=coachContextKey('custom',S.day);
+  S.customLine=Object.assign(S.customLine,{name:name.slice(0,30),goal,dailyTarget:daily,intro:intro.slice(0,80)});
+  if(previous!==coachContextKey('custom',S.day))S.aiCoaches.custom={};
+  syncCustomLine();
+  saveState();
+  renderChoose();
+  toast('目标已保存，点上方的目标卡片就能开始');
+}
 function chooseLine(id){
+  if(!Object.hasOwn(LINES,id)) return;
+  S.lineDays[S.line]=S.day;
   S.line = id;
   const done = doneCount(id);
-  S.day = done >= TOTAL_DAYS ? TOTAL_DAYS : done+1;
+  setCurrentLineDay(S.lineDays[id] || (done >= TOTAL_DAYS ? TOTAL_DAYS : done+1));
+  S.challengeDone=S.challengeDoneByLine[id] || 0;
+  S.lastAmount=S.lastAmountByLine[id] || 0;
+  S.aiCoach=null;
+  S.behavior=null;
+  syncActiveTripForLine();
   S.tab = 'journey';
   saveState();
   trackEvent('line_selected', {line:id, day:S.day, recommended:S.quizResult || null});
-  go('#/home');
+  if(location.hash==='#/home'){renderHome();window.scrollTo(0,0);}else go('#/home');
+}
+function renderLineSwitcher(){
+  $('lineSwitcher').innerHTML=Object.keys(LINES).map(id=>'<button type="button" aria-pressed="'+(id===S.line)+'" onclick="chooseLine(\''+id+'\')">'+escapeHtml(LINES[id].name)+'</button>').join('');
 }
 
 /* ========== 主旅程 ========== */
 function renderHome(){
+  // Background updates (e.g. a returning pet) must preserve the current tab.
+  if(S.tab!=='journey'){ switchTab(S.tab); return; }
   const L = LINES[S.line];
   const d = S.day, day = L.days[d-1];
   const done = doneCount(S.line);
+  renderLineSwitcher();
   $('headLineName').textContent = L.name;
-  const pct = Math.round(done/TOTAL_DAYS*100);
-  const stageIdx = done===0?0:(done<=7?1:(done<=14?2:3));
   const acts = ['觉醒','积累','守护'].map(a=>
     '<span class="'+(actOf(d)===a?'on':'')+'">'+a+'</span>').join('');
-
   const taskZone = buildTaskZone(day.mode, d);
-  const roomCard = roomCardHTML(done);
-  const challengeCard = challengeCardHTML(d, done);
-  const quizCard = quizDailyHTML(d);
-  const heroBg = 'linear-gradient(135deg,'+L.color+' 0%, ' + shade(L.color) + ' 100%)';
+  const sea = seasonOf(done);
   let html =
-    '<div class="journey-hero">'
-    +'<div class="bg" style="background:'+heroBg+'"></div>'
-    +'<div class="inner">'
-    +'<span class="journey-line"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICONS[S.line]+'</svg>'+L.name+'</span>'
-    +'<div class="journey-day">第 <b>'+d+'</b> 天 · '+L.tagline+'</div>'
-    +'<div class="journey-act">'+day.story+'</div>'
-    +'<div class="journey-progress"><i style="width:'+pct+'%;background:'+(done>=TOTAL_DAYS?'#F5C268':'#fff')+'"></i></div>'
+    '<section class="journey-hero" aria-label="小屋旅程">'
+    +'<div class="hero-heading"><div><span class="journey-line">我的 21 天 · '+escapeHtml(L.name)+'</span><h3>'+sea.name.split(' ').slice(1).join(' ')+'</h3></div>'
+    +'<div class="journey-day">旅程第<b>'+String(d).padStart(2,'0')+'</b>天 / 共 21 天</div></div>'
+    +roomCardHTML(done)
+    +'<div class="hero-footer"><div class="room-meta"><span>已打卡 '+done+' 天 · '+actOf(d)+'阶段</span><b id="roomGold">目标金币 '+lineGoldBalance()+'</b></div>'
+    +'<div class="journey-act">'+escapeHtml(S.line==='custom' ? S.customLine.intro || day.story : day.story)+'</div>'
+    +'<div class="goal-meter">已为这个目标记录 <b>'+lineSavedAmount().toFixed(2)+' 元</b>'
+    +(S.line==='custom'?' / '+S.customLine.goal.toFixed(2)+' 元<progress max="'+S.customLine.goal+'" value="'+Math.min(S.customLine.goal,lineSavedAmount())+'" aria-label="自定义储蓄目标进度"></progress>':'')+'</div>'
+    +'<span class="story-idea">'+day.idea+'</span>'
     +'<div class="acts">'+acts+'</div>'
-    +'</div></div>';
+    +'<div class="travel-sign" id="travelSign"'+(S.atHome?' hidden':'')+'><div class="t1">扑满旅行中</div><div class="t2" id="travelMsg">它正替你去看世界</div><div class="t3" id="travelCountdown"></div></div>'
+    +([7,14,21].includes(d)?'<p class="hero-note">第 '+d+' 天里程碑 · '+(d===21?'完成今天的任务，回看这段积累。':'完成今天的任务，给这一周的小进步留个纪念。')+'</p>':'')
+    +'</div></section>';
 
-  html += roomCard;
-  html += '<div class="story-card">'
-    +'<div class="story-label">今日剧情</div>'
-    +'<div class="story-text">'+day.story+'</div>'
-    +'<span class="story-idea"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>'+day.idea+'</span>'
-    +'</div>';
-  html += behaviorCardHTML();
-  html += aiCoachHTML(d);
-
-  if(isDone(d)){
-    html += '<div class="task-done" style="margin-top:14px">今日已完成 · 已存入 <b>'+S.lastAmount+'</b> 元</div>';
-    if(d < TOTAL_DAYS) html += '<button class="btn btn-primary" style="margin-top:14px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>';
-    else html += '<button class="btn btn-primary" style="margin-top:14px" onclick="go(\'#/grad\')">参加结业典礼</button>';
+  let taskContent;
+  if(S.line==='custom'){
+    taskContent=customDiaryHTML(d);
+    if(isDone(d)) taskContent+=nextDayButton(d);
+  }else if(isDone(d)){
+    const record=lineRecords().find(item=>item.day===d && item.from==='每日剧情任务');
+    taskContent = '<div class="task-done">✓ 今天的小目标完成了'+(record?' · 已记录 <b>'+Number(record.amount).toFixed(2)+'</b> 元':'')+'</div>';
+    if(d < TOTAL_DAYS) taskContent += '<button class="btn btn-primary" style="margin-top:14px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>';
+    else taskContent += '<button class="btn btn-primary" style="margin-top:14px" onclick="go(\'#/grad\')">回顾我的 21 天</button>';
   } else {
-    html += '<div class="task-card"><div class="task-head"><span class="dot"></span>今日玩法</div>'
-      +'<div class="task-title">'+taskZone.title+'</div>'
-      +'<div class="task-sub">'+taskZone.sub+'</div>'
-      +'<div class="task-zone" id="taskZone">'+taskZone.html+'</div></div>';
+    taskContent = '<div class="task-card">'
+      +'<div class="task-title">'+escapeHtml(S.line==='solo'?day.task:taskZone.title)+'</div>'
+      +'<div class="task-sub">'+escapeHtml(S.line==='solo'?day.idea:taskZone.sub)+'</div>'
+      +'<div class="task-zone" id="taskZone">'+taskZone.html+'</div><p class="ai-foot">体验任务会生成模拟金额，不读取账单，也不会实际扣款。</p></div>';
   }
-
-  html += challengeCard;
-  html += quizCard;
-  html += '<div class="scene-card">'
-    +'<div class="scene-label"><span>攒钱进度</span><span class="stage-name">'+L.scene[stageIdx]+'</span><span class="pct">'+pct+'%</span></div>'
-    +'<div class="scene-visual">'+sceneSvg(S.line, done, L.color)+'</div>'
-    +'<div class="scene-stage"><b>已坚持 '+done+' 天</b><span>共 21 天</span></div>'
+  html += '<div class="daily-grid">'
+    +dailyPanel('daily-task',S.line==='custom'?'今日存钱日记':'今日玩法',taskContent)
+    +dailyPanel('saving-challenge',S.line==='custom'?'今日存钱目标':'今日存钱挑战',challengeCardHTML(d,done))
+    +dailyPanel('daily-quiz','每日理财一问',quizDailyHTML(d))
+    +dailyPanel('ai-companion','AI 扑满陪伴',aiCoachHTML(d))
     +'</div>';
-
-  if(d===7 || d===14 || d===21){
-    html += '<div class="milestone"><b>里程碑：</b>'+(d===7?'第一幕「觉醒」结算完成，你的'+L.name+'有了新模样。':(d===14?'第二幕「积累」结算完成，离目标又近一步。':'恭喜你走完21天，结业典礼已开启。'))+'</div>';
-  }
-  html += squadCard();
   $('homeContent').innerHTML = html;
-  setNav(S.tab);
+  setNav('journey');
   updatePig();
-  requestBehaviorState();
+}
+function dailyPanel(id,title,content){
+  return '<section class="daily-panel" id="feature-'+id+'" tabindex="-1" aria-labelledby="title-'+id+'"><h3 id="title-'+id+'">'+title+'</h3>'+content+'</section>';
 }
 function aiCoachHTML(day){
-  const c = S.aiCoach && S.aiCoach.day===day ? S.aiCoach : null;
-  if(!c) return '<div class="ai-coach-card"><div class="ai-label">AI 扑满陪伴</div><p>根据今天的剧情和你的坚持情况，生成一句专属陪伴建议。</p><button class="btn btn-line" onclick="requestAICoach('+day+')">生成今日建议</button><div class="ai-foot">仅提供金融知识教育，不构成投资推荐</div></div>';
-  return '<div class="ai-coach-card"><div class="ai-label">AI 扑满陪伴 · '+escapeHtml(aiProviderLabel(c.provider))+'</div>'
+  const c = S.aiCoaches[S.line]?.[day];
+  const busy=coachRequests.has(S.line+':'+day);
+  if(!c) return '<div class="ai-coach-card"><p>不知道今天从哪开始？结合你的目标和打卡记录，给自己一个小建议。</p><button class="btn btn-line" onclick="requestAICoach('+day+')"'+(busy?' disabled':'')+'>'+(busy?'正在整理建议…':'看看今日建议')+'</button><div class="ai-foot">AI 不可用时提供基础规则建议；内容仅供学习参考，不构成投资建议。</div></div>';
+  return '<div class="ai-coach-card"><div class="ai-label">'+escapeHtml(aiProviderLabel(c.provider))+'</div>'
     +'<h3>'+escapeHtml(c.title)+'</h3><p>'+escapeHtml(c.message)+'</p>'
     +'<p><b>今天可以：</b>'+escapeHtml(c.action)+'</p>'
     +'<div class="ai-foot">风险提醒：'+escapeHtml(c.risk_note)+'</div></div>';
 }
 async function requestAICoach(day){
-  if(!API_ENABLED){ toast('启动后端后才能生成AI建议'); return; }
+  if(!API_ENABLED){ toast('离线体验暂不提供 AI 建议，请连接本地服务后再试'); return; }
+  const line=S.line,key=line+':'+day,contextKey=coachContextKey(line,day);
+  if(coachRequests.has(key))return;
+  coachRequests.add(key); refreshCoachCard();
   try{
-    const L = LINES[S.line], current = L.days[day-1];
+    const L = LINES[line], current = L.days[day-1];
     const result = await apiRequest('/api/ai/coach', {method:'POST', body:JSON.stringify({
-      line:S.line, day:day, completed:doneCount(S.line), story:current.story, idea:current.idea,
+      line, day, completed:doneCount(line), story:current.story, idea:current.idea,
+      goal:line==='custom'?{name:S.customLine.name,total:S.customLine.goal,dailyTarget:S.customLine.entries[day]?.target ?? S.customLine.dailyTarget,saved:lineSavedAmount(line)}:{name:L.goal,saved:lineSavedAmount(line)},
       profile:S.aiProfile ? {focus:S.aiProfile.focus, stage:S.aiProfile.stage} : null
     })});
-    S.aiCoach = Object.assign({day:day}, result.coach, {provider:result.provider});
+    if(contextKey!==coachContextKey(line,day))return;
+    S.aiCoaches[line][day] = Object.assign({line,day}, result.coach, {provider:result.provider});
     saveState();
-    trackEvent('ai_coach_generated', {day:day, provider:result.provider, audit_id:result.audit_id});
-    renderHome();
-  }catch(e){ toast('AI建议暂不可用，请稍后再试'); }
+    trackEvent('ai_coach_generated', {line,day, provider:result.provider, audit_id:result.audit_id});
+  }catch(e){ toast('暂时没能生成建议，稍后再试试'); }
+  finally{coachRequests.delete(key);refreshCoachCard();}
+}
+function refreshCoachCard(){
+  const card=document.querySelector('#feature-ai-companion .ai-coach-card');
+  if(card)card.outerHTML=aiCoachHTML(S.day);
+}
+function coachContextKey(line,day){
+  return line==='custom'?JSON.stringify([S.customLine.name,S.customLine.goal,S.customLine.dailyTarget,S.customLine.intro,S.customLine.entries[day]?.target]):line+':'+day;
 }
 function shade(hex){
   const n = parseInt(hex.slice(1),16);
@@ -1189,7 +1685,7 @@ function shade(hex){
   return 'rgb('+Math.round(r*.62)+','+Math.round(g*.62)+','+Math.round(b*.62)+')';
 }
 function nextDay(){
-  S.day = Math.min(S.day+1, TOTAL_DAYS);
+  setCurrentLineDay(Math.min(S.day+1, TOTAL_DAYS));
   saveState();
   trackEvent('day_opened', {line:S.line, day:S.day});
   renderHome();
@@ -1197,22 +1693,25 @@ function nextDay(){
 
 /* ========== 今日玩法任务引擎 ========== */
 function buildTaskZone(mode, d){
+  if(mode==='custom') return {title:'今日存钱日记',sub:'把目标拆成每天的小行动',html:customDiaryHTML(d)};
   switch(mode){
-    case 'answer': return {title:'先看清，再行动', sub:'回答完这一天的剧情问题，你就能看清自己现在的样子。', html:'<button class="box-item" onclick="doTask(\'answer\','+d+')"><b>完成今日剧情</b><span>先看清现状</span></button>'};
-    case 'save': return {title:'存下这一笔', sub:'今天的小目标：往你的目标账户里放一笔。', html:'<button class="box-item" onclick="doTask(\'save\','+d+')"><b>确认存入 '+rand(20,50)+' 元</b><span>钱会真实留在工行账户</span></button>'};
-    case 'blind': return {title:'打开今天的盲盒', sub:'金额是随机的——理财的第一步，是接受不确定。', html:'<button class="box-item" onclick="doTask(\'blind\','+d+')"><b>打开盲盒</b><span>抽一个数字存下</span></button>'};
-    case 'round': return {title:'把零头存下来', sub:'昨天的消费里，藏着今天能存的钱。', html:'<button class="box-item" onclick="doTask(\'round\','+d+')"><b>自动凑整 '+rand(8,36)+' 元</b><span>零头也能聚沙成塔</span></button>'};
-    case 'cancel': return {title:'砍掉一笔隐形开销', sub:'找一个你其实用不上的订阅或账单，取消它。', html:'<button class="box-item" onclick="doTask(\'cancel\','+d+')"><b>取消并存下 '+rand(15,45)+' 元</b><span>看见隐性成本</span></button>'};
-    case 'guess': return {title:'猜猜昨天的花费', sub:'猜得越不准，存得越多——猜错的部分，就是预算感。', html:'<button class="box-item" onclick="doTask(\'guess\','+d+')"><b>猜完了，差额存下 '+rand(10,40)+' 元</b><span>建立预算感</span></button>'};
-    case 'freeze': return {title:'今天不消费', sub:'忍住一笔非必要消费，把省下的钱留给更重要的事。', html:'<button class="box-item" onclick="doTask(\'freeze\','+d+')"><b>我忍住了，存下 '+rand(25,60)+' 元</b><span>对抗冲动消费</span></button>'};
-    case 'calc': return {title:'算一算真实价格', sub:'很多"划算"只是看起来划算，算完你就知道了。', html:'<button class="box-item" onclick="doTask(\'calc\','+d+')"><b>算好了，存下 '+rand(20,60)+' 元</b><span>看清真实成本</span></button>'};
-    case 'temp': return {title:'按今天的气温存钱', sub:'今天几度，就存几块钱——让存钱有点仪式感。', html:'<button class="box-item" onclick="doTask(\'temp\','+d+')"><b>今天 '+rand(8,30)+' 度，存 '+rand(8,30)+' 元</b><span>仪式感存钱</span></button>'};
-    case 'roll': return {title:'掷骰子决定存多少', sub:'理财也可以有点运气成分——1点存10块。', html:'<button class="box-item" onclick="doTask(\'roll\','+d+')"><b>掷骰子</b><span>点数 × 10 元</span></button>'};
+    case 'answer': return {title:'今天，了解自己一点', sub:'读读上方的今日故事，想一想它和自己的生活有什么联系。', html:'<button class="box-item" onclick="doTask(\'answer\','+d+')"><b>读完了，打个卡</b><span>为今天的小思考留个记录</span></button>'};
+    case 'save': return {title:'为心愿留下一笔', sub:'不必等到攒够很多，先体验记录第一笔。', html:'<button class="box-item" onclick="doTask(\'save\','+d+')"><b>体验记一笔</b><span>小小积累，也算进步</span></button>'};
+    case 'blind': return {title:'打开今天的小惊喜', sub:'抽一个模拟金额，为今天的记录添一点趣味。', html:'<button class="box-item" onclick="doTask(\'blind\','+d+')"><b>打开存钱盲盒</b><span>随机记录 10—88 元</span></button>'};
+    case 'round': return {title:'零头也值得留住', sub:'想想最近的一笔消费，试着把零头留给心愿。', html:'<button class="box-item" onclick="doTask(\'round\','+d+')"><b>体验零头记账</b><span>小金额，也有自己的用处</span></button>'};
+    case 'cancel': return {title:'看看闲置的小开销', sub:'回想一个不常用的订阅，把预算留给更在意的事。', html:'<button class="box-item" onclick="doTask(\'cancel\','+d+')"><b>记下这份小节省</b><span>不代为取消任何订阅</span></button>'};
+    case 'guess': return {title:'回想一下最近的花费', sub:'先估一估，再回看记录。了解自己的花钱节奏就好。', html:'<button class="box-item" onclick="doTask(\'guess\','+d+')"><b>体验预算打卡</b><span>不必猜准，从留意开始</span></button>'};
+    case 'freeze': return {title:'给愿望留点预算', sub:'不必苛刻地节省，想想哪笔非必要开支可以缓一缓。', html:'<button class="box-item" onclick="doTask(\'freeze\','+d+')"><b>记录今天的小选择</b><span>照顾生活，也照顾心愿</span></button>'};
+    case 'calc': return {title:'多看一眼总花费', sub:'除了标价，也留意附加费用，想清楚再做选择。', html:'<button class="box-item" onclick="doTask(\'calc\','+d+')"><b>体验成本打卡</b><span>为认真比较的自己记一笔</span></button>'};
+    case 'temp': return {title:'给存钱一点仪式感', sub:'把气温当作灵感，体验一次有趣的小额记录。', html:'<button class="box-item" onclick="doTask(\'temp\','+d+')"><b>体验气温存钱</b><span>模拟金额，未连接天气服务</span></button>'};
+    case 'roll': return {title:'掷出今天的小目标', sub:'用一次掷骰子决定模拟金额，让记录轻松一点。', html:'<button class="box-item" onclick="doTask(\'roll\','+d+')"><b>掷骰子并记录</b><span>点数 × 10 元</span></button>'};
   }
 }
 function doTask(mode, d){
+  if(mode==='custom'){saveCustomDiary(d,true);return;}
   if(isDone(d)) return;
   let amt;
+  const line=S.line;
   switch(mode){
     case 'roll': amt = rand(1,6)*10; break;
     case 'blind': amt = rand(10,88); break;
@@ -1220,25 +1719,67 @@ function doTask(mode, d){
     default: amt = rand(10,50);
   }
   S.lastAmount = amt;
-  S.completed[S.line].push(d);
-  S.gold += 1; S.idou += 200;
-  S.records.push({day:d, amount:amt, from:'每日剧情任务'});
+  S.lastAmountByLine[line]=amt;
+  S.completed[line].push(d);
+  S.gold += 1; S.idou += 200; S.lineGold[line]+=1;
+  const record={line,day:d,amount:amt,from:'每日剧情任务'};
+  lineRecords(line).push(record);
+  S.records.push(record);
   saveState();
   trackEvent('daily_task_completed', {line:S.line, day:d, mode:mode, amount:amt});
   playCoin(); flyCoin();
-  sayBubble('存进去啦！金币又多一枚~', 'full');
+  sayBubble('又记下一小步，送你一枚金币！', 'full');
   const z = $('taskZone');
-  z.innerHTML = '<div class="result-badge"><b>+'+amt+' 元</b><span>已存入你的目标账户 · 金币 +1 · i豆 +200</span></div>';
-  toast('今日打卡成功，'+LINES[S.line].name+'前进了一步');
-  setTimeout(()=>{ renderHome(); }, 650);
+  z.innerHTML = '<div class="result-badge"><b>+'+amt+' 元</b><span>模拟记录已完成 · 金币 +1 · i 豆 +200</span></div>';
+  toast('打卡完成，离“'+LINES[S.line].name+'”又近了一小步');
+  setTimeout(()=>{ if(S.line===line && S.day===d && S.tab==='journey')renderHome(); }, 650);
   // 每完成3天，扑满出发旅行（仿旅行青蛙）
-  if (doneCount(S.line) % 3 === 0){
-    setTimeout(()=>startTravel(), 1600);
+  if (doneCount(line) % 3 === 0){
+    setTimeout(()=>startTravel(line), 1600);
   }
   // 21天全勤 → 结业
-  if (doneCount(S.line) >= TOTAL_DAYS){
-    setTimeout(()=>go('#/grad'), 2500);
+  if (doneCount(line) >= TOTAL_DAYS){
+    setTimeout(()=>{if(S.line===line && S.day===d)go('#/grad');}, 2500);
   }
+}
+
+function validMoney(value,allowZero=true){return Number.isFinite(value) && value>=(allowZero?0:0.01) && value<=1000000 && Math.abs(value*100-Math.round(value*100))<0.000001;}
+function nextDayButton(d){return d<21?'<button class="btn btn-primary" style="margin-top:12px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>':'<button class="btn btn-primary" style="margin-top:12px" onclick="go(\'#/grad\')">查看阶段回顾</button>';}
+function customDiaryHTML(day){
+  const entry=S.customLine.entries[day] || {},done=isDone(day);
+  const target=entry.target ?? S.customLine.dailyTarget;
+  const amount=entry.amount ?? target;
+  return '<form class="custom-diary" onsubmit="event.preventDefault();saveCustomDiary('+day+',false)">'
+    +'<div class="diary-date">第 '+day+' 天'+(entry.createdAt?' · '+escapeHtml(new Date(entry.createdAt).toLocaleDateString()):'')+'</div>'
+    +'<label>今天计划存（元）<input id="customTarget" type="number" min="0" max="1000000" step="0.01" value="'+target+'" required></label>'
+    +'<label>本次记账（元）<input id="customAmount" type="number" min="0" max="1000000" step="0.01" value="'+amount+'"'+(done?' readonly':'')+' required></label>'
+    +'<label>今天的日记<textarea id="customDiaryNote" maxlength="240" placeholder="今天为心愿做了什么？一句话也值得记下来。">'+escapeHtml(entry.note || '')+'</textarea></label>'
+    +'<p class="ai-foot">仅记录金额，不发生实际转账。保存草稿不会计入进度。</p>'
+    +(done?'<div class="custom-target">✓ 已记录 '+Number(entry.amount||0).toFixed(2)+' 元。还可以修改计划和日记，金额不再变动。</div>':'')
+    +'<button class="btn btn-line" type="submit">'+(done?'更新日记':'保存计划与日记')+'</button>'
+    +(!done?'<button class="btn btn-primary" type="button" onclick="saveCustomDiary('+day+',true)">确认记账并打卡</button>':'')+'</form>';
+}
+function saveCustomDiary(day,complete){
+  if(S.line!=='custom' || S.day!==day)return;
+  const target=Number($('customTarget').value),amount=Number($('customAmount').value),note=$('customDiaryNote').value.trim();
+  if($('customTarget').value==='' || $('customAmount').value==='' || !validMoney(target) || !validMoney(amount,!(complete&&!isDone(day)))){toast('请填写有效金额，记账金额需大于零，最多两位小数');return;}
+  const done=isDone(day),previous=S.customLine.entries[day] || {};
+  const entry={target,amount:done?previous.amount:amount,note:note.slice(0,240),createdAt:previous.createdAt || new Date().toISOString(),completed:done||complete};
+  if(target!==previous.target)delete S.aiCoaches.custom[day];
+  S.customLine.entries[day]=entry;
+  if(complete && !done){
+    S.completed.custom.push(day);
+    S.gold+=1;S.lineGold.custom+=1;S.idou+=200;
+    const record={line:'custom',day,amount,from:'自定义存钱日记',note:entry.note};
+    lineRecords('custom').push(record);S.records.push(record);
+    trackEvent('daily_task_completed',{line:'custom',day,mode:'custom',amount});
+    playCoin();flyCoin();toast('本目标已记录 '+amount.toFixed(2)+' 元 · 金币 +1');
+  }else{
+    // Update descriptive text only; never change previously recorded money or credits.
+    for(const records of [lineRecords('custom'),S.records])for(const record of records){if(record.line==='custom' && record.day===day && record.from==='自定义存钱日记')record.note=entry.note;}
+    toast(done?'日记已更新，已记录的金额保持不变':'草稿已保存，准备好后再确认打卡');
+  }
+  saveState();renderHome();
 }
 
 /* ========== 攒钱进度图案 ========== */
@@ -1255,7 +1796,8 @@ function sceneSvg(lineId, done, color){
     baby:'<path d="M28 30c-8 6-8 16 0 22s20 6 20-4c-8 0-14-7-14-16 0-6-3-9-6-2z"/><circle cx="42" cy="56" r="7"/><path d="M39 56h6M42 53v6"/><path d="M22 40h-6a5 5 0 0 0 5 5h1"/>',
     travel:'<rect x="12" y="42" width="34" height="22" rx="4"/><path d="M20 42v-5h18v5"/><rect x="20" y="51" width="18" height="5" rx="2"/><path d="M12 54h34" opacity=".4"/>',
     gap:'<rect x="20" y="26" width="24" height="32" rx="3"/><path d="M26 34h12M26 40h12M26 46h6"/><circle cx="39" cy="47" r="6" stroke="#F5A623" fill="rgba(245,166,35,.25)"/><path d="M36 47h6M39 44v6"/>',
-    solo:'<path d="M28 20c0 11-5 16-11 19 6 3 11 8 11 19 0-11 5-16 11-19-6-3-11-8-11-19z"/><path d="M28 58v10"/><rect x="25" y="68" width="6" height="6"/><path d="M20 38c-6-3-11-8-11-19 0 11 5 16 11 19zM36 38c6-3 11-8 11-19 0 11-5 16-11 19z" opacity=".7"/>'
+    solo:'<path d="M28 30c-8-5-16-5-23-1v34c7-4 15-4 23 1 8-5 16-5 23-1V29c-7-4-15-4-23 1zM28 30v34"/><path d="M10 37h11M10 44h11M35 37h11M35 44h11"/>',
+    custom:'<circle cx="28" cy="45" r="22"/><circle cx="28" cy="45" r="13"/><path d="m25 48 23-23M37 25h11v11"/>'
   }[lineId] || '';
   return '<svg viewBox="0 0 240 106" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
     +dots
@@ -1263,22 +1805,17 @@ function sceneSvg(lineId, done, color){
     +'</svg>';
 }
 
-/* ========== 小队 ========== */
-function squadCard(){
-  const mine = doneCount(S.line);
-  const members = [
-    {n:'我', c:mine, col:'#C7000B'},
-    {n:'小圆', c:Math.min(21, mine+3), col:'#2A7FB8'},
-    {n:'阿哲', c:Math.min(21, Math.max(0,mine-2)), col:'#E07A3F'},
-    {n:'Momo', c:Math.min(21, mine+6), col:'#6A5ACD'}
-  ];
-  const rows = members.map(m=>
-    '<div class="squad-row"><span class="squad-ava" style="background:'+m.col+'">'+m.n.charAt(0)+'</span>'
-    +'<span class="squad-name">'+m.n+'</span>'
-    +'<span class="squad-bar"><i style="width:'+(m.c/21*100)+'%;background:'+m.col+'"></i></span>'
-    +'<span class="squad-num">'+m.c+'/21天</span></div>').join('');
-  return '<div class="squad-card"><div class="squad-rule"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 5-5"/></svg>只比坚持，不比金额 · 金额不公开</div>'
-    +'<div class="squad-list">'+rows+'</div></div>';
+/* ========== 攒钱进度（日历内） ========== */
+function savingsCardHTML(){
+  const L = LINES[S.line], done = doneCount(S.line);
+  const customGoal = S.line==='custom' ? Number(S.customLine.goal) : 0;
+  const saved = lineSavedAmount(S.line);
+  const pct = S.line==='custom' ? Math.min(100,Math.round(saved/Math.max(0.01,customGoal)*100)) : Math.round(done/TOTAL_DAYS*100);
+  const stageIdx = done===0?0:(done<=7?1:(done<=14?2:3));
+  return '<div class="scene-card">'
+    +'<div class="scene-label"><span class="stage-name">'+(S.line==='custom'?'金额目标进度':'旅程进度 · '+L.scene[stageIdx])+'</span><span class="pct">'+pct+'%</span></div>'
+    +'<div class="scene-visual">'+sceneSvg(S.line,done,L.color)+'</div>'
+    +'<div class="scene-stage"><b>已打卡 '+done+' 天</b><span>'+(S.line==='custom'?saved.toFixed(2)+' / '+customGoal.toFixed(2)+' 元':'已记录 '+saved.toFixed(2)+' 元')+'</span></div><p class="card-note">'+(S.line==='custom'?'按已记录金额计算，仅为模拟记账。':'百分比按打卡天数计算，不代表存款或收益。')+'</p></div>';
 }
 
 /* ========== 日历 ========== */
@@ -1291,18 +1828,27 @@ function renderCalendar(){
     if(i===S.day) cls.push('current');
     if(doneSet.indexOf(i)>=0) cls.push('done');
     if(i===7||i===14||i===21) cls.push('milestone');
-    cells += '<div class="'+cls.join(' ')+'" onclick="viewDay('+i+')">'+i+'</div>';
+    cells += '<button class="'+cls.join(' ')+'" onclick="viewDay('+i+')" aria-label="第 '+i+' 天'+(doneSet.includes(i)?'，已完成':'')+'"'+(i===S.day?' aria-current="date"':'')+'>'+i+'</button>';
   }
-  return '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">'
-    +'<div class="section-title" style="margin:0">'+L.name+' · 21天旅程</div>'
-    +'<span style="font-size:12.5px;color:var(--ink-soft)">完成 '+doneSet.length+' / '+TOTAL_DAYS+' 天</span></div>'
-    +'<div class="cal-grid" style="margin-top:10px">'+cells+'</div>'
-    +'<div class="cal-legend"><span><i style="background:var(--teal)"></i>已完成</span><span><i style="background:var(--cream);border:1px solid var(--line)"></i>未完成</span><span><i style="background:var(--gold)"></i>三幕节点</span><span><i style="border:2px solid var(--red);background:transparent"></i>今天</span></div>'
-    +'<div class="story-card"><div class="story-label">第 '+S.day+' 天 · '+L.days[S.day-1].story+'</div>'
-    +'<div class="story-text">'+L.days[S.day-1].task+'</div>'
-    +'<span class="story-idea">'+L.days[S.day-1].idea+'</span></div>';
+  const calendar = '<p class="card-note">'+escapeHtml(L.name)+' · 已打卡 '+doneSet.length+' / '+TOTAL_DAYS+' 天。点选天数，查看当天的故事与记录。</p>'
+    +'<div class="cal-grid">'+cells+'</div>'
+    +'<div class="cal-legend"><span><i style="background:var(--green)"></i>已打卡</span><span><i style="background:var(--cream)"></i>待开启</span><span><i style="background:var(--gold)"></i>里程碑</span><span><i style="border:2px solid var(--red)"></i>正在查看</span></div>'
+    +'<div class="calendar-preview"><b>第 '+S.day+' 天 · '+L.days[S.day-1].idea+'</b><p>'+L.days[S.day-1].task+'</p></div>';
+  return viewIntro('把坚持，留在日历里','回看走过的日子，也看看正在积累的改变。','02')
+    +featureCard('calendar-days','21 天日历','点选天数，继续任务或回看已完成的记录。',calendar,'calendar')
+    +featureCard('savings-progress','攒钱进度','每一次坚持，都让生活目标更近一点。',savingsCardHTML(),'coin')
+    +featureCard('participation','我的参与节奏','从记录中了解自己，找到舒服的坚持方式。',behaviorCardHTML(),'chart')
+    +featureCard('goal-records',S.line==='custom'?'我的存钱日记':'我的记账记录','留住为这个目标积累的每一笔。',goalRecordsHTML(),'note');
 }
-function viewDay(i){ S.day = i; S.tab='journey'; renderHome(); }
+function goalRecordsHTML(){
+  if(S.line==='custom'){
+    const entries=Object.entries(S.customLine.entries).sort((a,b)=>Number(b[0])-Number(a[0]));
+    return entries.length?'<ol class="diary-history">'+entries.map(([day,entry])=>'<li><b>第 '+day+' 天 · '+(entry.completed?'已记 '+Number(entry.amount).toFixed(2)+' 元':'计划草稿')+'</b><div>计划 '+Number(entry.target).toFixed(2)+' 元</div><p>'+escapeHtml(entry.note || '这一天还没有写下心情。')+'</p><button onclick="viewDay('+day+')">回看这一天</button></li>').join('')+'</ol>':'<p class="card-note">还没有日记，先为今天写一个小计划吧。</p>';
+  }
+  const records=lineRecords().slice().reverse();
+  return records.length?'<ol class="diary-history">'+records.map(item=>'<li>第 '+item.day+' 天 · '+escapeHtml(item.from)+'<br><b>'+Number(item.amount).toFixed(2)+' 元</b></li>').join('')+'</ol>':'<p class="card-note">这里还没有记录。去旅程页完成一次任务或存钱挑战，记下第一笔吧。</p>';
+}
+function viewDay(i){ setCurrentLineDay(i); saveState(); switchTab('journey'); window.scrollTo(0,0); }
 
 /* ========== 徽章 ========== */
 const BADGES = [
@@ -1337,14 +1883,17 @@ function beadSvg(art, lit, col){
 function renderBadge(){
   const done = doneCount(S.line);
   const souCount = S.souvenirs.length;
-  return renderSouBook()
-    +'<div class="section-title" style="margin-top:18px">徽章墙 · 拼豆收集册</div>'
-    +'<p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 12px;line-height:1.7">8 枚经典徽章 + 4 枚旅行徽章。完成对应挑战，豆子一颗颗亮起来。</p>'
+  const badges = '<p class="card-note">8 枚经典徽章 + 4 枚旅行徽章。完成对应挑战，豆子一颗颗亮起来。</p>'
     +'<div class="badge-grid">'+BADGES.map((b,i)=>{
       const lit = badgeLit(i, done, souCount);
       return '<div class="badge'+(lit?' lit':'')+'"><span class="ico">'+beadSvgP(b.pixels, lit, b.col)+'</span><span>'+b.n+'</span>'+(lit?'<span class="got">已点亮</span>':'<span class="lock">'+b.d+'</span>')+'</div>';
-    }).join('')+'</div>'
-    +'<div class="line-tip" style="margin-top:14px">拼豆按完成进度逐颗点亮（演示版即时点亮；正式版按T+2到账）。</div>';
+    }).join('')+'</div>';
+  const guide = '<p class="card-note">完成每日任务，点亮经典徽章；扑满每完成 3 天任务会出门旅行，回来带回一件纪念品。集齐纪念品，解锁旅行徽章。</p>'
+    +'<button class="btn btn-line" onclick="jumpFeature(\'journey\',\'daily-task\')">去完成今日任务</button>';
+  return viewIntro('把小成就，收藏起来','每一枚徽章、每一件礼物，都有自己的故事。','04')
+    +featureCard('badge-collection','拼豆徽章','用一颗颗亮起的拼豆，纪念坚持的日子。',badges,'badge')
+    +featureCard('souvenir-collection','旅行纪念品','打开扑满的行囊，看看它带回来的世界。',renderSouBook(),'gift')
+    +featureCard('collection-guide','收集指南','了解徽章与纪念品的解锁方式。',guide,'note');
 }
 
 /* ========== 小队页 ========== */
@@ -1356,42 +1905,46 @@ function renderSquad(){
     {n:'阿哲', c:Math.min(21, Math.max(0,mine-2)), col:'#E07A3F', tag:''},
     {n:'Momo', c:Math.min(21, mine+6), col:'#6A5ACD', tag:''}
   ];
-  return '<div class="section-title">我的小队 · '+LINES[S.line].name+'</div>'
-    + teamGoalHTML()
-    +'<div class="squad-card"><div class="squad-rule"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 12l2.5 2.5 5-5"/></svg>小队由熟人通过邀请码组成，不设陌生人匹配与私聊</div>'
+  const progress = '<div class="squad-card"><p class="card-note">一起坚持，不比金额。这里只展示打卡天数，队友为模拟角色。</p>'
     +'<div class="squad-list">'+members.map(m=>
       '<div class="squad-row"><span class="squad-ava" style="background:'+m.col+'">'+m.n.charAt(0)+'</span>'
       +'<span class="squad-name">'+m.n+' '+m.tag+'</span>'
       +'<span class="squad-bar"><i style="width:'+(m.c/21*100)+'%;background:'+m.col+'"></i></span>'
-      +'<span class="squad-num">'+m.c+'/21天</span></div>').join('')+'</div></div>'
-    +'<div class="line-tip">队友之间只展示打卡天数和进度，不公开金额、不按金额排名——只比谁更坚持。</div>'
-    +'<button class="btn btn-line" style="margin-top:14px" onclick="toast(\'演示环境：正式版通过邀请码邀请微信好友入队\')">邀请队友</button>';
+      +'<span class="squad-num">'+m.c+'/21天</span></div>').join('')+'</div></div>';
+  const invite = '<p class="card-note">目前可以体验模拟小队，暂不支持邀请好友、匹配或私聊。你的记账金额不会显示在小队中。</p>'
+    +'<button class="btn btn-line" onclick="toast(\'好友邀请还未开放，可以先体验模拟小队。\')">好友邀请 · 暂未开放</button>';
+  return viewIntro('有人同行，也有自己的节奏','模拟小队体验 · 一起坚持，不比金额。','03')
+    +featureCard('team-goal','小队共同目标','看看大家合在一起的打卡进度。',teamGoalHTML(),'chart')
+    +featureCard('team-members','队友进度','只看打卡天数，为每一份小进步加油。',progress,'team')
+    +featureCard('team-invite','邀请与约定','与熟悉的人同行，让陪伴保持轻松。',invite,'note');
 }
 
 /* ========== 结业 ========== */
 function renderGrad(){
   const L = LINES[S.line];
   const done = doneCount(S.line);
-  S.idou = Math.max(S.idou, done*200);
-  S.gold = Math.max(S.gold, done);
   $('gradContent').innerHTML =
     '<div class="grad-hero"><div class="seal"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>'
-    +'<h2>恭喜毕业，'+L.name+'完成</h2><p>你用21天，走完了第一次完整的理财闭环。</p></div>'
-    +'<div class="grad-stats"><div class="grad-stat"><b>'+done+'</b><span>坚持天数</span></div><div class="grad-stat"><b>'+S.gold+'</b><span>已存金币</span></div><div class="grad-stat"><b>'+S.idou+'</b><span>工银i豆</span></div></div>'
+    +'<h2>'+escapeHtml(L.name)+' · '+(done===21?'21 天回顾':'阶段回顾')+'</h2><p>回头看看，每一次小小的行动，都为这个心愿留下了记录。</p></div>'
+    +'<div class="grad-stats"><div class="grad-stat"><b>'+done+'</b><span>打卡天数</span></div><div class="grad-stat"><b>'+lineGoldBalance()+'</b><span>目标金币</span></div><div class="grad-stat"><b>'+done*200+'</b><span>体验 i 豆</span></div></div>'
     +'<div class="grad-sou"><span class="gs-label">🎁 扑满替你带回来的</span>'
     +(S.souvenirs.length ? S.souvenirs.map(i=>'<span class="gs-emoji" title="'+SOUVENIRS[i].name+'">'+SOUVENIRS[i].emoji+'</span>').join('') : '<span class="gs-emoji">🌱</span>')
     +'</div>'
-    +'<div class="story-card"><div class="story-label">结业报告</div>'
-    +'<div class="story-text">这一趟旅程，你完成了'+done+'次打卡，'+L.scene[3]+'。攒下的钱已经真实留在你的工行账户里。</div>'
-    +'<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">'+L.products.map(p=>'<span style="background:#E6F2F1;color:var(--teal);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600">衔接 '+p+'</span>').join('')+'</div></div>'
-    +'<div class="next-card"><h4>下一站 · 进阶剧本</h4><p>21天只是新手村。毕业之后，你的'+L.name+'会继续生长：小家之后是育儿、房车、养老；攒下的钱可以对接 '+L.products.join('、')+'，让习惯变成真正的财富。</p>'
-    +'<div class="chips"><span class="chip">长线剧本线</span><span class="chip">每日回访钩子</span><span class="chip">理财进阶课程</span></div></div>'
-    +'<button class="btn btn-primary" style="margin-top:16px" onclick="go(\'#/home\')">回到旅程回顾</button>';
+    +'<div class="story-card"><div class="story-label">这一阶段的收获</div>'
+    +'<div class="story-text">这一趟旅程，你完成了'+done+'次打卡，累计记录 '+lineSavedAmount().toFixed(2)+' 元。'+(S.line==='custom'?'目标金额 '+S.customLine.goal.toFixed(2)+' 元，还差 '+Math.max(0,S.customLine.goal-lineSavedAmount()).toFixed(2)+' 元。':'')+'以上均为模拟记账，不代表银行实际资金到账。</div>'
+    +'<p class="card-note">金币与 i 豆仅为体验奖励，不代表现金或可兑换权益。</p></div>'
+    +'<div class="next-card"><h4>接下来，按自己的节奏继续</h4><p>21 天是一段记录，不是目标的终点。可以回看“'+escapeHtml(L.name)+'”的日记与打卡，也可以切换到其他目标，之前的积累会为你保留。</p>'
+    +'<div class="chips"><span class="chip">回看打卡</span><span class="chip">整理记录</span><span class="chip">继续其他目标</span></div></div>'
+    +'<button class="btn btn-primary" style="margin-top:16px" onclick="go(\'#/home\')">回到我的旅程</button>';
 }
 
 /* ========== 底部导航 ========== */
 function switchTab(tab){
+  if(!['journey','calendar','squad','badge'].includes(tab)) tab='journey';
   S.tab = tab;
+  if(!$('view-home').classList.contains('active')){ go('#/home'); return; }
+  renderLineSwitcher();
+  $('headLineName').textContent = {journey:LINES[S.line].name,calendar:'日历与进度',squad:'我的小队',badge:'我的收藏'}[tab];
   let html = '';
   if(tab==='journey'){ renderHome(); return; }
   if(tab==='calendar') html = renderCalendar();
@@ -1399,16 +1952,26 @@ function switchTab(tab){
   if(tab==='badge') html = renderBadge();
   $('homeContent').innerHTML = html;
   setNav(tab);
+  if(tab==='calendar') requestBehaviorState();
 }
 function setNav(tab){
   document.querySelectorAll('.nav-btn').forEach(b=>{
     b.classList.toggle('on', b.dataset.tab===tab);
   });
+  $('workspaceLocation').textContent = {journey:'旅程',calendar:'日历',squad:'小队',badge:'徽章'}[tab];
+  document.querySelectorAll('[data-destination]').forEach(button=>{
+    if(button.dataset.destination===tab) button.setAttribute('aria-current','page');
+    else button.removeAttribute('aria-current');
+  });
 }
 
 /* ========== 背景音乐（Web Audio 实时生成 8-bit） ========== */
 const bgmBtn = document.getElementById('bgmBtn');
-function setBgmBtn(muted){ if(bgmBtn) bgmBtn.classList.toggle('muted', muted); }
+function setBgmBtn(muted){
+  if(bgmBtn) bgmBtn.classList.toggle('muted', muted);
+  const quick = $('quickMusic');
+  if(quick){ quick.textContent=muted?'开启音乐':'关闭音乐'; quick.setAttribute('aria-pressed',String(!muted)); }
+}
 function toggleBgm(){
   if(!audioCtx) initAudio();
   if(musicOn){ musicOn=false; setBgmBtn(true); clearTimeout(bgmTimer); }
@@ -1421,29 +1984,29 @@ document.addEventListener('pointerdown', function once(){ if(!audioCtx) initAudi
 /* ================= 旅行纪念品库 ================= */
 const SOUVENIRS = [
   {emoji:'🏔️', name:'雪山的存钱罐', from:'北方的雪山', story:'在雪山脚下，我学会了：钱要慢慢攒，路要慢慢走。雪再厚，也是千片万片积出来的。'},
-  {emoji:'🌊', name:'海边的贝壳', from:'南方的海岸', story:'海浪教会我：潮起潮落，钱也要有涨有跌的平常心。贝壳虽小，却是海送给我的礼物。'},
+  {emoji:'🌊', name:'海边的贝壳', from:'南方的海岸', story:'沿着海岸走了很久，我挑了一枚小贝壳。慢慢走，也会遇见值得收藏的东西。'},
   {emoji:'🍜', name:'一碗热汤面', from:'市井小巷', story:'最暖的不是贵，是刚刚好的温度。省钱也能很幸福，一碗面就够。'},
-  {emoji:'🎐', name:'夏日的风铃', from:'古镇小巷', story:'风吹铃响，像极了复利悄悄生长的声音——不喧哗，却一直在积累。'},
+  {emoji:'🎐', name:'夏日的风铃', from:'古镇小巷', story:'巷口的风铃响了一下，我就想起你。今天的小小坚持，也值得被轻轻听见。'},
   {emoji:'🌾', name:'麦田的麦穗', from:'金色麦田', story:'一颗麦穗是谷粒，千颗麦穗是丰收。攒钱，也是一穗一穗捡起来的。'},
   {emoji:'🏮', name:'元宵的灯笼', from:'花灯夜市', story:'灯亮一盏，路就亮一段。应急金，就是人生路上的那盏灯。'},
-  {emoji:'🍁', name:'秋天的枫叶', from:'红叶山', story:'枫叶红了又落，资产配置也要四季轮换。落下的，是为了明年更红。'},
-  {emoji:'🎿', name:'雪地护目镜', from:'滑雪场', story:'看清路，才能滑得稳。投资先看风险，再看收益，别被雪景迷了眼。'},
-  {emoji:'🌸', name:'春天的花瓣', from:'樱花道', story:'花会再开，钱会再攒。耐心，是最好的复利。'},
+  {emoji:'🍁', name:'秋天的枫叶', from:'红叶山', story:'我把一片红叶夹进了行囊。季节慢慢换，你的小屋和记录也在一点点变得丰富。'},
+  {emoji:'🎿', name:'雪地护目镜', from:'滑雪场', story:'第一次滑雪，我也走得很慢。找到自己的节奏，比急着赶上别人更自在。'},
+  {emoji:'🌸', name:'春天的花瓣', from:'樱花道', story:'花开有自己的时候，心愿也一样。这片花瓣送给正在慢慢积累的你。'},
   {emoji:'📮', name:'远方的明信片', from:'世界各地', story:'世界那么大，先从小目标开始看。明信片上的风景，都是攒出来的。'},
   {emoji:'🧭', name:'指南针', from:'荒野营地', story:'迷路时指南针最重要——就像人生，要有自己的财务规划方向。'},
-  {emoji:'🌟', name:'流星许愿石', from:'星空营地', story:'把愿望写下来，把存钱坚持下来，都会实现的。我替你许了一个。'}
+  {emoji:'🌟', name:'流星许愿石', from:'星空营地', story:'流星划过的时候，我替你许了个愿。把它写下来吧，我们从明天的一小步继续。'}
 ];
 
 /* ================= 随机存钱挑战 ================= */
 const CHALLENGES = [
-  {amount:5.20, desc:'今天存下 5.20 元，谐音“我爱你”——给未来的自己一点爱。'},
-  {amount:13.14, desc:'13.14 = 一生一世。坚持攒钱，就是对自己最长情的告白。'},
-  {amount:52.0, desc:'52.0 = 我爱你。把今天的爱，投给以后那个更有底气的你。'},
-  {amount:6.66, desc:'6.66 谐音“顺顺”，祝你的钱包一路顺风。'},
-  {amount:8.88, desc:'8.88 谐音“发发”，小目标也要讨个好彩头。'},
-  {amount:9.99, desc:'9.99 谐音“久久”，长长久久，慢慢变富。'},
-  {amount:20.20, desc:'20.20 谐音“爱你爱你”，攒钱也是爱自己的方式。'},
-  {amount:66.6, desc:'66.6 = 顺顺顺。今天就把这份顺利存进扑满里。'}
+  {amount:5.20, desc:'从 5.20 元的小记录开始，给未来的自己留一点心意。'},
+  {amount:13.14, desc:'今天试试记录 13.14 元，让心愿多一点积累。'},
+  {amount:52.0, desc:'为在意的目标留一笔，今天的参考金额是 52 元。'},
+  {amount:6.66, desc:'用 6.66 元记下今天，小金额也值得认真对待。'},
+  {amount:8.88, desc:'给今天添个小仪式：为心愿记录 8.88 元。'},
+  {amount:9.99, desc:'试着记录 9.99 元，不求很多，适合自己就好。'},
+  {amount:20.20, desc:'今天的参考金额是 20.20 元，按你的预算调整就好。'},
+  {amount:66.6, desc:'想给目标多留一点？可以试试 66.60 元，也可以调小。'}
 ];
 
 /* ================= 理财答题库（零黑话） ================= */
@@ -1480,22 +2043,22 @@ function updatePig(){
   if (!stageEl) return;
   stageEl.className = 'pig-stage stage'+pigStage();
   const travel = document.getElementById('travelSign');
-  if (travel){ travel.style.display = S.atHome ? 'none' : 'block'; }
+  if (travel){ travel.hidden = S.atHome; }
   if (!S.atHome){ document.getElementById('pigExclaim').style.display='none'; updateTravelCountdown(); }
 }
 function setPigFace(name){
   document.querySelectorAll('.pig-img').forEach(im=>im.classList.toggle('on', im.dataset.face===name));
 }
 const BUBBLES = [
-  '今天也要存一枚金币！',
-  '完成副本，我会出门旅行哦！',
-  '坚持21天，一起攒成小金库！',
-  '别着急，金币是一枚一枚攒起来的。',
-  '存起来存起来！我要金币~',
-  '你今天攒钱了吗？',
-  '积少成多，就是这个道理~',
-  '扑满会陪你一起成长的！',
-  '攒够了，我就替你去远方看看！'
+  '今天想为哪个心愿留下一小步？',
+  '每完成 3 天任务，我就去带一份旅行礼物！',
+  '一笔记录、一句日记，都算小进步。',
+  '别着急，按自己的节奏来就好。',
+  '你照顾心愿，我来陪你。',
+  '今天能做到多少，就从多少开始。',
+  '偶尔歇一歇，之前的积累也不会消失。',
+  '欢迎回来，我一直在这里。',
+  '下一次旅行，我会把远方装进行囊。'
 ];
 function sayBubble(text, face){
   const b = document.getElementById('pigBubble');
@@ -1517,10 +2080,19 @@ function showExclaim(){
 }
 
 /* ================= 旅行系统（仿旅行青蛙） ================= */
+function nextTravelMilestone(line=S.line){
+  for(let milestone=3;milestone<=doneCount(line);milestone+=3){
+    if(!S.rewards.trips.some(trip=>trip.line===line && trip.milestone===milestone)) return milestone;
+  }
+  return null;
+}
 function checkTravel(){
-  if (!S.atHome){
-    const left = S.travelStart + S.travelDur - Date.now();
-    if (left <= 0) returnHome();
+  if(!rewardsReady)return;
+  for(const line of Object.keys(LINES)){
+    if(tripRequests.has(line) || Date.now()<(tripRetryAt.get(line)||0))continue;
+    const trip=activeTripForLine(line);
+    if(trip){if(Date.now()+rewardClockOffset>=trip.ready_at)returnHome(line);}
+    else if(nextTravelMilestone(line))startTravel(line);
   }
 }
 function updateTravelCountdown(){
@@ -1528,41 +2100,83 @@ function updateTravelCountdown(){
   if (!el) return;
   const left = Math.max(0, S.travelStart + S.travelDur - Date.now());
   const sec = Math.ceil(left/1000);
-  el.textContent = '预计 '+sec+' 秒后带着礼物回来';
+  el.textContent = sec>0 ? '预计 '+sec+' 秒后带着礼物回来' : '扑满已返程，正在领取礼物…';
 }
-function startTravel(){
-  if (!S.atHome) return;
-  S.atHome = false;
-  S.travelStart = Date.now();
-  const msgs = ['它正替你去看雪','它正替你去看海','它正替你去看星空','它正替你去看麦田'];
-  const m = document.getElementById('travelMsg');
-  if (m) m.textContent = msgs[Math.floor(Math.random()*msgs.length)];
-  saveState();
-  updatePig();
-  renderHome();
-  toast('🧳 扑满出发旅行啦！回来会带纪念品～');
+async function startTravel(line=S.line){
+  const milestone = nextTravelMilestone(line);
+  if(!rewardsReady || tripRequests.has(line) || activeTripForLine(line) || !milestone) return;
+  tripRequests.add(line);
+  try{
+    let started;
+    if(API_ENABLED){
+      const result = await rewardRequest('/api/travel/start',{line,milestone});
+      started = result.started;
+    }else{
+      const timestamp=Date.now();
+      const trip={id:'local-'+line+'-'+milestone,line,milestone,started_at:timestamp,ready_at:timestamp+45000,claimed_at:null,coins:null,souvenir:null};
+      S.rewards.provider='local';
+      S.rewards.trips.push(trip);
+      S.rewards.active_trips.push(trip);
+      S.rewards.revision++;
+      syncActiveTripForLine();
+      started=true;
+      saveState();
+    }
+    updatePig();
+    if(started) toast(LINES[line].name+' · 扑满出发，回来带回 3–10 金币');
+  }catch(e){
+    tripRetryAt.set(line,Date.now()+10000);
+    toast('出发暂未成功，稍后会自动重试');
+  }finally{ tripRequests.delete(line); }
 }
-function returnHome(){
-  S.atHome = true;
-  S.travelStart = null;
-  const pool = SOUVENIRS.map((_,i)=>i).filter(i=>!S.souvenirs.includes(i));
-  const idx = pool.length>0 ? pool[Math.floor(Math.random()*pool.length)] : Math.floor(Math.random()*SOUVENIRS.length);
-  S.souvenirs.push(idx);
-  S.newSou = idx;
-  saveState();
-  updatePig();
-  renderHome();
-  const s = SOUVENIRS[idx];
-  toast('🎁 扑满回来了！带回：'+s.emoji+' '+s.name);
-  setTimeout(()=>showSouDetail(idx), 800);
+async function returnHome(line=S.line){
+  const trip=activeTripForLine(line);
+  if(!trip || tripRequests.has(line) || (API_ENABLED && !rewardsReady)) return;
+  if(Date.now()+rewardClockOffset<trip.ready_at) return;
+  tripRequests.add(line);
+  try{
+    let result;
+    if(API_ENABLED){
+      result=await rewardRequest('/api/travel/claim',{trip_id:trip.id});
+      if(result.pending) return;
+    }else{
+      if(trip.claimed_at!==null) return;
+      const pool=SOUVENIRS.map((_,i)=>i).filter(i=>!S.souvenirs.includes(i));
+      const idx=pool.length?pool[rand(0,pool.length-1)]:rand(0,SOUVENIRS.length-1);
+      const coins=rand(3,10);
+      Object.assign(trip,{claimed_at:Date.now(),coins,souvenir:idx});
+      // A restored JSON snapshot may contain a separate active-trip object.
+      const stored=S.rewards.trips.find(item=>item.id===trip.id);
+      if(stored) Object.assign(stored,trip);
+      S.rewards.gold+=coins; S.rewards.revision++;
+      S.rewards.active_trips=S.rewards.trips.filter(item=>item.claimed_at===null);
+      syncActiveTripForLine();
+      if(!S.souvenirs.includes(idx)) S.souvenirs.push(idx);
+      result={awarded:true,coins,souvenir:idx};
+    }
+    S.newSou=result.souvenir;
+    saveState(); updatePig(); refreshGold();
+    if(S.tab==='badge' && $('view-home').classList.contains('active'))switchTab('badge');
+    const souvenir=SOUVENIRS[result.souvenir];
+    if(result.awarded){
+      toast(LINES[line].name+' · '+souvenir.name+' · 金币 +'+result.coins);
+      sayBubble('这次旅行带回了 '+result.coins+' 金币！','happy');
+      playCoin(); flyCoin();
+      // Other goals finish in the background without interrupting the current journal.
+      if(S.line===line)setTimeout(()=>{if(S.line===line)showSouDetail(result.souvenir,result.coins);},800);
+    }
+  }catch(e){
+    tripRetryAt.set(line,Date.now()+10000);
+    toast('返程奖励暂未确认，稍后自动重试，不会重复领取');
+  }finally{ tripRequests.delete(line); }
 }
 
 /* ================= 四季小屋卡片 ================= */
 const SEASONS = [
-  {key:'spring', name:'🌸 春日小屋'},
-  {key:'summer', name:'☀️ 夏日小屋'},
-  {key:'autumn', name:'🍁 秋日小屋'},
-  {key:'winter', name:'❄️ 冬日小屋'}
+  {key:'spring', image:'room_spring.png', name:'🌸 春日小屋'},
+  {key:'summer', image:'room_summer.png', name:'☀️ 夏日小屋'},
+  {key:'autumn', image:'room_automn.png', name:'🍁 秋日小屋'},
+  {key:'winter', image:'room_winter.png', name:'❄️ 冬日小屋'}
 ];
 function seasonOf(done){
   if (done>=21) return SEASONS[3];
@@ -1572,27 +2186,32 @@ function seasonOf(done){
 }
 function roomCardHTML(done){
   const sea = seasonOf(done);
-  const travel = S.atHome ? ''
-    : '<div class="travel-sign"><div class="t1">🧳 扑满旅行中</div><div class="t2" id="travelMsg">它正替你去看世界</div><div class="t3" id="travelCountdown"></div></div>';
-  return '<div class="room-card"><div class="room-frame room-r-'+sea.key+'"></div>'
-    +'<div class="room-veil2"></div><span class="room-tag">'+sea.name+'</span>'
-    +'<span class="room-gold">💰 '+S.gold+' 金币</span>'+travel+'</div>';
+  return '<img class="room-frame" src="assets/'+sea.image+'" alt="'+sea.name+'，扑满的四季小屋" width="1024" height="1024">';
 }
 
 /* ================= 存钱挑战 / 每日一问（journey 内嵌卡） ================= */
 function challengeCardHTML(d, done){
+  if(S.line==='custom'){
+    const entry=S.customLine.entries[d],target=entry?.target ?? S.customLine.dailyTarget;
+    return '<div class="challenge-card"><p class="c-desc">'+escapeHtml(S.customLine.name)+'</p><div class="custom-target">今日计划 '+Number(target).toFixed(2)+' 元<br>实际记录 '+(entry?.completed?Number(entry.amount).toFixed(2):'0.00')+' 元</div>'
+      +'<p class="custom-progress">想攒到 '+S.customLine.goal.toFixed(2)+' 元<br>已记录 '+lineSavedAmount().toFixed(2)+' 元<br>距离目标 '+Math.max(0,S.customLine.goal-lineSavedAmount()).toFixed(2)+' 元</p>'
+      +'<p class="custom-progress">在“今日存钱日记”里调整金额，按自己的节奏来。21 天结束后，仍可回看记录；金额目标单独计算。</p></div>';
+  }
   const ch = CHALLENGES[(d + lineIdx()*3) % CHALLENGES.length];
-  const doneCh = S.challengeDone === d;
+  const doneCh = S.challenges[S.line].includes(d);
   return '<div class="challenge-card"><div class="c-title">🎲 今日存钱挑战</div><div class="c-desc">'+ch.desc+'</div>'
     + (doneCh
-      ? '<div class="mini" style="color:var(--green);font-weight:700">✓ 今日挑战已完成，明天再战！</div>'
-      : '<div class="c-form"><input type="number" id="challengeInput" value="'+ch.amount+'" step="0.01" min="0"><button class="btn" onclick="doChallenge('+d+')">确认存钱</button></div>')
+      ? '<div class="mini" style="color:var(--green);font-weight:700">✓ 今天已记录，又为心愿留下一笔。</div>'
+      : '<div class="c-form"><input type="number" id="challengeInput" aria-label="本次挑战金额，单位元" value="'+ch.amount+'" step="0.01" min="0"><button class="btn" onclick="doChallenge('+d+')">记录这笔金额</button></div><p class="ai-foot">金额可调整。仅模拟记账，不实际扣款；完成后金币 +1。</p>')
     + '</div>';
 }
 function doChallenge(d){
-  const v = parseFloat(document.getElementById('challengeInput').value);
-  if (isNaN(v) || v<0){ toast('请输入有效金额（可以改成任意你想存的数）'); return; }
+  if(S.challenges[S.line].includes(d) || S.day!==d || S.line==='custom')return;
+  const v = Number(document.getElementById('challengeInput').value);
+  if (!validMoney(v,false)){ toast('请输入大于零的有效金额，最多两位小数'); return; }
   S.challengeDone = d;
+  S.challengeDoneByLine[S.line]=d;
+  S.challenges[S.line].push(d);
   addSave(v, '存钱挑战');
   trackEvent('saving_challenge_completed', {line:S.line, day:d, amount:v});
   renderHome();
@@ -1600,33 +2219,48 @@ function doChallenge(d){
 function quizDailyHTML(d){
   const qIdx = (d + lineIdx()) % DAILY_QUIZ.length;
   const q = DAILY_QUIZ[qIdx];
-  const doneQ = S.quizDone.includes(qIdx);
-  let opts = '';
-  if (!doneQ){ q.opts.forEach((o,i)=>{ opts += '<button class="quiz-opt" data-i="'+i+'" onclick="answerDaily('+qIdx+','+q.ans+','+i+')">'+'ABCD'[i]+'. '+o+'</button>'; }); }
-  return '<div class="quiz-card"><div class="q-title">🧠 每日理财一问'+(doneQ?'（已答过）':'')+'</div>'
-    + '<div class="q-text">'+q.q+'</div>'+opts
-    + '<div class="quiz-explain" id="quizExplain"'+(doneQ?' style="display:block"':'')+'>'+q.exp+'</div></div>';
+  const key=S.line+':'+d, result=S.rewards.quizzes[key], busy=quizRequests.has(key);
+  const doneQ=!!result?.correct;
+  const opts=q.opts.map((text,i)=>'<button class="quiz-opt'+(result && i===q.ans?' correct':'')+(result && i===result.selected && !result.correct?' wrong':'')+'" data-i="'+i+'" onclick="answerDaily('+i+')"'+(doneQ||busy?' disabled':'')+'>'+'ABCD'[i]+'. '+text+'</button>').join('');
+  const feedback=quizErrors.get(key) || (busy?'正在确认答案和奖励…':result?(doneQ?'答对了，今天又多懂一点！':'没关系，看看解析再试一次。'):'');
+  return '<div class="quiz-card"><div class="quiz-reward">'+(doneQ?'✓ 已获得 1 金币':'答对 +1 金币 · 每个目标每天一次')+'</div>'
+    +'<div class="q-text">'+q.q+'</div>'+opts
+    +(feedback?'<div class="quiz-feedback" role="status">'+escapeHtml(feedback)+'</div>':'')
+    +'<div class="quiz-explain" id="quizExplain"'+(result?' style="display:block"':'')+'>'+q.exp+'</div></div>';
 }
-function answerDaily(qIdx, ans, selected){
-  const card = document.querySelector('.quiz-card');
-  const btns = card.querySelectorAll('.quiz-opt');
-  const picked = Number.isInteger(selected) ? selected : -1;
-  if (picked<0) return;
-  btns.forEach(b=>{ b.disabled = true; if (parseInt(b.dataset.i)===ans) b.classList.add('correct'); else if (parseInt(b.dataset.i)===picked) b.classList.add('wrong'); });
-  document.getElementById('quizExplain').style.display='block';
-  if (picked===ans){
-    S.quizDone.push(qIdx);
-    S.gold += 1;
+async function answerDaily(selected){
+  const line=S.line, day=S.day, key=line+':'+day;
+  if(!Number.isInteger(selected) || selected<0 || selected>3 || quizRequests.has(key) || S.rewards.quizzes[key]?.correct) return;
+  const qIdx=(day+lineIdx())%DAILY_QUIZ.length, q=DAILY_QUIZ[qIdx];
+  quizRequests.add(key); quizErrors.delete(key);
+  refreshDailyQuiz();
+  try{
+    let result;
+    if(API_ENABLED){
+      result=await rewardRequest('/api/daily-quiz/answer',{line,day,selected});
+      behaviorRevision++;
+      if($('behaviorCard')) requestBehaviorState();
+    }else{
+      const correct=selected===q.ans;
+      S.rewards.quizzes[key]={question:qIdx,selected,correct,coins:correct?1:0};
+      S.rewards.provider='local'; S.rewards.revision++;
+      if(correct) S.rewards.gold++;
+      result={correct,awarded:correct,coins:correct?1:0};
+    }
     saveState();
-    trackEvent('daily_quiz_answered', {line:S.line, day:S.day, question:qIdx, correct:true});
-    toast('✅ 答对啦！金币 +1 · 解析见下方', 3500);
-    playCoin(); flyCoin();
-  } else {
-    toast('❌ 答错啦，看看解析，明天再来！', 3500);
-    trackEvent('daily_quiz_answered', {line:S.line, day:S.day, question:qIdx, correct:false});
-    playBlip();
+    if(result.awarded){ toast('答对啦！金币 +1'); playCoin(); flyCoin(); }
+    else if(result.correct) toast('这道题的金币已领过，知识可以再温习');
+    else { toast('答错也没关系，读完解析再试试'); playBlip(); }
+  }catch(e){
+    quizErrors.set(key,'暂时没能确认答案和奖励，请稍后重试。');
+  }finally{
+    quizRequests.delete(key);
+    refreshDailyQuiz(); refreshGold(); updatePig();
   }
-  renderHome();
+}
+function refreshDailyQuiz(){
+  const card=document.querySelector('#feature-daily-quiz .quiz-card');
+  if(card) card.outerHTML=quizDailyHTML(S.day);
 }
 
 /* ================= 小队团队目标（全队攒满 84 金币） ================= */
@@ -1635,15 +2269,15 @@ function teamGoalHTML(){
   const mates = [3, -2, 6].map(off => Math.min(21, Math.max(0, mine+off)));
   const total = mine + mates.reduce((a,b)=>a+b,0);
   const goal = 84;
-  return '<div class="team-goal"><div class="tg-title">👥 全队闯关目标</div>'
+  return '<div class="team-goal"><div class="tg-title">👥 小队共同目标</div>'
     +'<div class="tg-bar"><div class="tg-fill" style="width:'+Math.min(100, total/goal*100)+'%"></div></div>'
-    +'<div class="tg-num">全队已完成 '+total+' 天 / 目标 '+goal+' 天 · 只比坚持，不比金额</div></div>';
+    +'<div class="tg-num">全队累计打卡 '+total+' / '+goal+' 天 · 含模拟队友记录</div></div>';
 }
 
 /* ================= 纪念品图鉴（徽章页） ================= */
 function renderSouBook(){
   let html = '<div class="section-title" style="margin-top:16px">旅行纪念品 · 扑满带回来的世界</div>'
-    +'<p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 4px;line-height:1.7">扑满每完成 3 天副本就出门旅行，回来带回一件纪念品。集齐 12 件，解锁全部旅行徽章。</p>'
+    +'<p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 4px;line-height:1.7">每个目标累计完成 3 天任务，扑满就会出发一次，带回纪念品和 3—10 枚金币。不同目标的旅行纪念品会收藏在一起，共 12 件。</p>'
     +'<div class="sou-grid2">';
   SOUVENIRS.forEach((s,i)=>{
     const got = S.souvenirs.includes(i);
@@ -1653,11 +2287,12 @@ function renderSouBook(){
   html += '</div>';
   return html;
 }
-function showSouDetail(i){
+function showSouDetail(i,coins=0){
   const s = SOUVENIRS[i];
   document.getElementById('souDetail').innerHTML = '<div class="sd-box">'
     +'<div class="sd-emoji">'+s.emoji+'</div><div class="sd-name">'+s.name+'</div>'
     +'<div class="sd-from">来自 · '+s.from+'</div>'
+    +(coins?'<div class="quiz-reward">旅行惊喜 · 金币 +'+coins+'</div>':'')
     +'<div class="sd-story">'+s.story+'</div>'
     +'<button class="btn" onclick="closeSouDetail()">收下它</button></div>';
   document.getElementById('souDetail').style.display='flex';
@@ -1751,12 +2386,13 @@ setInterval(()=>{
 
 function lineIdx(){ return Object.keys(LINES).indexOf(S.line); }
 function addSave(amount, from){
-  S.records.push({day:S.day, amount, from});
-  S.gold += 1;
+  lineRecords(S.line).push({line:S.line,day:S.day, amount, from});
+  S.records.push({line:S.line,day:S.day, amount, from});
+  S.gold += 1; S.lineGold[S.line]+=1;
   saveState();
   trackEvent('saving_recorded', {line:S.line, day:S.day, amount:Number(amount), source:from});
   playCoin(); flyCoin();
-  toast('已存入 '+Number(amount).toFixed(2)+' 元 · 金币 +1');
+  toast('已记录 '+Number(amount).toFixed(2)+' 元 · 金币 +1');
 }
 
 render();

@@ -26,7 +26,7 @@ class ProfileTests(unittest.TestCase):
             "answers": [0, 0, 0, 0], "line": "travel", "scores": {"travel": 999},
         })
         self.assertEqual(context["line"], "home")
-        self.assertEqual(context["scores"], {"home": 4, "baby": 2, "travel": 0, "gap": 1, "solo": 2})
+        self.assertEqual(context["scores"], {"home": 3, "baby": 2, "travel": 0, "gap": 1, "solo": 1})
         self.assertEqual(len(context["evidence"]), 4)
         self.assertIn("工资", context["evidence"][1]["question"])
         self.assertIn("只进不出", context["evidence"][1]["answer"])

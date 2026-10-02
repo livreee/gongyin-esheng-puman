@@ -22,6 +22,8 @@ from urllib.parse import parse_qs, urlparse
 from ai_service import generate_coach, generate_profile, provider_status
 from behavior_model import BEHAVIOR_EVENT_TYPES, analyze_events
 from private_config import load_private_config
+import rewards
+import journey_state
 
 
 ROOT = Path(__file__).resolve().parent
@@ -90,6 +92,7 @@ def db_session():
 def init_db() -> None:
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     with DB_LOCK, db_session() as connection:
+        rewards.init_schema(connection)
         connection.executescript(
             """
             CREATE TABLE IF NOT EXISTS user_states (
@@ -269,6 +272,14 @@ class AppHandler(SimpleHTTPRequestHandler):
         if not self.same_origin_request():
             return
         parsed = urlparse(self.path)
+        if parsed.path in {"/api/daily-quiz/answer", "/api/travel/start", "/api/travel/claim"}:
+            try:
+                self.handle_reward_post(parsed.path)
+            except ValueError as error:
+                self.send_json(HTTPStatus.BAD_REQUEST, {"error": str(error)})
+            except Exception:
+                self.send_json(HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "reward service unavailable"})
+            return
         if parsed.path == "/api/events":
             try:
                 self.handle_event_post()
@@ -314,13 +325,15 @@ class AppHandler(SimpleHTTPRequestHandler):
             return
         if parsed.path == "/api/state":
             user_id = self.user_id()
-            with db_session() as connection:
+            with DB_LOCK, db_session() as connection:
+                connection.execute("BEGIN")
                 row = connection.execute(
                     "SELECT state_json, version, updated_at FROM user_states WHERE user_id = ?",
                     (user_id,),
                 ).fetchone()
+                reward_state = rewards.snapshot(connection, user_id)
             if row is None:
-                self.send_json(HTTPStatus.OK, {"state": None, "version": 0})
+                self.send_json(HTTPStatus.OK, {"state": None, "version": 0, "rewards": reward_state})
             else:
                 self.send_json(
                     HTTPStatus.OK,
@@ -328,6 +341,7 @@ class AppHandler(SimpleHTTPRequestHandler):
                         "state": json.loads(row["state_json"]),
                         "version": row["version"],
                         "updated_at": row["updated_at"],
+                        "rewards": reward_state,
                     },
                 )
             return
@@ -339,6 +353,13 @@ class AppHandler(SimpleHTTPRequestHandler):
                     (user_id,),
                 ).fetchall()
             self.send_json(HTTPStatus.OK, {"events": {row["event_type"]: row["total"] for row in counts}})
+            return
+        if parsed.path == "/api/rewards":
+            user_id = self.user_id()
+            with DB_LOCK, db_session() as connection:
+                connection.execute("BEGIN")
+                reward_state = rewards.snapshot(connection, user_id)
+            self.send_json(HTTPStatus.OK, {"ok": True, "rewards": reward_state})
             return
         if parsed.path == "/api/behavior/state":
             self.handle_behavior_get(parsed, timeline=False)
@@ -357,7 +378,10 @@ class AppHandler(SimpleHTTPRequestHandler):
         state = body.get("state")
         if not isinstance(state, dict):
             raise ValueError("state must be an object")
-        state_json = json.dumps(state, ensure_ascii=False, separators=(",", ":"))
+        # Reward balances/claims have their own ledger; stale saves cannot overwrite them.
+        state.pop("rewards", None)
+        journey_state.validate_state(state)
+        state_json = json.dumps(state, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
         timestamp = now_iso()
         with DB_LOCK, db_session() as connection:
             existing = connection.execute(
@@ -375,7 +399,23 @@ class AppHandler(SimpleHTTPRequestHandler):
                 """,
                 (user_id, state_json, version, timestamp),
             )
-        self.send_json(HTTPStatus.OK, {"ok": True, "version": version, "updated_at": timestamp})
+            reward_state = rewards.snapshot(connection, user_id)
+        self.send_json(HTTPStatus.OK, {"ok": True, "version": version, "updated_at": timestamp, "rewards": reward_state})
+
+    def handle_reward_post(self, path: str) -> None:
+        user_id, payload = self.user_id(), read_json(self)
+        operation = {
+            "/api/daily-quiz/answer": rewards.answer_quiz,
+            "/api/travel/start": rewards.start_trip,
+            "/api/travel/claim": rewards.claim_trip,
+        }[path]
+        with DB_LOCK, db_session() as connection:
+            connection.execute("BEGIN IMMEDIATE")
+            result = operation(connection, user_id, payload)
+            if path == "/api/daily-quiz/answer":
+                self.recompute_behavior(connection, user_id)
+            reward_state = rewards.snapshot(connection, user_id)
+        self.send_json(HTTPStatus.OK, {"ok": True, **result, "rewards": reward_state})
 
     def handle_event_post(self) -> None:
         user_id = self.user_id()
@@ -388,6 +428,8 @@ class AppHandler(SimpleHTTPRequestHandler):
             raise ValueError("payload must be an object")
         if event_type in BEHAVIOR_EVENT_TYPES:
             payload["day"] = behavior_day(payload.get("day"))
+            if "line" in payload:
+                journey_state.valid_line(payload["line"])
         if event_type == "daily_quiz_answered" and not isinstance(payload.get("correct"), bool):
             raise ValueError("correct must be a boolean")
         with DB_LOCK, db_session() as connection:
@@ -403,19 +445,24 @@ class AppHandler(SimpleHTTPRequestHandler):
         user_id = self.user_id()
         params = parse_qs(parsed.query)
         requested_day = (params.get("day") or [None])[0]
+        line = (params.get("line") or [None])[0]
+        if line is not None:
+            journey_state.valid_line(line)
         if requested_day is not None:
             requested_day = behavior_day(requested_day)
         with DB_LOCK, db_session() as connection:
-            analysis = self.recompute_behavior(connection, user_id, requested_day)
+            analysis = self.recompute_behavior(connection, user_id, requested_day, line=line)
         if timeline:
             self.send_json(HTTPStatus.OK, {
                 "ok": True,
+                "line": line,
                 "model_version": analysis["model_version"],
                 "timeline": analysis["timeline"],
             })
         else:
             self.send_json(HTTPStatus.OK, {
                 "ok": True,
+                "line": line,
                 "model_version": analysis["model_version"],
                 "summary": analysis["summary"],
             })
@@ -424,18 +471,22 @@ class AppHandler(SimpleHTTPRequestHandler):
         user_id = self.user_id()
         payload = read_json(self)
         upto_day = payload.get("day")
+        line = payload.get("line")
+        if line is not None:
+            journey_state.valid_line(line)
         if upto_day is not None:
             upto_day = behavior_day(upto_day)
         with DB_LOCK, db_session() as connection:
-            analysis = self.recompute_behavior(connection, user_id, upto_day)
+            analysis = self.recompute_behavior(connection, user_id, upto_day, line=line)
         self.send_json(HTTPStatus.OK, {
             "ok": True,
+            "line": line,
             "model_version": analysis["model_version"],
             "summary": analysis["summary"],
             "timeline": analysis["timeline"],
         })
 
-    def recompute_behavior(self, connection: sqlite3.Connection, user_id: str, upto_day: Any = None) -> dict[str, Any]:
+    def recompute_behavior(self, connection: sqlite3.Connection, user_id: str, upto_day: Any = None, line: str | None = None) -> dict[str, Any]:
         rows = connection.execute(
             "SELECT event_type, payload_json, created_at FROM events WHERE user_id = ? ORDER BY created_at ASC, id ASC",
             (user_id,),
@@ -449,12 +500,23 @@ class AppHandler(SimpleHTTPRequestHandler):
                 payload = {}
             if not isinstance(payload, dict) or row["event_type"] not in BEHAVIOR_EVENT_TYPES:
                 continue
+            if line is not None and payload.get("line") != line:
+                continue
             events.append({"event_type": row["event_type"], "payload": payload, "created_at": row["created_at"]})
             try:
                 max_event_day = max(max_event_day, behavior_day(payload.get("day")))
             except ValueError:
                 pass
         row = connection.execute("SELECT state_json FROM user_states WHERE user_id = ?", (user_id,)).fetchone()
+        if line is not None:
+            saved = json.loads(row["state_json"]) if row else {}
+            try:
+                state_day = behavior_day(saved.get("lineDays", {}).get(line, 1))
+            except (ValueError, AttributeError):
+                state_day = 1
+            # Per-line views never read or overwrite the legacy all-line cache.
+            target_day = behavior_day(upto_day) if upto_day is not None else max(max_event_day, state_day)
+            return analyze_events(events, target_day)
         try:
             state_day = behavior_day(json.loads(row["state_json"]).get("day")) if row else 1
         except (ValueError, AttributeError):

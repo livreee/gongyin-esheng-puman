@@ -20,20 +20,20 @@ LINE_NAMES = {
     "baby": "宝贝计划",
     "travel": "说走就走",
     "gap": "自由Gap",
-    "solo": "第一次独居",
+    "solo": "攒一笔学习基金",
 }
 
 QUIZ_WEIGHTS = (
-    (("home", "solo"), ("baby",), ("travel",), ("gap",)),
+    (("home",), ("baby",), ("travel",), ("gap",)),
     (("home", "baby"), ("travel", "solo"), ("gap", "solo"), ("travel",)),
-    (("home", "solo"), ("baby",), ("travel",), ("gap",)),
+    (("solo",), ("baby",), ("travel",), ("gap",)),
     (("home", "baby", "gap"), ("solo", "travel"), ("home", "baby"), ("gap", "travel")),
 )
-PROFILE_VERSION = "answers-v1"
+PROFILE_VERSION = "answers-v2-learning"
 QUIZ_CONTENT = (
     ("最近三个月，你最大的心愿是？", ("把租来的小窝布置成家", "为宝宝或未来的宝宝存一笔钱", "来一次说走就走的旅行", "给自己一段停下来喘口气的时间")),
     ("发工资那天，你通常先做什么？", ("先转一笔到“只进不出”的账户", "看看最近有什么想买的", "算算这个月还能剩多少", "没想过，花完再说")),
-    ("哪种生活场景最让你心动？", ("下班回家，灯是暖的，房间是自己的", "收到孩子的小礼物", "拖着行李箱在机场看日出", "工作日也能躺在公园长椅上晒太阳")),
+    ("哪种生活场景最让你心动？", ("学会一项新技能，让未来多一种选择", "收到孩子的小礼物", "拖着行李箱在机场看日出", "工作日也能躺在公园长椅上晒太阳")),
     ("如果多出1000块，你最想怎么用？", ("存起来，离目标更近一步", "犒劳自己一顿好的或一个小物件", "研究一下怎么钱生钱", "先放着，等有想做的事再说")),
 )
 
@@ -159,7 +159,7 @@ def _profile_fallback(payload: dict[str, Any]) -> dict[str, Any]:
         "宝贝计划": "先看清家庭开支，再安排长期目标",
         "说走就走": "先把旅行目标拆成可执行的小金额",
         "自由Gap": "先建立安全垫，再规划阶段性目标",
-        "第一次独居": "先控制固定支出，再建立独居基金",
+        "攒一笔学习基金": "先明确学习目标和总费用，再拆成稳定的小额储蓄",
     }[line]
     answers = payload["answers"]
     income_habits = (
@@ -226,6 +226,14 @@ def _coach_fallback(payload: dict[str, Any]) -> dict[str, str]:
     else:
         message = "进入守护阶段后，先识别风险，再考虑任何收益机会。"
         action = "完成今天的防诈或信用知识任务"
+    if payload.get("line") == "solo":
+        message = "每一笔学习基金都在为下一次成长留出选择，按自己的节奏积累。"
+        action = "列出一项想学的技能，核对课程、资料和报名费用，再安排今天能负担的小金额。"
+    elif payload.get("line") == "custom":
+        goal = payload.get("goal") if isinstance(payload.get("goal"), dict) else {}
+        name = _text(goal.get("name"), "自己的目标", 30)
+        message = f"为“{name}”留一点预算，把今天的计划和实际记录分别写下来。"
+        action = "回看今天的存钱日记，允许计划随实际情况调整，不挪用其他目标的金额。"
     return {
         "title": f"第{day}天 · 扑满陪你看一眼",
         "message": message,
