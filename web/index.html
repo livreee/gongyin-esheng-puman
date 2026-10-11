@@ -239,10 +239,18 @@ body{
 .badge{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
 .badge .ico{width:74px;height:74px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#F1EAD6;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);transition:all .2s}
 .badge.lit .ico{background:#FFF8EC;box-shadow:0 0 0 3px rgba(245,166,35,.35),3px 3px 0 var(--ink)}
+.badge .ico svg{border-radius:8px}
+.badge.doing .ico{background:#FBF3E2;box-shadow:0 0 0 2px rgba(245,166,35,.22),3px 3px 0 var(--ink)}
 .badge span{font-size:11.5px;color:var(--ink-soft);line-height:1.35}
 .badge.lit span{color:var(--ink);font-weight:700}
 .badge .got{font-size:10.5px;color:var(--teal);font-weight:700}
+.badge .doing{font-size:10.5px;color:#B4791A;font-weight:700}
 .badge .lock{font-size:10.5px;color:#A9A294}
+.bead-summary{margin-bottom:14px;padding:12px;border:1px solid #E1C7BC;border-radius:12px;background:#FBF0E5}
+.bead-summary-head{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:var(--ink)}
+.bead-badge-count{flex:none;font-size:11px;font-weight:700;border-radius:20px;padding:3px 9px;background:#F3D8CB;color:var(--red-deep)}
+.bead-summary progress{display:block;width:100%;height:9px;margin:9px 0 7px;accent-color:var(--red-deep)}
+.bead-summary small{display:block;font-size:11px;color:var(--ink-soft);line-height:1.75}
 .bead-pop{animation:beadPop .28s ease backwards}
 @keyframes beadPop{0%{transform:scale(.2)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
 
@@ -450,6 +458,19 @@ body{
 .portfolio-summary small{display:block;color:var(--ink-soft);font-size:11px}
 .goal-meter{margin:10px 0;font-size:12px;line-height:1.8;color:var(--red-deep)}
 .goal-meter progress{display:block;width:100%;height:8px;margin:5px 0;accent-color:var(--red-deep)}
+.goal-total{margin:10px 0;padding:11px 12px;border:1px dashed #DFB5A9;border-radius:13px;background:#FFF8F3}
+.goal-total-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11.5px;font-weight:700;color:#8C562B}
+.goal-badge{flex:none;font-size:10.5px;font-weight:700;border-radius:20px;padding:3px 8px;background:#F3D8CB;color:var(--red-deep)}
+.goal-badge.muted{background:#EFE7E0;color:var(--ink-soft);font-weight:600}
+.goal-total-summary{font-size:11.5px;line-height:1.8;color:var(--ink-soft);margin-top:5px}
+.goal-total-summary b{color:var(--red-deep)}
+.goal-total progress{display:block;width:100%;height:8px;margin:7px 0 0;accent-color:var(--red-deep)}
+.goal-total-form{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin-top:9px}
+.goal-total-form label{flex:1 1 150px;min-width:0;display:grid;gap:4px;font-size:11px;color:var(--ink-soft)}
+.goal-total-form input{box-sizing:border-box;width:100%;background:#FFFDF9;border:1px solid #D7AEB1;border-radius:9px;padding:8px 10px;font:inherit;font-size:13px;color:var(--ink)}
+.goal-total-actions{display:flex;gap:7px;flex-wrap:wrap}
+.goal-total-actions .btn{width:auto;flex:0 0 auto;font-size:13px;padding:9px 13px;border-radius:10px}
+.goal-total-hint{font-size:10.5px;color:var(--ink-soft);line-height:1.7;margin-top:7px}
 .diary-history{list-style:none;padding:0;display:grid;gap:10px}
 .diary-history li{border-bottom:1px solid #E7D3C9;padding-bottom:10px;font-size:12px;line-height:1.8}
 .diary-history p{white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink-soft)}
@@ -574,6 +595,73 @@ summary:focus-visible,.quick-links button:focus-visible,.cal-cell:focus-visible{
 .daily-panel .ai-foot{font-size:10px;line-height:1.7}
 @media(max-width:360px){.daily-grid{gap:9px}.daily-panel{padding:11px 8px}.daily-panel h3{font-size:13px}.daily-panel .quiz-opt{font-size:11px;padding:7px 5px}}
 
+/* 21 天完成页：独立纪念卡，不改变未完成目标的阶段回顾。 */
+body.completion-active .stage{background:radial-gradient(circle,rgba(120,14,34,.075) 1px,transparent 1px),linear-gradient(135deg,#F3E9DD,#F6F0E7 55%,#ECE4DD);background-size:18px 18px,100% 100%}
+body.completion-active .phone{background:#FFF9F0;border-color:#E3CCBF;box-shadow:0 22px 70px rgba(68,28,29,.12)}
+body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
+#view-grad.is-complete{padding:0 22px 22px;font-family:"PingFang SC","Microsoft YaHei","Segoe UI",sans-serif;background:radial-gradient(ellipse at 50% 15%,#FFF0CD 0,transparent 38%),#FFF9F0}
+#view-grad.is-complete .app-head{position:relative;background:none;border:0;padding:17px 0 11px;margin:0;gap:8px;backdrop-filter:none}
+#view-grad.is-complete .app-head h2{font-size:12px;letter-spacing:.09em;font-weight:600;color:#8B6559}
+#view-grad.is-complete .back{height:30px;width:30px;justify-content:center;border-color:#E4CEC1;background:rgba(255,255,255,.6)}
+.completion-sound{display:none;width:30px;height:30px;border:1px solid #E4CEC1;border-radius:8px;background:rgba(255,255,255,.6);color:#805B4B;cursor:pointer}
+#view-grad.is-complete .completion-sound{display:grid;place-items:center}
+#view-grad.is-complete .app-head .spacer{display:none}
+.completion-sound svg{width:16px;height:16px}
+.completion-hero{text-align:center;padding:12px 0 21px}
+.completion-eyebrow{font-size:10px;color:#95794C;letter-spacing:.2em;font-weight:600}
+.completion-art{position:relative;width:254px;height:178px;margin:10px auto 9px;isolation:isolate}
+.completion-art::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse,rgba(244,195,88,.2),transparent 68%);z-index:-1}
+.completion-medal{position:absolute;left:38px;top:8px;width:144px;height:144px;border-radius:50%;background:linear-gradient(145deg,#FFF9E0,#F9DE9A);border:1px solid #D9B762;box-shadow:0 5px 0 #D8B978,0 14px 25px rgba(129,80,13,.1);color:#783A27;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-8deg)}
+.completion-medal::before{content:"";position:absolute;inset:7px;border:1px dashed #C39C54;border-radius:50%}
+.completion-medal b{font-family:Georgia,"Times New Roman",serif;font-size:79px;font-weight:500;line-height:.95;letter-spacing:-.06em;padding-right:5px}
+.completion-medal span{font-size:9px;letter-spacing:.2em;margin-top:8px;font-weight:700;transform:translateX(-10px)}
+.completion-mascot{position:absolute;right:5px;bottom:3px;width:122px;height:126px;object-fit:contain;filter:drop-shadow(0 7px 3px rgba(112,70,22,.13));transform:rotate(7deg)}
+.completion-spark{position:absolute;color:#BB8E3B;font-style:normal;font-family:Georgia,serif;font-size:23px;line-height:1}
+.completion-spark.s1{top:16px;right:22px}.completion-spark.s2{bottom:17px;left:11px;font-size:17px}.completion-spark.s3{top:34px;left:4px;font-size:12px;color:#A85551}.completion-spark.s4{top:80px;right:3px;font-size:12px}
+.completion-hero h2{font-size:22px;color:#342F3C;line-height:1.65;font-weight:750;letter-spacing:.035em}
+.completion-hero h2 span{display:block;color:#891C32;font-size:31px;letter-spacing:.09em}
+.completion-hero p{font-size:12px;line-height:1.9;color:#887368;margin-top:7px}
+.completion-ticket{position:relative;background:#FFFDF9;border:1px solid #E5D5BD;border-radius:17px;padding:18px 17px 13px;box-shadow:0 6px 20px rgba(99,63,21,.035)}
+.completion-ticket-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.completion-ticket-head h3{font-size:14px;font-weight:700;color:#563E35;min-width:0}
+.completion-ticket-head span{font-size:9px;font-weight:600;color:#A18767;letter-spacing:.12em;white-space:nowrap}
+.completion-goal{font-size:11px;line-height:1.8;color:#8F7466;overflow-wrap:anywhere;margin-top:4px}
+.completion-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;margin:14px 0 10px}
+.completion-day{display:grid;place-items:center;position:relative;height:25px;border-radius:6px;background:#F9EBE5;color:#A14E50;border:1px solid #EED4C9;font-family:"Segoe UI",sans-serif;font-size:10px;font-weight:600;font-variant-numeric:tabular-nums}
+.completion-day.is-milestone{background:#942B3C;color:#FFF5E6;border-color:#942B3C}
+.completion-day.is-last{background:#F7D786;color:#754922;border-color:#DEB759}
+.completion-phases{display:flex;justify-content:space-between;font-size:9px;color:#8F7567;padding:0 2px}
+.completion-phases b{color:#AF8964;font-weight:500;margin-right:4px}
+.completion-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;margin-top:15px;padding-top:14px;border-top:1px dashed #E2CDB8}
+.completion-stat{text-align:center;min-width:0}
+.completion-stat+.completion-stat{border-left:1px solid #EEE2D3}
+.completion-stat dt{font-size:9px;color:#8C776B;margin-top:5px;line-height:1.7}
+.completion-stat dd{font-size:22px;font-family:"Segoe UI",sans-serif;line-height:1.2;font-weight:700;color:#79333A;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.completion-stat dd small{font-size:11px;font-weight:400;color:#AD8D74}
+.completion-stat .completion-amount{font-size:18px;line-height:1.47}
+.completion-ticket-note{margin-top:12px;font-size:10px;color:#89705D;line-height:1.7;text-align:center;overflow-wrap:anywhere}
+.completion-next{position:relative;overflow:hidden;margin-top:18px;border:1px solid #762035;border-radius:17px;background:linear-gradient(120deg,#64172B,#8A2239);padding:20px 19px 15px;color:#fff;box-shadow:0 7px 15px rgba(112,27,46,.09)}
+.completion-next::after{content:"";pointer-events:none;position:absolute;width:155px;height:155px;border:1px solid rgba(244,205,145,.13);border-radius:50%;right:-61px;top:-35px;box-shadow:0 0 0 20px rgba(244,205,145,.035),0 0 0 40px rgba(244,205,145,.025)}
+.completion-next>*{position:relative;z-index:1}
+.completion-next-label{display:flex;align-items:center;gap:8px;font-size:9px;letter-spacing:.13em;color:#E6BF9F}
+.completion-next-label span{height:1px;width:20px;background:#C29B73}
+.completion-next h3{font-size:19px;font-weight:600;line-height:1.65;margin:9px 0 6px;letter-spacing:.025em}
+.completion-next p{font-size:11px;color:#E8C5C6;line-height:1.9}
+.completion-explore{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:17px;padding:13px 14px;border:1px solid #EFC879;border-radius:10px;background:linear-gradient(110deg,#FBE7B9,#F1D08A);color:#5B2E21;font:700 12px/1.6 "PingFang SC","Microsoft YaHei",sans-serif;text-decoration:none;transition:background .15s,transform .15s;min-height:48px}
+.completion-explore svg{width:18px;height:18px;flex:none}
+.completion-explore:hover{background:#FFECC5;transform:translateY(-1px)}
+.completion-explore:active{transform:none}
+.completion-explore:focus-visible,.completion-actions button:focus-visible,.completion-sound:focus-visible{outline:3px solid #C69939;outline-offset:4px}
+.completion-next .completion-external{font-size:10px;color:#E0B9B8;margin-top:9px;text-align:center}
+.completion-actions{display:flex;align-items:center;justify-content:center;gap:17px;margin:15px 0 10px}
+.completion-actions button{background:none;border:0;padding:8px 0;color:#825A4D;font:inherit;font-size:11px;cursor:pointer;min-height:38px}
+.completion-actions span{height:12px;width:1px;background:#DFCEC0}
+.completion-footnote{font-size:10px;line-height:1.9;color:#897565;text-align:center}
+.completion-signoff{display:flex;align-items:center;justify-content:center;gap:10px;font-size:9px;color:#B3957C;letter-spacing:.1em;margin:16px 0 0}
+.completion-signoff::before,.completion-signoff::after{content:"";height:1px;width:28px;background:#E4D5C6}
+@media(max-width:360px){#view-grad.is-complete{padding-left:16px;padding-right:16px}.completion-hero h2{font-size:20px}.completion-hero h2 span{font-size:28px}.completion-ticket{padding-left:13px;padding-right:13px}.completion-next{padding-left:15px;padding-right:15px}.completion-next h3{font-size:18px}.completion-ticket-head span{letter-spacing:.04em;font-size:8px}.completion-explore{padding-left:11px;padding-right:11px;font-size:11px}.completion-stat .completion-amount{font-size:16px;line-height:1.65}}
+@media(prefers-reduced-motion:reduce){.completion-explore{transition:none}.completion-explore:hover{transform:none}}
+
 </style>
 </head>
 <body>
@@ -688,7 +776,8 @@ summary:focus-visible,.quick-links button:focus-visible,.cal-cell:focus-visible{
     <button class="back" onclick="go('#/home')" aria-label="返回">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
     </button>
-    <h2>我的旅程回顾</h2>
+    <h2 id="gradPageTitle">我的旅程回顾</h2>
+    <button class="completion-sound" type="button" onclick="toggleBgm()" aria-label="开启背景音乐" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>
     <span class="spacer"></span>
   </div>
   <div id="gradContent"></div>
@@ -948,7 +1037,7 @@ const API_ENABLED = /^https?:$/.test(location.protocol) && (!ON_GITHUB_PAGES || 
 const PROFILE_VERSION = 'answers-v2-learning';
 function emptyRewards(){ return {provider:'local',gold:0,quizzes:{},trips:[],active_trips:[],active_trip:null,revision:0}; }
 function defaultCustomLine(){ return {name:'我的自定义目标', goal:1000, dailyTarget:20, intro:'由你设定目标金额，并用每天一篇小日记记录积累', entries:{}}; }
-function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, atHome:true, travelStart:null, travelDur:45000, quizDone:[], challengeDone:0, idou:0, lastAmount:0, aiProfile:null, aiCoach:null, behavior:null, customLine:defaultCustomLine(), lineDays:{}, lineRecords:{}, lineGold:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0, rewards:emptyRewards()}; }
+function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, atHome:true, travelStart:null, travelDur:45000, quizDone:[], challengeDone:0, idou:0, lastAmount:0, aiProfile:null, aiCoach:null, behavior:null, customLine:defaultCustomLine(), lineDays:{}, lineRecords:{}, lineGold:{}, lineGoals:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0, rewards:emptyRewards()}; }
 const S = {
   rewards:emptyRewards(),
   line:'home', day:1,
@@ -957,7 +1046,7 @@ const S = {
   atHome:true, travelStart:null, travelDur:45000,
   quizDone:[], challengeDone:0, lastAmount:0,
   customLine:defaultCustomLine(), lineDays:{},
-  lineRecords:{}, lineGold:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0,
+  lineRecords:{}, lineGold:{}, lineGoals:{}, challenges:{}, challengeDoneByLine:{}, lastAmountByLine:{}, aiCoaches:{}, multiLineVersion:0,
   quizStep:0, quizSel:[], quizScore:{home:0,baby:0,travel:0,gap:0,solo:0}, quizPersonDone:false,
   tab:'journey'
 };
@@ -990,6 +1079,7 @@ function normalizeState(){
   S.lineRecords=object(S.lineRecords);
   S.lineDays=object(S.lineDays);
   S.lineGold=object(S.lineGold);
+  S.lineGoals=object(S.lineGoals);
   S.challenges=object(S.challenges);
   S.aiCoaches=object(S.aiCoaches);
   Object.keys(LINES).forEach(id=>{
@@ -1001,6 +1091,8 @@ function normalizeState(){
     S.lineRecords[id]=S.lineRecords[id].filter(item=>item && Number.isInteger(item.day) && item.day>=1 && item.day<=21 && Number.isFinite(Number(item.amount)) && Number(item.amount)>=0)
       .map(item=>({...item,line:id,amount:money(item.amount)}));
     S.lineGold[id]=Number.isFinite(Number(S.lineGold[id])) ? Math.max(0,Number(S.lineGold[id])) : S.lineRecords[id].length;
+    // The custom goal lives in customLine.goal so both editors stay on one value.
+    S.lineGoals[id]=id==='custom' ? 0 : money(S.lineGoals[id],0);
     S.challenges[id]=validDays(S.challenges[id]);
     if(wasLegacy){
       const oldChallenge=Number(S.challengeDoneByLine?.[id] ?? (id===S.line?S.challengeDone:0));
@@ -1146,7 +1238,10 @@ function lineGoldBalance(line=S.line){
   const travelGold=S.rewards.trips.filter(trip=>trip.line===line && trip.claimed_at!==null).reduce((sum,trip)=>sum+(Number(trip.coins)||0),0);
   return (Number(S.lineGold[line])||0)+quizGold+travelGold;
 }
-function refreshGold(){ if($('roomGold')) $('roomGold').textContent='目标金币 '+lineGoldBalance(); }
+function refreshGold(){
+  if($('roomGold')) $('roomGold').textContent='目标金币 '+lineGoldBalance();
+  if($('completionGold')) $('completionGold').textContent=lineGoldBalance();
+}
 function applyRewardSnapshot(snapshot){
   if(!snapshot || snapshot.provider!=='server') return;
   if(rewardsReady && S.rewards.provider==='server' && snapshot.revision<S.rewards.revision) return;
@@ -1227,6 +1322,7 @@ function escapeHtml(value){
 function go(hash){ location.hash = hash; }
 function completedDays(){ return S.completed[S.line]; }
 function doneCount(line){ return (S.completed[line]||[]).length; }
+function isJourneyComplete(line=S.line){ return Array.from({length:TOTAL_DAYS},(_,i)=>i+1).every(day=>(S.completed[line]||[]).includes(day)); }
 function isDone(d){ return S.completed[S.line].indexOf(d) >= 0; }
 function actOf(d){ return d<=7?'觉醒':(d<=14?'积累':'守护'); }
 
@@ -1312,7 +1408,9 @@ function render(){
   const h = location.hash || '#/start';
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   const nav = $('bottomNav'), comp = $('compliance');
-  if(h.startsWith('#/home') || h.startsWith('#/grad')){ nav.style.display='flex'; comp.classList.remove('hidden'); }
+  const completeView = h.startsWith('#/grad') && isJourneyComplete();
+  document.body.classList.toggle('completion-active',completeView);
+  if(h.startsWith('#/home') || (h.startsWith('#/grad') && !completeView)){ nav.style.display='flex'; comp.classList.remove('hidden'); }
   else { nav.style.display='none'; comp.classList.add('hidden'); }
   if(h.startsWith('#/start')){ show('view-start'); }
   else if(h.startsWith('#/quiz')){ show('view-quiz'); renderQuiz(); }
@@ -1553,6 +1651,56 @@ function renderChoose(){
 function lineSavedAmount(id=S.line){
   return Math.round(lineRecords(id).reduce((sum,item)=>sum+Math.round((Number(item.amount)||0)*100),0))/100;
 }
+function lineGoalAmount(id=S.line){
+  if(id==='custom') return Math.max(0,Number(S.customLine && S.customLine.goal)||0);
+  return Math.max(0,Number((S.lineGoals || {})[id])||0);
+}
+function lineGoalHTML(){
+  const goal=lineGoalAmount();
+  const saved=lineSavedAmount();
+  const remain=Math.max(0,Math.round((goal-saved)*100)/100);
+  const pct=goal>0?Math.min(100,Math.round(saved/goal*100)):0;
+  const summary = goal>0
+    ? '目标 <b>'+goal.toFixed(2)+' 元</b> · 已存 <b>'+saved.toFixed(2)+' 元</b> · '
+      +(remain>0?'还需再存 <b>'+remain.toFixed(2)+' 元</b>':'已经达成这个目标')
+    : '设置一个总体金额目标，这里就会显示已存多少、还需再存多少。';
+  return '<div class="goal-total">'
+    +'<div class="goal-total-head"><span>总体金额目标</span><span class="goal-badge'+(goal>0?'':' muted')+'">'+(goal>0?'已完成 '+pct+'%':'未设置')+'</span></div>'
+    +'<p class="goal-total-summary">'+summary+'</p>'
+    +(goal>0?'<progress max="'+goal+'" value="'+Math.min(goal,saved)+'" aria-label="总体金额目标进度"></progress>':'')
+    +'<form class="goal-total-form" onsubmit="saveLineGoal(event)">'
+    +'<label>目标金额（元）<input id="lineGoalInput" type="number" min="0.01" max="1000000" step="0.01" value="'+(goal>0?goal:'')+'" placeholder="例如 3000" required></label>'
+    +'<div class="goal-total-actions"><button class="btn btn-primary" type="submit">'+(goal>0?'更新目标':'保存目标')+'</button>'
+    +(goal>0 && S.line!=='custom'?'<button class="btn btn-line" type="button" onclick="clearLineGoal()">清除</button>':'')
+    +'</div></form>'
+    +'<p class="goal-total-hint">只记下目标金额用来对比攒钱进度，不代表银行账户余额。</p>'
+    +'</div>';
+}
+function saveLineGoal(event){
+  if(event) event.preventDefault();
+  if(!$('lineGoalInput')) return;
+  const goal=Number($('lineGoalInput').value);
+  if(!validMoney(goal,false)){ toast('目标金额需在 0.01—1000000 元之间，最多两位小数'); return; }
+  if(S.line==='custom'){
+    const previous=coachContextKey('custom',S.day);
+    S.customLine.goal=goal;
+    syncCustomLine();
+    if(previous!==coachContextKey('custom',S.day))S.aiCoaches.custom={};
+    if($('customGoalInput')) $('customGoalInput').value=goal;
+  }else{
+    S.lineGoals[S.line]=goal;
+  }
+  saveState();
+  renderHome();
+  toast('总体金额目标已保存：'+goal.toFixed(2)+' 元');
+}
+function clearLineGoal(){
+  if(S.line==='custom' || !S.lineGoals) return;
+  delete S.lineGoals[S.line];
+  saveState();
+  renderHome();
+  toast('已清除这个目标的金额目标');
+}
 function saveCustomLine(event){
   event.preventDefault();
   const name=$('customNameInput').value.trim();
@@ -1608,8 +1756,8 @@ function renderHome(){
     +roomCardHTML(done)
     +'<div class="hero-footer"><div class="room-meta"><span>已打卡 '+done+' 天 · '+actOf(d)+'阶段</span><b id="roomGold">目标金币 '+lineGoldBalance()+'</b></div>'
     +'<div class="journey-act">'+escapeHtml(S.line==='custom' ? S.customLine.intro || day.story : day.story)+'</div>'
-    +'<div class="goal-meter">已为这个目标记录 <b>'+lineSavedAmount().toFixed(2)+' 元</b>'
-    +(S.line==='custom'?' / '+S.customLine.goal.toFixed(2)+' 元<progress max="'+S.customLine.goal+'" value="'+Math.min(S.customLine.goal,lineSavedAmount())+'" aria-label="自定义储蓄目标进度"></progress>':'')+'</div>'
+    +lineGoalHTML()
+    +'<div class="goal-meter">已为这个目标记录 <b>'+lineSavedAmount().toFixed(2)+' 元</b></div>'
     +'<span class="story-idea">'+day.idea+'</span>'
     +'<div class="acts">'+acts+'</div>'
     +'<div class="travel-sign" id="travelSign"'+(S.atHome?' hidden':'')+'><div class="t1">扑满旅行中</div><div class="t2" id="travelMsg">它正替你去看世界</div><div class="t3" id="travelCountdown"></div></div>'
@@ -1623,8 +1771,7 @@ function renderHome(){
   }else if(isDone(d)){
     const record=lineRecords().find(item=>item.day===d && item.from==='每日剧情任务');
     taskContent = '<div class="task-done">✓ 今天的小目标完成了'+(record?' · 已记录 <b>'+Number(record.amount).toFixed(2)+'</b> 元':'')+'</div>';
-    if(d < TOTAL_DAYS) taskContent += '<button class="btn btn-primary" style="margin-top:14px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>';
-    else taskContent += '<button class="btn btn-primary" style="margin-top:14px" onclick="go(\'#/grad\')">回顾我的 21 天</button>';
+    taskContent += nextDayButton(d);
   } else {
     taskContent = '<div class="task-card">'
       +'<div class="task-title">'+escapeHtml(S.line==='solo'?day.task:taskZone.title)+'</div>'
@@ -1737,14 +1884,21 @@ function doTask(mode, d){
   if (doneCount(line) % 3 === 0){
     setTimeout(()=>startTravel(line), 1600);
   }
-  // 21天全勤 → 结业
-  if (doneCount(line) >= TOTAL_DAYS){
-    setTimeout(()=>{if(S.line===line && S.day===d)go('#/grad');}, 2500);
-  }
+  scheduleJourneyCompletion(line,d);
 }
 
+function scheduleJourneyCompletion(line,day){
+  if(!isJourneyComplete(line)) return;
+  // The user may navigate away during the celebration; never pull them back.
+  setTimeout(()=>{
+    if(S.line===line && S.day===day && S.tab==='journey' && $('view-home').classList.contains('active')) go('#/grad');
+  },1800);
+}
 function validMoney(value,allowZero=true){return Number.isFinite(value) && value>=(allowZero?0:0.01) && value<=1000000 && Math.abs(value*100-Math.round(value*100))<0.000001;}
-function nextDayButton(d){return d<21?'<button class="btn btn-primary" style="margin-top:12px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>':'<button class="btn btn-primary" style="margin-top:12px" onclick="go(\'#/grad\')">查看阶段回顾</button>';}
+function nextDayButton(d){
+  if(isJourneyComplete())return '<button class="btn btn-primary" style="margin-top:12px" onclick="go(\'#/grad\')">查看我的完成纪念</button>';
+  return d<TOTAL_DAYS?'<button class="btn btn-primary" style="margin-top:12px" onclick="nextDay()">进入第 '+(d+1)+' 天</button>':'<button class="btn btn-primary" style="margin-top:12px" onclick="go(\'#/grad\')">查看阶段回顾</button>';
+}
 function customDiaryHTML(day){
   const entry=S.customLine.entries[day] || {},done=isDone(day);
   const target=entry.target ?? S.customLine.dailyTarget;
@@ -1780,6 +1934,7 @@ function saveCustomDiary(day,complete){
     toast(done?'日记已更新，已记录的金额保持不变':'草稿已保存，准备好后再确认打卡');
   }
   saveState();renderHome();
+  if(complete && !done)scheduleJourneyCompletion('custom',day);
 }
 
 /* ========== 攒钱进度图案 ========== */
@@ -1850,52 +2005,89 @@ function goalRecordsHTML(){
 }
 function viewDay(i){ setCurrentLineDay(i); saveState(); switchTab('journey'); window.scrollTo(0,0); }
 
-/* ========== 徽章 ========== */
+/* ========== 徽章（拼豆：每完成一个任务点亮一颗豆子，填满一个图案得一枚徽章） ========== */
 const BADGES = [
-  {n:'迈出第一步', d:'完成第1天', col:'#C7000B', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,0,1,1,0,1,1],[1,1,1,1,1,1,1,1],[0,1,0,1,1,0,1,0],[0,1,0,0,0,0,1,0],[0,0,0,0,0,0,0,0]]},
-  {n:'连续3天', d:'连续打卡3天', col:'#F4845F', pixels:[[0,0,1,0,0,1,0,0],[0,0,1,0,0,1,0,0],[0,0,1,1,1,1,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0]]},
-  {n:'觉醒者', d:'完成第7天·第一幕', col:'#FFD23F', pixels:[[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,1,0,1,1,0,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
-  {n:'积累者', d:'完成第14天·第二幕', col:'#7BC950', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,0,0,1,1,1],[1,1,1,0,0,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
-  {n:'坚持14天', d:'连续打卡14天', col:'#4EA8DE', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,0,1,1,1,1,0,1],[1,0,1,0,0,1,0,1],[1,0,1,0,0,1,0,1],[1,1,1,1,1,1,1,1]]},
-  {n:'守护者', d:'完成第21天·第三幕', col:'#9B5DE5', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,0,0,0,0,0,0]]},
-  {n:'全勤毕业', d:'21天全勤', col:'#F5A623', pixels:[[0,1,0,0,0,0,1,0],[1,1,1,0,0,1,1,1],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0],[0,0,0,0,0,0,0,0]]},
-  {n:'理财启蒙', d:'完成全部21天', col:'#0E9C8E', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,0,0,1,1,1],[1,1,0,0,0,0,1,1],[0,1,1,0,0,1,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
-  {n:'旅行家', d:'收集3件纪念品', col:'#FF8C00', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1],[1,0,1,0,0,1,0,1],[0,1,0,0,0,0,1,0],[0,0,1,1,1,1,0,0]]},
-  {n:'探索者', d:'收集6件纪念品', col:'#00BCD4', pixels:[[0,0,0,1,1,0,0,0],[0,0,1,1,1,1,0,0],[0,1,1,1,1,1,1,0],[1,1,1,1,1,1,1,1],[1,1,0,1,1,0,1,1],[0,1,0,1,1,0,1,0],[0,0,1,1,1,1,0,0],[0,0,0,1,1,0,0,0]]},
-  {n:'收藏家', d:'收集9件纪念品', col:'#8E44AD', pixels:[[1,1,1,1,1,1,1,1],[1,0,0,0,0,0,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,1,1,1,1,0,1],[1,0,0,0,0,0,0,1],[1,1,1,1,1,1,1,1]]},
-  {n:'环球玩家', d:'集齐全部12件', col:'#FFD700', pixels:[[0,1,1,1,1,1,1,0],[1,0,0,0,0,0,0,1],[1,0,1,0,0,1,0,1],[1,0,0,1,1,0,0,1],[1,0,0,1,1,0,0,1],[1,0,1,0,0,1,0,1],[1,0,0,0,0,0,0,1],[0,1,1,1,1,1,1,0]]}
+  {n:'迈出第一步', m:'嫩芽', pal:['#4CAF50','#3B7A3F','#A5D6A7','#8D6E63'], rows:['.....','..0..','.020.','..0..','33333']},
+  {n:'连续3天', m:'三颗豆', pal:['#F4845F','#C25B3A','#FFD3B6','#F5C542'], rows:['00.33','00.33','.....','.000.','.000.']},
+  {n:'觉醒者', m:'日出', pal:['#FFC93C','#E08A1E','#FFF3B0','#2E86DE'], rows:['..00..','.0220.','.0000.','333333','......','......']},
+  {n:'坚持14天', m:'打勾', pal:['#3DBE72','#28885A','#A8E6B8','#FFFFFF'], rows:['....00','...000','..000.','.000..','000...','.00...']},
+  {n:'旅行家', m:'行李箱', pal:['#2FA3A3','#1C7070','#A8E0E0','#F5C542'], rows:['.0...0.','.00000.','.00000.','.0030..','.00000.','.......','.......']},
+  {n:'全勤毕业', m:'学士帽', pal:['#2F3A5F','#1B2237','#6B78A8','#F5C542'], rows:['..000..','.00000.','0000000','.......','.00000.','.....3.','.....3.']},
+  {n:'守护者', m:'盾牌', pal:['#4A7FD4','#2C4E8F','#A9C8F5','#F5C542'], rows:['000000','000000','.0330.','.0000.','..00..','...0..']},
+  {n:'积累者', m:'金币', pal:['#F5C542','#C9922B','#FFF0B3','#FFFFFF'], rows:['.0000.','000000','00..00','001100','.0000.','......']},
+  {n:'理财启蒙', m:'书本', pal:['#C7403C','#8E241F','#F6D8C8','#F5C542'], rows:['.00000.','.10330.','.10000.','.10000.','.10000.','.10000.','.......']},
+  {n:'探索者', m:'群山', pal:['#7B8FA8','#4C5D73','#FFFFFF','#FFC93C'], rows:['...0..33','..000...','.00000..','0000000.','....00..','...0000.','..000000','........']},
+  {n:'收藏家', m:'宝箱', pal:['#A9703F','#7A4C25','#D9A46B','#F5C542'], rows:['..0000..','.022220.','00000000','03333300','00000000','........','........','........']},
+  {n:'环球玩家', m:'地球仪', pal:['#2E86DE','#1B4F72','#5FBF7F','#F5C542'], rows:['..0000..','.000000.','00222000','02220000','.000000.','..0000..','...33...','........']}
 ];
-function beadSvg(art, lit, col){
-  const cell = 6, gap = 1, n = art.length;
-  const w = n*cell + (n-1)*gap;
-  let rects = '';
-  art.forEach((row,ri)=>{
+/* 豆子按“从上到下、从左到右”的顺序依次点亮，图案填满即得到该枚徽章。 */
+const BEAD_CELLS = BADGES.map(b=>{
+  const cells=[];
+  b.rows.forEach((row,ri)=>{
     for(let ci=0;ci<row.length;ci++){
-      const ch = row[ci];
-      if(ch==='.') continue;
-      const on = lit;
-      const fill = !on ? '#D8CFB8' : (ch==='o' ? '#FFD23F' : col);
-      rects += '<rect x="'+(ci*(cell+gap))+'" y="'+(ri*(cell+gap))+'" width="'+cell+'" height="'+cell+'" rx="1.4" fill="'+fill+'" stroke="#23283C" stroke-width="1" class="'+(on?'bead-pop':'')+'" style="transform-box:fill-box;transform-origin:center;animation-delay:'+(ri*40+ci*40)+'ms"/>';
+      const ch=row[ci];
+      if(ch!=='.') cells.push({r:ri,c:ci,col:b.pal[Number(ch)]});
     }
   });
-  return '<svg viewBox="0 0 '+w+' '+w+'" width="58" height="58" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
+  return cells;
+});
+const BEAD_TOTAL = BEAD_CELLS.reduce((sum,cells)=>sum+cells.length,0);
+function beadCount(){
+  let n=0;
+  Object.keys(LINES).forEach(id=>{
+    n += (S.completed[id]||[]).length;
+    n += (S.challenges[id]||[]).length;
+  });
+  return n + Object.values(S.rewards.quizzes||{}).filter(v=>v && v.correct).length;
+}
+function beadSvgP(cells, lit, size){
+  const cell=6, gap=1, w=size*cell+(size-1)*gap;
+  let rects='';
+  cells.forEach((item,i)=>{
+    const on=i<lit, x=item.c*(cell+gap), y=item.r*(cell+gap), fill=on?item.col:'#CFC2A8';
+    rects+='<rect x="'+x+'" y="'+y+'" width="'+cell+'" height="'+cell+'" rx="1.6" fill="'+fill
+      +'" stroke="'+(on?shade(item.col):'#B0A288')+'" stroke-width="0.9"'
+      +(on?' class="bead-pop"':'')+' style="transform-box:fill-box;transform-origin:center;animation-delay:'
+      +Math.min(i,24)*35+'ms"/>';
+  });
+  return '<svg viewBox="0 0 '+w+' '+w+'" width="58" height="58" aria-hidden="true">'+rects+'</svg>';
+}
+function badgeProgress(){
+  const beads=beadCount();
+  let litBadges=0, cursor=0;
+  const items=BADGES.map((b,i)=>{
+    const cells=BEAD_CELLS[i];
+    const lit=Math.max(0,Math.min(cells.length,beads-cursor));
+    cursor+=cells.length;
+    if(lit>=cells.length) litBadges++;
+    return {i,badge:b,cells,lit,need:cells.length,done:lit>=cells.length};
+  });
+  return {beads,litBadges,items};
 }
 function renderBadge(){
-  const done = doneCount(S.line);
-  const souCount = S.souvenirs.length;
-  const badges = '<p class="card-note">8 枚经典徽章 + 4 枚旅行徽章。完成对应挑战，豆子一颗颗亮起来。</p>'
-    +'<div class="badge-grid">'+BADGES.map((b,i)=>{
-      const lit = badgeLit(i, done, souCount);
-      return '<div class="badge'+(lit?' lit':'')+'"><span class="ico">'+beadSvgP(b.pixels, lit, b.col)+'</span><span>'+b.n+'</span>'+(lit?'<span class="got">已点亮</span>':'<span class="lock">'+b.d+'</span>')+'</div>';
-    }).join('')+'</div>';
-  const guide = '<p class="card-note">完成每日任务，点亮经典徽章；扑满每完成 3 天任务会出门旅行，回来带回一件纪念品。集齐纪念品，解锁旅行徽章。</p>'
+  const {beads,litBadges,items}=badgeProgress();
+  const shown=Math.min(beads,BEAD_TOTAL);
+  const summary='<div class="bead-summary">'
+    +'<div class="bead-summary-head"><b>已点亮 '+shown+' / '+BEAD_TOTAL+' 颗豆子</b>'
+    +'<span class="bead-badge-count">徽章 '+litBadges+' / '+BADGES.length+'</span></div>'
+    +'<progress max="'+BEAD_TOTAL+'" value="'+shown+'" aria-label="拼豆进度"></progress>'
+    +'<small>完成每日任务就点亮一颗豆子：剧情任务打卡 +1、存钱挑战 +1、答对每日理财一问 +1。豆子按顺序填满图案，填满一整个图案就得到一枚徽章。</small>'
+    +'</div>';
+  const badges = summary+'<div class="badge-grid">'+items.map(item=>{
+    const status=item.done?'<span class="got">已点亮 · 徽章到手</span>'
+      :(item.lit>0?'<span class="doing">已点亮 '+item.lit+' / '+item.need+' 颗</span>'
+        :'<span class="lock">'+item.badge.m+' · 需要 '+item.need+' 颗</span>');
+    return '<div class="badge'+(item.done?' lit':'')+(item.lit>0&&!item.done?' doing':'')+'">'
+      +'<span class="ico">'+beadSvgP(item.cells,item.lit,item.badge.rows.length)+'</span>'
+      +'<span>'+item.badge.n+'</span>'+status+'</div>';
+  }).join('')+'</div>';
+  const guide = '<p class="card-note">每天有三种任务可以点亮豆子，六个目标的进度一起累计。扑满每完成 3 天任务会出门旅行，回来带回一件纪念品。</p>'
     +'<button class="btn btn-line" onclick="jumpFeature(\'journey\',\'daily-task\')">去完成今日任务</button>';
   return viewIntro('把小成就，收藏起来','每一枚徽章、每一件礼物，都有自己的故事。','04')
-    +featureCard('badge-collection','拼豆徽章','用一颗颗亮起的拼豆，纪念坚持的日子。',badges,'badge')
+    +featureCard('badge-collection','拼豆徽章','完成一个任务点亮一颗豆子，填满图案就得到徽章。',badges,'badge')
     +featureCard('souvenir-collection','旅行纪念品','打开扑满的行囊，看看它带回来的世界。',renderSouBook(),'gift')
     +featureCard('collection-guide','收集指南','了解徽章与纪念品的解锁方式。',guide,'note');
 }
-
 /* ========== 小队页 ========== */
 function renderSquad(){
   const mine = doneCount(S.line);
@@ -1920,9 +2112,62 @@ function renderSquad(){
 }
 
 /* ========== 结业 ========== */
+// ICBC mobile site's public personal-banking introduction, verified 2026-10-10.
+// Opens a normal official webpage, not an unverified app scheme or product sale.
+const ICBC_MOBILE_BANKING_URL = 'https://m.icbc.com.cn/column/1438058319981199366.html';
+function completionHTML(){
+  const goal=escapeHtml(LINES[S.line].name);
+  const saved=lineSavedAmount();
+  const amount=saved.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const days=Array.from({length:TOTAL_DAYS},(_,i)=>{
+    const day=i+1;
+    return '<span class="completion-day'+(day%7===0?' is-milestone':'')+(day===TOTAL_DAYS?' is-last':'')+'" aria-label="第 '+day+' 天已打卡">'+String(day).padStart(2,'0')+'</span>';
+  }).join('');
+  const target=lineGoalAmount();
+  const goalNote=target>0
+    ? (saved>=target?'本次记录已达到设定金额；与真实银行余额无关。':'距离设定金额还差 '+(target-saved).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})+' 元；完成旅程不等于达成金额目标。')
+    : '金额仅为本目标的模拟记录，不代表银行余额。';
+  return '<div class="completion-page">'
+    +'<header class="completion-hero" aria-labelledby="completionTitle">'
+    +'<div class="completion-eyebrow">EVERY LITTLE STEP COUNTS</div>'
+    +'<div class="completion-art" aria-hidden="true"><div class="completion-medal"><b>21</b><span>DAYS</span></div><img class="completion-mascot" src="assets/pig-happy.webp" alt="" width="122" height="126"><i class="completion-spark s1">✦</i><i class="completion-spark s2">✧</i><i class="completion-spark s3">✦</i><i class="completion-spark s4">✧</i></div>'
+    +'<h2 id="completionTitle">21 天扑满计划<span>打卡完成！</span></h2>'
+    +'<p>把「想做」变成了「做到」，谢谢认真坚持的你。<br>这段计划结束了，属于你的故事才刚刚开始。</p></header>'
+    +'<section class="completion-ticket" aria-labelledby="completionTicketTitle">'
+    +'<div class="completion-ticket-head"><h3 id="completionTicketTitle">每一小步，都算数</h3><span>MY 21-DAY STORY</span></div>'
+    +'<p class="completion-goal">我的目标 · '+goal+'</p>'
+    +'<div class="completion-days" role="group" aria-label="21 个旅程日均已完成">'+days+'</div>'
+    +'<div class="completion-phases"><span><b>01—07</b>觉醒</span><span><b>08—14</b>积累</span><span><b>15—21</b>守护</span></div>'
+    +'<div class="completion-stats"><dl class="completion-stat"><dd>21<small> / 21</small></dd><dt>旅程打卡</dt></dl><dl class="completion-stat"><dd class="completion-amount">'+amount+'</dd><dt>模拟记录 / 元</dt></dl><dl class="completion-stat"><dd id="completionGold">'+lineGoldBalance()+'</dd><dt>目标金币</dt></dl></div>'
+    +'<p class="completion-ticket-note">'+goalNote+'</p></section>'
+    +'<section class="completion-next" aria-labelledby="completionNextTitle">'
+    +'<div class="completion-next-label"><span></span>下一章 · 与工行一起继续</div>'
+    +'<h3 id="completionNextTitle">继续解锁<br>你的工银e生故事</h3>'
+    +'<p>21 天的积累，是一个新的起点。<br>去工行 App 看看，让下一份心愿也有着落。</p>'
+    +'<a class="completion-explore" href="'+ICBC_MOBILE_BANKING_URL+'" target="_blank" rel="noopener noreferrer" aria-describedby="completionExternalNote" onclick="trackCompletionExplore()"><span>点击此处，探索更多工行 App 内容</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'
+    +'<p class="completion-external" id="completionExternalNote">前往工行官方手机银行介绍页 · 新窗口打开</p></section>'
+    +'<nav class="completion-actions" aria-label="完成后的其他选择"><button type="button" onclick="jumpFeature(\'calendar\',\'goal-records\')">回看我的 21 天</button><span aria-hidden="true"></span><button type="button" onclick="go(\'#/choose\')">继续其他目标</button></nav>'
+    +'<p class="completion-footnote">本页为体验纪念，金币与 i 豆不代表现金或可兑换权益。<br>不向工行传送本页记录；具体服务以官方页面为准。</p>'
+    +'<div class="completion-signoff">工银e生 · 陪你把心愿写成日常</div></div>';
+}
+function trackCompletionExplore(){
+  if(isJourneyComplete())trackEvent('completion_explore_clicked',{line:S.line,day:S.day,completed:TOTAL_DAYS,destination:'icbc_mobile_banking'});
+}
 function renderGrad(){
   const L = LINES[S.line];
   const done = doneCount(S.line);
+  const complete=isJourneyComplete();
+  $('view-grad').classList.toggle('is-complete',complete);
+  $('gradPageTitle').textContent=complete?'工银e生 · 成长纪念':'我的旅程回顾';
+  if(complete){
+    $('gradContent').innerHTML=completionHTML();
+    $('souDetail').style.display='none';
+    $('toast').classList.remove('show');
+    const sound=document.querySelector('.completion-sound');
+    sound.setAttribute('aria-pressed',String(musicOn));
+    sound.setAttribute('aria-label',musicOn?'关闭背景音乐':'开启背景音乐');
+    return;
+  }
   $('gradContent').innerHTML =
     '<div class="grad-hero"><div class="seal"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6l4 2"/><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>'
     +'<h2>'+escapeHtml(L.name)+' · '+(done===21?'21 天回顾':'阶段回顾')+'</h2><p>回头看看，每一次小小的行动，都为这个心愿留下了记录。</p></div>'
@@ -1971,6 +2216,8 @@ function setBgmBtn(muted){
   if(bgmBtn) bgmBtn.classList.toggle('muted', muted);
   const quick = $('quickMusic');
   if(quick){ quick.textContent=muted?'开启音乐':'关闭音乐'; quick.setAttribute('aria-pressed',String(!muted)); }
+  const sound=document.querySelector('.completion-sound');
+  if(sound){sound.setAttribute('aria-pressed',String(!muted));sound.setAttribute('aria-label',muted?'开启背景音乐':'关闭背景音乐');}
 }
 function toggleBgm(){
   if(!audioCtx) initAudio();
@@ -2163,7 +2410,7 @@ async function returnHome(line=S.line){
       sayBubble('这次旅行带回了 '+result.coins+' 金币！','happy');
       playCoin(); flyCoin();
       // Other goals finish in the background without interrupting the current journal.
-      if(S.line===line)setTimeout(()=>{if(S.line===line)showSouDetail(result.souvenir,result.coins);},800);
+      if(S.line===line)setTimeout(()=>{if(S.line===line && $('view-home').classList.contains('active'))showSouDetail(result.souvenir,result.coins);},800);
     }
   }catch(e){
     tripRetryAt.set(line,Date.now()+10000);
@@ -2302,28 +2549,6 @@ function closeSouDetail(){
   S.newSou = null; saveState();
   document.getElementById('souDetail').style.display='none';
   if (S.tab==='badge'){ switchTab('badge'); }
-}
-
-/* ================= 拼豆徽章渲染（pixels 矩阵 → SVG） ================= */
-function beadSvgP(pixels, lit, col){
-  const cell = 6, gap = 1, n = pixels.length;
-  const w = n*cell + (n-1)*gap;
-  let rects = '';
-  pixels.forEach((row,ri)=>{
-    row.forEach((v,ci)=>{
-      if (!v) return;
-      const fill = !lit ? '#D8CFB8' : col;
-      rects += '<rect x="'+(ci*(cell+gap))+'" y="'+(ri*(cell+gap))+'" width="'+cell+'" height="'+cell+'" rx="1.4" fill="'+fill+'" stroke="#23283C" stroke-width="1" class="'+(lit?'bead-pop':'')+'" style="transform-box:fill-box;transform-origin:center;animation-delay:'+(ri*40+ci*40)+'ms"/>';
-    });
-  });
-  return '<svg viewBox="0 0 '+w+' '+w+'" width="58" height="58" shape-rendering="crispEdges" aria-hidden="true">'+rects+'</svg>';
-}
-function badgeLit(idx, done, souCount){
-  if (idx<8){ return done >= (idx+1)*3 - 2; }
-  if (idx===8)  return souCount>=3;
-  if (idx===9)  return souCount>=6;
-  if (idx===10) return souCount>=9;
-  return souCount>=12;
 }
 
 /* ================= 音频（Web Audio 8-bit，替代外部 wav） ================= */

@@ -13,21 +13,23 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE_ROOT = "工银e生-21天扑满计划"
-SOURCE_DIRS = {"web", "21day-wealth-script", "picture_copy", "tools"}
+SOURCE_DIRS = {"web", "21day-wealth-script", "picture_copy", "tools", "screenshots"}
 ROOT_FILES = {"README.md", ".gitignore", ".nojekyll", "index.html", "render.yaml"}
 EXCLUDED_DIRS = {".git", ".agents", ".codex", "__pycache__", ".pytest_cache", ".venv", "venv", "node_modules", "dist", ".secrets", "secrets"}
 KEY_PATTERN = re.compile(rb"(?<![A-Za-z0-9])sk-[A-Za-z0-9_-]{20,}")
+TOKEN_PATTERN = re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|rnd_[A-Za-z0-9]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)")
 
 
 def excluded(relative: Path) -> bool:
     name = relative.name.lower()
     return (
         any(part.lower() in EXCLUDED_DIRS for part in relative.parts)
+        or (relative.parts[0] == "tools" and relative.as_posix() != "tools/package_project.py")
         or name.startswith("~$")
         or (name.startswith(".env") and name != ".env.example")
         or name == "deepseek.json"
         or ".sqlite3" in name
-        or name.endswith((".db", ".db-wal", ".db-shm", ".pyc", ".pyo", ".log", ".tmp", ".bak", ".key", ".pem", ".secret", ".local.json"))
+        or name.endswith((".db", ".db-wal", ".db-shm", ".pyc", ".pyo", ".log", ".tmp", ".bak", ".key", ".pem", ".secret", ".local.json", ".zip"))
     )
 
 
@@ -50,13 +52,15 @@ def source_files() -> list[Path]:
 
 
 def check_payload(relative: Path, payload: bytes) -> None:
-    if KEY_PATTERN.search(payload):
+    if KEY_PATTERN.search(payload) or TOKEN_PATTERN.search(payload):
         raise RuntimeError("Possible API key found; package stopped: " + str(relative))
     if relative.suffix.lower() == ".docx":
         with zipfile.ZipFile(io.BytesIO(payload)) as document:
             for member in document.infolist():
-                if member.filename.endswith((".xml", ".rels")) and KEY_PATTERN.search(document.read(member)):
-                    raise RuntimeError("Possible API key in Word document; package stopped: " + str(relative))
+                if member.filename.endswith((".xml", ".rels")):
+                    content = document.read(member)
+                    if KEY_PATTERN.search(content) or TOKEN_PATTERN.search(content):
+                        raise RuntimeError("Possible secret in Word document; package stopped: " + str(relative))
 
 
 def main() -> None:

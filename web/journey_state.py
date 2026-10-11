@@ -87,6 +87,9 @@ def validate_state(state):
             text(record.get("note", ""), 240)
     if "customLine" in state:
         validate_custom(state["customLine"])
+    for goal in line_map(state.get("lineGoals", {})).values():
+        # Zero is the unset sentinel; customLine.goal remains authoritative.
+        money(goal)
     if state.get("multiLineVersion") == 1:
         valid_line(state.get("line"))
         day(state.get("day"))

@@ -98,6 +98,34 @@ class JourneyTests(unittest.TestCase):
         self.assertEqual(saved["rewards"]["gold"], reward["rewards"]["gold"])
         self.assertEqual(self.ok("/api/state")["state"]["lineRecords"]["solo"], before)
 
+    def test_line_amount_goals_round_trip_and_clear_preserve_records(self):
+        state = self.state()
+        state["lineGoals"] = {"home": 1000000, "solo": 12.34, "travel": 0.01, "gap": 0, "custom": 0}
+        self.ok("/api/state", {"state": state}, method="PUT")
+        server.init_db()
+        self.assertEqual(self.ok("/api/state")["state"], state)
+        state["lineGoals"]["home"] = 2000
+        del state["lineGoals"]["solo"]
+        self.ok("/api/state", {"state": state}, method="PUT")
+        result = self.ok("/api/state")["state"]
+        self.assertEqual(result, state)
+        self.assertEqual(result["lineRecords"], self.state()["lineRecords"])
+        self.assertEqual(result["customLine"]["goal"], 500)
+
+    def test_invalid_line_amount_goals_do_not_overwrite_state(self):
+        original = self.state()
+        self.ok("/api/state", {"state": original}, method="PUT")
+        invalid = [None, [], {"unknown": 10}, {"__proto__": 10}]
+        for line in ("home", "custom"):
+            invalid.extend({line: value} for value in
+                           (-1, True, "20", 1.001, 1000001, float("nan"), float("inf")))
+        for goals in invalid:
+            with self.subTest(goals=goals):
+                state = self.state()
+                state["lineGoals"] = goals
+                self.assertEqual(self.request("/api/state", {"state": state}, method="PUT")[0], 400)
+                self.assertEqual(self.ok("/api/state")["state"], original)
+
     def test_invalid_custom_amounts_fail_without_overwriting(self):
         original = self.state()
         self.ok("/api/state", {"state": original}, method="PUT")
