@@ -14,6 +14,8 @@ import urllib.request
 from urllib.parse import urlparse
 from typing import Any
 
+from behavior_model import analyze_events
+
 
 LINE_NAMES = {
     "home": "我的小家",
@@ -211,47 +213,65 @@ def generate_profile(payload: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _coach_fallback(payload: dict[str, Any]) -> dict[str, str]:
-    day = int(payload.get("day", 1) or 1)
-    completed = int(payload.get("completed", 0) or 0)
-    if completed == 0:
-        message = "今天先完成一个最小动作，先开始，再慢慢调整。"
-        action = "完成今日第一笔小额储蓄任务"
-    elif completed < 7:
-        message = "连续几天的微小积累，正在帮你建立预算和储蓄的节奏。"
-        action = "回顾最近一次支出，找出一笔可以优化的开销"
-    elif completed < 14:
-        message = "你已经进入积累阶段，可以把目标拆成更稳定的周期计划。"
-        action = "估算一笔以防万一的钱，并记录目标金额"
-    else:
-        message = "进入守护阶段后，先识别风险，再考虑任何收益机会。"
-        action = "完成今天的防诈或信用知识任务"
-    if payload.get("line") == "solo":
-        message = "每一笔学习基金都在为下一次成长留出选择，按自己的节奏积累。"
-        action = "列出一项想学的技能，核对课程、资料和报名费用，再安排今天能负担的小金额。"
-    elif payload.get("line") == "custom":
-        goal = payload.get("goal") if isinstance(payload.get("goal"), dict) else {}
-        name = _text(goal.get("name"), "自己的目标", 30)
-        message = f"为“{name}”留一点预算，把今天的计划和实际记录分别写下来。"
-        action = "回看今天的存钱日记，允许计划随实际情况调整，不挪用其他目标的金额。"
+def coach_context(payload: dict[str, Any]) -> dict[str, Any]:
+    """Only check-in facts cross the model boundary, including for old clients."""
+    day = payload.get("day")
+    days = payload.get("completed_days", [])
+    if type(day) is not int or not 1 <= day <= 21:
+        raise ValueError("day must be an integer between 1 and 21")
+    if (not isinstance(days, list) or len(days) > 21
+            or any(type(value) is not int or not 1 <= value <= 21 for value in days)
+            or len(set(days)) != len(days)):
+        raise ValueError("completed_days must contain unique journey days (1-21)")
+    days = sorted(days)
+    summary = analyze_events([
+        {"event_type": "daily_task_completed", "payload": {"day": value}}
+        for value in days if value <= day
+    ], day)["summary"]
     return {
-        "title": f"第{day}天 · 扑满陪你看一眼",
-        "message": message,
-        "action": action,
-        "risk_note": "不轻信稳赚、高息和先交钱的理财信息。",
+        "day": day, "completed_days": days, "completed": len(days),
+        "today_completed": day in days, "remaining": 21 - len(days),
+        "journey_streak": summary["streak"], "participation_state": summary["state"],
+    }
+
+
+def _coach_fallback(context: dict[str, Any]) -> dict[str, str]:
+    completed, day = context["completed"], context["day"]
+    if completed == 21:
+        message = "21个旅程日都留下了你的脚印！我是扑满，很高兴陪你走到这里，来看看属于你的结局吧。"
+        action = "打开21天结局，回看这一程。"
+    elif context["today_completed"]:
+        message = f"第{day}个旅程日打卡完成啦！我们已经一起走过{completed}步，今天的小努力，我记住了。"
+        action = "今天可以安心休息，准备好再开启下一步。"
+    elif completed:
+        message = f"我是扑满，已经帮你收好了{completed}个打卡印记。第{day}步还等着你，慢慢来，我陪你。"
+        action = "愿意的话，先读一读今天的小故事。"
+    else:
+        message = "我是扑满，很高兴遇见你！第一个打卡印记还空着，我们从今天的一小步开始吧。"
+        action = "读一读今日剧情，按自己的节奏完成第一次打卡。"
+    return {
+        "title": f"第{day}天 · 扑满想对你说", "message": message,
+        "action": action, "risk_note": "只根据打卡状态陪伴，不判断你的财务状况。",
     }
 
 
 def generate_coach(payload: dict[str, Any]) -> dict[str, Any]:
-    fallback = _coach_fallback(payload)
+    context = coach_context(payload)
+    fallback = _coach_fallback(context)
     system = (
-        "你是银行金融知识教育助手。根据21天旅程状态生成一句陪伴建议和一个可执行的小动作。"
-        "只能涉及预算、储蓄、应急金、防诈、信用和保险基础知识；禁止具体投资买卖建议、收益承诺和产品导流。"
+        "你是工银e生的小猪扑满，用第一人称和用户自然说话。你只能看到打卡状态，用户没有对话输入框。"
+        "生成一句温暖、具体、不施压的陪伴话语（message最多80字），以及一个可选的小行动。"
+        "day和completed_days指旅程日，不是自然日期；不能把旅程连续打卡说成连续自然日。"
+        "participation_state只由打卡推断，仅辅助措辞，不给用户贴标签。"
+        "不得编造用户说过的话、收入、年龄、情绪、金额、生活事件或自然日中断。"
+        "今日已完成则庆祝和允许休息，未完成则轻量邀请；全部完成则邀请回看结局。"
+        "不催促存钱，不推荐产品，不承诺收益，不因中断责备用户。"
         "只能输出JSON，字段必须包含title、message、action、risk_note。"
     )
-    parsed, provider, model = _call_json(system, payload)
-    if parsed:
-        coach = {key: _text(parsed.get(key), fallback[key]) for key in fallback}
+    parsed, provider, model = _call_json(system, context)
+    if parsed and all(isinstance(parsed.get(key), str) and parsed[key].strip() for key in ("title", "message", "action")):
+        coach = {key: _text(parsed.get(key), fallback[key], 80 if key == "message" else 120) for key in fallback}
+        coach["risk_note"] = fallback["risk_note"]
     else:
-        coach = fallback
-    return {"provider": provider, "model": model, "coach": coach}
+        coach, provider = fallback, "rules"
+    return {"provider": provider, "model": model, "coach": coach, "context": context}

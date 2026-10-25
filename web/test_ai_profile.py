@@ -98,6 +98,30 @@ class QuietHandler(server.AppHandler):
         pass
 
 
+class CompanionTests(unittest.TestCase):
+    def test_checkin_changes_response_and_full_journey_is_celebrated(self):
+        with patch.object(ai_service, "_call_json", return_value=(None, "rules", "test")):
+            waiting = ai_service.generate_coach({"day": 2, "completed_days": [1]})
+            done = ai_service.generate_coach({"day": 2, "completed_days": [1, 2]})
+            all_done = ai_service.generate_coach({"day": 21, "completed_days": list(range(1, 22))})
+        self.assertNotEqual(waiting["coach"]["message"], done["coach"]["message"])
+        self.assertIn("安心休息", done["coach"]["action"])
+        self.assertIn("结局", all_done["coach"]["message"])
+
+    def test_partial_model_response_is_not_labeled_ai(self):
+        with patch.object(ai_service, "_call_json", return_value=({"message": "只有一句"}, "llm", "test")):
+            result = ai_service.generate_coach({"day": 1, "completed_days": []})
+        self.assertEqual(result["provider"], "rules")
+
+    def test_valid_model_message_preserves_fixed_disclosure(self):
+        generated = {"title": "扑满的话", "message": "今天的脚印我收好啦！", "action": "歇一歇吧。", "risk_note": "untrusted"}
+        with patch.object(ai_service, "_call_json", return_value=(generated, "llm", "test")):
+            result = ai_service.generate_coach({"day": 2, "completed_days": [1, 2]})
+        self.assertEqual(result["provider"], "llm")
+        self.assertEqual(result["coach"]["message"], generated["message"])
+        self.assertNotEqual(result["coach"]["risk_note"], "untrusted")
+
+
 class ProfileApiTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

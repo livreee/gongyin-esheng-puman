@@ -64,6 +64,9 @@ class DeploymentTests(unittest.TestCase):
         self.assertTrue(json.loads(body)["ok"])
         status, _, _ = self.request("/", headers={"Origin": "https://puman-test.onrender.com"})
         self.assertEqual(status, 200)
+        status, body, _ = self.request("/h5.html", headers={"Origin": "https://puman-test.onrender.com"})
+        self.assertEqual(status, 200)
+        self.assertIn(b"mode', 'h5", body)
 
     def test_pages_preflight_and_saved_state(self):
         origin = {"Origin": "https://livreee.github.io"}

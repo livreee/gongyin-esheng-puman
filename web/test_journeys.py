@@ -209,14 +209,57 @@ class JourneyTests(unittest.TestCase):
                     connection.execute("INSERT INTO pet_trips(id,user_id,line,milestone,started_at,ready_at) VALUES('parallel','migration-user','custom',3,1,45001)")
                     self.assertEqual(len(rewards.snapshot(connection, "migration-user")["active_trips"]), 2)
 
-    def test_learning_profile_and_custom_coach_use_current_goal(self):
+    def test_learning_profile_and_checkin_only_coach(self):
         context = ai_service.profile_context({"answers": [0, 2, 0, 1]})
         self.assertEqual(context["line"], "solo")
         self.assertEqual(context["line_name"], "攒一笔学习基金")
         self.assertIn("技能", context["evidence"][2]["answer"])
         with patch.object(ai_service, "_call_json", return_value=(None, "rules", "test")):
-            coach = ai_service.generate_coach({"line": "custom", "day": 2, "goal": {"name": "考试报名费"}})
-        self.assertIn("考试报名费", coach["coach"]["message"])
+            coach = ai_service.generate_coach({"line": "custom", "day": 2, "completed_days": [1], "goal": {"name": "考试报名费"}})
+        self.assertNotIn("考试报名费", json.dumps(coach, ensure_ascii=False))
+        self.assertEqual(coach["context"]["completed"], 1)
+
+    def test_retirement_save_quiz_trip_and_behavior_keep_other_lines(self):
+        state = self.state()
+        old_solo = copy.deepcopy(state["lineRecords"]["solo"])
+        state.update(line="retirement", day=3)
+        state["lineDays"]["retirement"] = 3
+        state["completed"]["retirement"] = [1, 2, 3]
+        state["lineRecords"]["retirement"] = [{"line": "retirement", "day": 1, "amount": 10,
+                                                "completedAt": "2026-10-24T10:00:00Z"}]
+        state["lineGoals"] = {"retirement": 2000}
+        self.ok("/api/state", {"state": state}, method="PUT")
+        server.init_db()
+        restored = self.ok("/api/state")["state"]
+        self.assertEqual(restored, state)
+        self.assertEqual(restored["lineRecords"]["solo"], old_solo)
+        self.assertEqual(rewards.LINES.index("custom"), 5)
+        selected = rewards.QUIZ_ANSWERS[(1 + rewards.LINES.index("retirement")) % len(rewards.QUIZ_ANSWERS)]
+        payload = {"line": "retirement", "day": 1, "selected": selected}
+        self.assertTrue(self.ok("/api/daily-quiz/answer", payload)["awarded"])
+        self.assertFalse(self.ok("/api/daily-quiz/answer", payload)["awarded"])
+        self.ok("/api/travel/start", {"line": "retirement", "milestone": 3})
+        trips = self.ok("/api/rewards")["rewards"]["active_trips"]
+        self.assertEqual([trip["line"] for trip in trips], ["retirement"])
+        self.assertEqual(self.request("/api/events", {"event_type": "daily_task_completed", "payload": {"line": "retirement", "day": 3}})[0], 201)
+        self.assertEqual(self.ok("/api/behavior/state?line=retirement&day=3")["summary"]["completed_days"], 1)
+
+    def test_coach_model_and_audit_only_receive_checkin_facts(self):
+        payload = {"day": 3, "completed_days": [1, 3], "line": "custom", "message": "不应发送的聊天",
+                   "goal": {"name": "私密目标", "amount": 999}, "diary": "私密日记", "profile": {"income": 123}}
+        with patch.object(ai_service, "_call_json", return_value=(None, "rules", "test")) as model:
+            result = self.ok("/api/ai/coach", payload)
+        context = model.call_args.args[1]
+        self.assertEqual(set(context), {"day", "completed_days", "completed", "today_completed", "remaining", "journey_streak", "participation_state"})
+        self.assertEqual(context["completed_days"], [1, 3])
+        self.assertTrue(context["today_completed"])
+        self.assertEqual(context, result["context"])
+        with server.db_session() as connection:
+            row = connection.execute("SELECT request_json FROM ai_outputs WHERE id=?", (result["audit_id"],)).fetchone()
+        self.assertEqual(json.loads(row[0]), context)
+        for days in ([1, 1], [True], [22], ["1"], None):
+            self.assertEqual(self.request("/api/ai/coach", {"day": 3, "completed_days": days})[0], 400)
+        self.assertEqual(self.request("/api/ai/coach", {"day": True, "completed_days": []})[0], 400)
 
 
 if __name__ == "__main__":

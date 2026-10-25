@@ -71,7 +71,7 @@ def main() -> None:
         check_payload(relative, payload)
         contents[relative.as_posix()] = payload
 
-    required = {"README.md", "web/index.html", "web/server.py", "web/ai_service.py", "web/behavior_model.py", "web/private_config.py", "web/.env.example"}
+    required = {"README.md", "web/index.html", "web/h5.html", "web/server.py", "web/ai_service.py", "web/behavior_model.py", "web/private_config.py", "web/.env.example"}
     if not required.issubset(contents):
         raise RuntimeError("Required project files are missing")
     if [name for name in contents if Path(name).name.lower() == "readme.md"] != ["README.md"]:

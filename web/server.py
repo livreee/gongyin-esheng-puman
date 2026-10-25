@@ -214,7 +214,7 @@ class AppHandler(SimpleHTTPRequestHandler):
         )
         if path == root:
             self.path = "/index.html"
-        elif path not in {root / "index.html", root / "config.js"} and not allowed_asset:
+        elif path not in {root / "index.html", root / "h5.html", root / "config.js"} and not allowed_asset:
             self.send_error(HTTPStatus.NOT_FOUND)
             return None
         return super().send_head()
@@ -583,10 +583,9 @@ class AppHandler(SimpleHTTPRequestHandler):
             # Persist authoritative answers and scoring, never client-supplied scores.
             payload = result["context"]
         else:
-            day = int(payload.get("day", 0))
-            if day < 1 or day > 21:
-                raise ValueError("day must be between 1 and 21")
             result = generate_coach(payload)
+            # Neither the model nor the audit log receives arbitrary chat/diary fields.
+            payload = result["context"]
         response = {"ok": True, "feature": feature, **result}
         with DB_LOCK, db_session() as connection:
             cursor = connection.execute(

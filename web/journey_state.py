@@ -2,7 +2,7 @@
 
 import math
 
-LINES = ("home", "baby", "travel", "gap", "solo", "custom")
+LINES = ("home", "baby", "travel", "gap", "solo", "custom", "retirement")
 MAX_MONEY = 1_000_000
 
 

@@ -7,7 +7,8 @@ import secrets
 import time
 import uuid
 
-LINES = ("home", "baby", "travel", "gap", "solo", "custom")
+# Append new lines: existing offsets determine saved quiz question identities.
+LINES = ("home", "baby", "travel", "gap", "solo", "custom", "retirement")
 # Same question order as DAILY_QUIZ in index.html; the contract is covered by tests.
 QUIZ_ANSWERS = (1, 0, 0, 2, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0)
 QUIZ_GOLD = 1

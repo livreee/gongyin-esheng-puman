@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no,email=no,address=no">
 <script src="./config.js"></script>
+<script>if(new URLSearchParams(location.search).get('mode')==='h5')document.documentElement.classList.add('h5-mode');</script>
 <title>工银e生 · 21天扑满计划</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' shape-rendering='crispEdges'%3E%3Crect width='32' height='32' fill='%2323283C'/%3E%3Crect x='6' y='6' width='20' height='20' fill='%23C7000B'/%3E%3Crect x='10' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='16' y='10' width='4' height='4' fill='%23FFD23F'/%3E%3Crect x='10' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3Crect x='16' y='16' width='4' height='4' fill='%23FFFFFF'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap">
@@ -52,6 +54,24 @@ body{
 }
 @media (min-width:520px){
   .phone{margin:24px 0;min-height:calc(100vh - 48px);border-radius:26px;border:4px solid var(--ink);box-shadow:10px 10px 0 rgba(35,40,60,.85);overflow:hidden}
+}
+.h5-mode,.h5-mode body{height:auto;min-height:100%;background:var(--cream);overscroll-behavior-y:none}
+.h5-mode body{padding:0;touch-action:manipulation;-webkit-text-size-adjust:100%}
+.h5-mode .stage{min-height:100vh;min-height:100dvh;background:var(--cream)}
+.h5-mode .phone{max-width:none;min-height:100vh;min-height:100dvh;margin:0;border:0;border-radius:0;box-shadow:none;overflow:visible}
+.h5-mode .view{padding-bottom:calc(104px + var(--app-safe-bottom,env(safe-area-inset-bottom,0px)))}
+.h5-mode #view-start{min-height:100vh;min-height:100dvh;padding-bottom:var(--app-safe-bottom,env(safe-area-inset-bottom,0px))}
+.h5-mode .start-top{padding-top:calc(24px + var(--app-safe-top,env(safe-area-inset-top,0px)))}
+.h5-mode .app-head{top:0;padding-top:calc(12px + var(--app-safe-top,env(safe-area-inset-top,0px)))}
+.h5-mode .bottom-nav{bottom:0;max-width:none;padding-bottom:var(--app-safe-bottom,env(safe-area-inset-bottom,0px));border-radius:0;border-left:0;border-right:0}
+.h5-mode .bgm-btn{top:calc(12px + var(--app-safe-top,env(safe-area-inset-top,0px)));right:calc(12px + var(--app-safe-right,env(safe-area-inset-right,0px)))}
+.h5-mode .toast{top:calc(12px + var(--app-safe-top,env(safe-area-inset-top,0px)))}
+.h5-mode .view-home-active .pig-stage{right:calc(12px + var(--app-safe-right,env(safe-area-inset-right,0px)));bottom:calc(82px + var(--app-safe-bottom,env(safe-area-inset-bottom,0px)))}
+@media (min-width:520px){
+  .h5-mode .phone{margin:0;min-height:100vh;min-height:100dvh;border:0;border-radius:0;box-shadow:none}
+  .h5-mode .bottom-nav{bottom:0;width:100%;border-left:0;border-right:0;border-bottom:0;box-shadow:none}
+  .h5-mode .bgm-btn{right:12px}
+  .h5-mode .view-home-active .pig-stage{bottom:calc(82px + var(--app-safe-bottom,env(safe-area-inset-bottom,0px)))}
 }
 .view{display:none;padding:0 16px 96px;animation:fadeIn .22s steps(3)  }
 .view.active{display:block}
@@ -662,6 +682,10 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
 @media(max-width:360px){#view-grad.is-complete{padding-left:16px;padding-right:16px}.completion-hero h2{font-size:20px}.completion-hero h2 span{font-size:28px}.completion-ticket{padding-left:13px;padding-right:13px}.completion-next{padding-left:15px;padding-right:15px}.completion-next h3{font-size:18px}.completion-ticket-head span{letter-spacing:.04em;font-size:8px}.completion-explore{padding-left:11px;padding-right:11px;font-size:11px}.completion-stat .completion-amount{font-size:16px;line-height:1.65}}
 @media(prefers-reduced-motion:reduce){.completion-explore{transition:none}.completion-explore:hover{transform:none}}
 
+.ending-letter{font-size:14px;line-height:1.95;color:#65483D;margin:14px 0;overflow-wrap:anywhere}
+.completion-ticket+.completion-ticket{margin-top:18px}
+.service-steps{padding-left:20px;margin:14px 0;font-size:12px;line-height:1.9;color:#FFF1DA}
+.service-steps li+li{margin-top:6px}
 </style>
 </head>
 <body>
@@ -685,7 +709,7 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
     </div>
     <div class="start-cards">
       <div><b class="fx">21</b><span>天小步积累</span></div>
-      <div><b class="fx">5</b><span>条主题旅程</span></div>
+      <div><b class="fx">6</b><span>条主题旅程</span></div>
       <div><b class="fx">1</b><span>个自定目标</span></div>
     </div>
   </div>
@@ -833,7 +857,7 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
 </div>
 
 <script>
-/* ========== 数据：六条剧情线 × 21天（含一条可自定义线路） ========== */
+/* ========== 数据：六条预设剧情 + 一条自定义线路 × 21天 ========== */
 function makeCustomDays(){
   return Array.from({length:21},(_,index)=>{
     const d=index+1;
@@ -986,8 +1010,74 @@ const LINES = {
     color:'#9A2438', scene:['一份自己的心愿','有了第一笔','积累正在发生','回看这一程'],
     goal:'为自己的目标存钱', products:['目标储蓄','每日记账'], icon:'custom',
     days:makeCustomDays()
+  },
+  // Append after custom to preserve existing quiz offsets and reward identities.
+  retirement:{
+    id:'retirement', name:'给未来的自己', tagline:'为自己存养老储备金，让未来多一份选择',
+    color:'#347B68', scene:['一封未来来信','种下第一颗种子','慢慢长出绿荫','留给未来的花园'],
+    goal:'攒下自己的第一笔养老储备金', products:['个人养老金服务','长期资金规划'], icon:'retirement',
+    days:[
+      {d:1,story:'未来的自己寄来一封信：退休后想过怎样的一天？先写下一个小期待',task:'想一想自己的养老生活',idea:'养老准备也可以从青年时期开始',mode:'answer'},
+      {d:2,story:'给未来花园种下第一颗种子，先从负担得起的小金额开始',task:'记录第一笔养老储备',idea:'小步起点，不挤占生活费',mode:'save'},
+      {d:3,story:'把消费的零头留给未来，小种子有了一点水',task:'体验零头记账',idea:'积少成多',mode:'round'},
+      {d:4,story:'拆开扑满的种子盲盒，为长期心愿添一点期待',task:'完成一次模拟小额记录',idea:'用轻量行动陪伴长期目标',mode:'blind'},
+      {d:5,story:'AI工具会员又要自动续费了，先核对是否仍需要，再考虑给未来留一点预算',task:'检查一项闲置订阅',idea:'今天的选择也照顾未来',mode:'cancel'},
+      {d:6,story:'把日常开销、应急金和养老储备分开，花园不需要一次长大',task:'估算能轻松承担的小预算',idea:'先顾生活与应急，再安排长期积累',mode:'guess'},
+      {d:7,story:'第一幕：小种子发芽了。你开始给未来的自己留位置',task:'回顾最初七步',idea:'为自己建立长期准备意识',mode:'answer'},
+      {d:8,story:'临时看病需要一笔钱，长期养老资金适合随时取用吗？',task:'区分应急金与长期资金',idea:'关注流动性和领取条件',mode:'calc'},
+      {d:9,story:'储备不必一次到位，树苗靠一次次照料长大',task:'再留下一笔模拟记录',idea:'长期积累不等于保证收益',mode:'save'},
+      {d:10,story:'喜欢的谷子上新了：给当下快乐设预算，也为未来留一小格',task:'平衡悦己与长期心愿',idea:'合理消费，不用过度节省',mode:'freeze'},
+      {d:11,story:'第一份工资里，为自己设置一个可调整的长期储备计划',task:'想一个适合重复的小行动',idea:'收入变化时也能调整节奏',mode:'save'},
+      {d:12,story:'扑满拿来两张卡：普通养老储备与个人养老金账户，是同一回事吗？',task:'了解专用账户、投资范围与领取规则',idea:'用途规划与制度账户要区分；规则以官方为准',mode:'answer'},
+      {d:13,story:'给未来花园留下一次轻松的气温打卡',task:'体验小额模拟记录',idea:'给长期坚持一点仪式感',mode:'temp'},
+      {d:14,story:'第二幕：树苗长出绿荫，回看哪些动作更容易坚持',task:'回顾积累方式',idea:'长期计划可以随着生活调整',mode:'answer'},
+      {d:15,story:'短视频里的AI“养老专家”说稳赚高息，还要求转入私人账户',task:'识别保收益、私下转账等信号',idea:'不凭专家形象相信收益承诺',mode:'answer'},
+      {d:16,story:'接到“养老金客服”电话，对方要求开屏幕共享领取补贴',task:'挂断后通过官方渠道核验',idea:'不共享屏幕、不提供验证码',mode:'answer'},
+      {d:17,story:'换工作或灵活就业后，收入节奏变了，养老储备也可以调整',task:'重新看看生活、应急和长期预算',idea:'不借贷凑缴，不因打卡增加压力',mode:'calc'},
+      {d:18,story:'税收优惠是否适合自己？扑满提醒先看资格、实际税负和资金使用时间',task:'了解个人养老金的条件与限制',idea:'优惠不等于人人相同，投资也有风险',mode:'answer'},
+      {d:19,story:'为未来花园掷一次小骰子，留下今天的脚印',task:'完成趣味模拟记录',idea:'享受积累过程',mode:'roll'},
+      {d:20,story:'带上自己的问题去了解工行正式服务：期限、风险、费用和领取条件',task:'准备一张官方服务了解清单',idea:'正式业务需独立授权与适当性评估',mode:'answer'},
+      {d:21,story:'花园留下了21个脚印。扑满写来结局信，未来的生活继续由你选择',task:'查看自己的21天结局',idea:'完成入门练习，养老储备仍是长期计划',mode:'answer'}
+    ]
   }
 };
+
+// Editorial scenarios for the 2026 journey; fictional situations, not news claims.
+const HOTSPOTS_2026 = {
+  home:[
+    [5,'AI家居会员自动续费了，先看看这项服务是否仍然用得上','核对一项订阅的续费与取消条件','留意自动续费'],
+    [10,'联名谷子和盲盒都想带回家：给喜欢的东西留预算，也给小家留空间','为一笔情绪消费留出考虑时间','悦己消费也可以有预算'],
+    [15,'视频里的“房东”催你转装修押金，声音和脸都很像：会不会是AI仿冒？','用原有联系方式独立核实身份和合同','人脸与声音不能代替身份核验'],
+    [16,'“银行客服”邀请你屏幕共享取消贷款，扑满提醒先挂断核验','通过官方渠道联系银行','保护屏幕、密码和验证码']
+  ],
+  baby:[
+    [5,'直播间的育儿清单越看越长，先核对需要，别被限时倒计时推着囤货','为家庭列一份按需购买清单','理性育儿消费'],
+    [15,'“育儿补贴客服”让你先交手续费，再共享屏幕领补贴','从官方渠道核实补贴申领信息','不为陌生链接交费或提供验证码'],
+    [16,'AI配音的“育儿专家”推荐高收益教育金，熟悉的声音不代表可信','核实机构资质和正式产品信息','把情感信任与金融判断分开']
+  ],
+  travel:[
+    [6,'Citywalk、追演唱会和远途旅行都很心动，先把门票、交通与住宿加起来','列出一趟出行的完整预算','兴趣消费看总成本'],
+    [12,'低价特种兵旅行看起来省钱，退改费和往返交通也要算进去','比较两种出行方案的总开销','低标价不等于低总价'],
+    [15,'“航班客服”通知退改签赔付，要求先开屏幕共享','自己打开航空公司官方渠道核验','拒绝远程控制与陌生赔付链接'],
+    [16,'演唱会“内部票”卖家催你脱离平台付款，扑满建议先停一停','检查购票与退款渠道','保留订单与凭据']
+  ],
+  gap:[
+    [6,'想试试数字游民生活？把房租、交通、设备和收入空档一起列进计划','估算灵活就业的基础生活成本','不把不确定收入当固定结余'],
+    [12,'接单收入有高有低，社保缴费与生活费需要提前留位置','查询当地官方参保与缴费规则','按实际情况安排社保和现金流'],
+    [15,'有人推销“AI副业躺赚课”，承诺交钱后稳定接单','核实服务、退款约定与收益承诺','警惕培训贷和保收益宣传'],
+    [16,'声音像朋友的人请你代收一笔兼职款，还让你借银行卡','独立核实并拒绝出借账户','账户不能随意借给别人']
+  ],
+  solo:[
+    [5,'AI学习工具试用到期，多个会员都要续费：先看哪些真的帮助学习','检查使用频率、续费日期和取消入口','为有效学习付费'],
+    [12,'“AI速成证书班”打出低月供，别忘记课程总价、贷款费用与退费条款','比较课程总成本','看清培训分期的真实负担'],
+    [15,'“退费专员”要求先下载App买理财才能拿回学费','联系原机构与官方维权渠道核验','退款不应以投资或垫资为条件'],
+    [16,'一段AI生成的名师视频推荐包过班，先核实老师、课程与合同','保留宣传、支付和合同凭据','不把合成形象当资质证明']
+  ]
+};
+for(const [line,scenes] of Object.entries(HOTSPOTS_2026)){
+  for(const [day,story,task,idea] of scenes) Object.assign(LINES[line].days[day-1],{story,task,idea,topic:'2026青年生活情境'});
+}
+for(const day of LINES.retirement.days) day.topic='为自己存养老储备金';
 
 /* ========== 财富人格测试题库 ========== */
 const QUIZ = [
@@ -1021,6 +1111,7 @@ const QUIZ = [
 /* ========== 状态（持久化前置，避免 TDZ） ========== */
 const LS_KEY = 'icbc-puman-v2';
 const USER_ID_KEY = 'icbc-puman-user-id';
+const H5_MODE = document.documentElement.classList.contains('h5-mode');
 const ON_GITHUB_PAGES = location.hostname.endsWith('.github.io');
 const API_BASE_URL = (()=>{
   // The Render page always uses its own API. Only the Pages copy needs a URL.
@@ -1041,7 +1132,7 @@ function defaultState(){ return {gold:0, records:[], souvenirs:[], newSou:null, 
 const S = {
   rewards:emptyRewards(),
   line:'home', day:1,
-  completed:{home:[],baby:[],travel:[],gap:[],solo:[],custom:[]},
+  completed:{home:[],baby:[],travel:[],gap:[],solo:[],custom:[],retirement:[]},
   gold:0, idou:0, records:[], souvenirs:[], newSou:null,
   atHome:true, travelStart:null, travelDur:45000,
   quizDone:[], challengeDone:0, lastAmount:0,
@@ -1064,7 +1155,7 @@ let rewardsReady = !API_ENABLED;
 let rewardClockOffset = 0;
 const tripRequests = new Set();
 const tripRetryAt = new Map();
-const coachRequests = new Set();
+const coachRequests = new Map();
 const quizRequests = new Set();
 const quizErrors = new Map();
 
@@ -1074,7 +1165,7 @@ function normalizeState(){
   const object=value=>value && typeof value==='object' && !Array.isArray(value) ? value : {};
   const validDays=days=>Array.isArray(days)?[...new Set(days.filter(day=>Number.isInteger(day)&&day>=1&&day<=TOTAL_DAYS))].sort((a,b)=>a-b):[];
   const money=(value,fallback=0)=>Number.isFinite(Number(value)) && Number(value)>=0 && Number(value)<=1000000 ? Math.round(Number(value)*100)/100 : fallback;
-  S.completed = Object.assign({home:[],baby:[],travel:[],gap:[],solo:[],custom:[]}, S.completed || {});
+  S.completed = Object.assign({home:[],baby:[],travel:[],gap:[],solo:[],custom:[],retirement:[]}, S.completed || {});
   S.records=Array.isArray(S.records)?S.records:[];
   S.lineRecords=object(S.lineRecords);
   S.lineDays=object(S.lineDays);
@@ -1318,6 +1409,56 @@ function toast(msg){
 }
 function escapeHtml(value){
   return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+const PumanH5 = (()=>{
+  const listeners = new Map();
+  function emit(type, detail={}){
+    const message={source:'gongyin-esheng',version:'1.0',type,detail};
+    try{
+      if(window.ICBCAppBridge && typeof window.ICBCAppBridge.postMessage==='function'){
+        window.ICBCAppBridge.postMessage(JSON.stringify(message)); return true;
+      }
+      if(window.webkit?.messageHandlers?.puman?.postMessage){
+        window.webkit.messageHandlers.puman.postMessage(message); return true;
+      }
+      if(window.ReactNativeWebView?.postMessage){
+        window.ReactNativeWebView.postMessage(JSON.stringify(message)); return true;
+      }
+    }catch(error){ console.warn('App bridge unavailable',error); }
+    return false;
+  }
+  function receive(event){
+    let message=event?.data ?? event;
+    if(typeof message==='string'){
+      try{ message=JSON.parse(message); }catch(error){ return; }
+    }
+    if(!message || message.source!=='icbc-app' || typeof message.type!=='string') return;
+    if(message.type==='puman.safeArea'){
+      const area=message.detail||{};
+      for(const side of ['top','right','bottom','left']){
+        const value=Number(area[side]);
+        if(Number.isFinite(value)&&value>=0&&value<=120) document.documentElement.style.setProperty('--app-safe-'+side,value+'px');
+      }
+    }
+    (listeners.get(message.type)||[]).forEach(handler=>handler(message.detail||{}));
+  }
+  window.addEventListener('message',receive);
+  window.PumanH5Receive=receive;
+  return Object.freeze({
+    isEmbedded:H5_MODE,
+    emit,
+    on(type,handler){ if(typeof handler==='function')listeners.set(type,[...(listeners.get(type)||[]),handler]); },
+    back(){
+      if(location.hash && location.hash!=='#/start'){ history.back(); return true; }
+      return H5_MODE && emit('puman.close');
+    },
+    close(){ return H5_MODE && emit('puman.close'); }
+  });
+})();
+if(H5_MODE){
+  window.addEventListener('DOMContentLoaded',()=>PumanH5.emit('puman.ready',{route:location.hash||'#/start'}),{once:true});
+  window.addEventListener('hashchange',()=>PumanH5.emit('puman.route',{route:location.hash||'#/start'}));
+  PumanH5.on('puman.back',()=>PumanH5.back());
 }
 function go(hash){ location.hash = hash; }
 function completedDays(){ return S.completed[S.line]; }
@@ -1619,7 +1760,8 @@ const ICONS = {
   travel:'<path d="M4 8l16-4-3 16-5-6-6 1z"/><circle cx="12" cy="13" r="1.6"/>',
   gap:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 9h6M9 13h6M9 17h3"/><path d="M16 16l2 2 3-4" stroke="#E8A33D" stroke-width="2"/>',
   solo:'<path d="M12 6c-3-3-7-3-10-1v15c3-2 7-2 10 1 3-3 7-3 10-1V5c-3-2-7-2-10 1zM12 6v15"/>',
-  custom:'<circle cx="12" cy="12" r="8"/><path d="M12 7v10M8 12h8"/>'
+  custom:'<circle cx="12" cy="12" r="8"/><path d="M12 7v10M8 12h8"/>',
+  retirement:'<path d="M12 21V11M12 14C3 14 3 5 3 5s9 0 9 9zM12 10C12 2 21 3 21 3s0 8-9 8"/>'
 };
 function renderChoose(){
   $('quizSuggest').textContent = S.quizPersonDone ? LINES[S.quizResult].name : '还没测试';
@@ -1758,7 +1900,8 @@ function renderHome(){
     +'<div class="journey-act">'+escapeHtml(S.line==='custom' ? S.customLine.intro || day.story : day.story)+'</div>'
     +lineGoalHTML()
     +'<div class="goal-meter">已为这个目标记录 <b>'+lineSavedAmount().toFixed(2)+' 元</b></div>'
-    +'<span class="story-idea">'+day.idea+'</span>'
+    +(day.topic?'<p class="hero-note">'+escapeHtml(day.topic)+'</p>':'')
+    +'<span class="story-idea">'+escapeHtml(day.idea)+'</span>'
     +'<div class="acts">'+acts+'</div>'
     +'<div class="travel-sign" id="travelSign"'+(S.atHome?' hidden':'')+'><div class="t1">扑满旅行中</div><div class="t2" id="travelMsg">它正替你去看世界</div><div class="t3" id="travelCountdown"></div></div>'
     +([7,14,21].includes(d)?'<p class="hero-note">第 '+d+' 天里程碑 · '+(d===21?'完成今天的任务，回看这段积累。':'完成今天的任务，给这一周的小进步留个纪念。')+'</p>':'')
@@ -1774,8 +1917,8 @@ function renderHome(){
     taskContent += nextDayButton(d);
   } else {
     taskContent = '<div class="task-card">'
-      +'<div class="task-title">'+escapeHtml(S.line==='solo'?day.task:taskZone.title)+'</div>'
-      +'<div class="task-sub">'+escapeHtml(S.line==='solo'?day.idea:taskZone.sub)+'</div>'
+      +'<div class="task-title">'+escapeHtml(day.task)+'</div>'
+      +'<div class="task-sub">'+escapeHtml(day.idea)+'</div>'
       +'<div class="task-zone" id="taskZone">'+taskZone.html+'</div><p class="ai-foot">体验任务会生成模拟金额，不读取账单，也不会实际扣款。</p></div>';
   }
   html += '<div class="daily-grid">'
@@ -1792,31 +1935,45 @@ function dailyPanel(id,title,content){
   return '<section class="daily-panel" id="feature-'+id+'" tabindex="-1" aria-labelledby="title-'+id+'"><h3 id="title-'+id+'">'+title+'</h3>'+content+'</section>';
 }
 function aiCoachHTML(day){
-  const c = S.aiCoaches[S.line]?.[day];
+  const saved = S.aiCoaches[S.line]?.[day];
+  const c = saved?.contextKey===coachContextKey(S.line,day)?saved:null;
   const busy=coachRequests.has(S.line+':'+day);
-  if(!c) return '<div class="ai-coach-card"><p>不知道今天从哪开始？结合你的目标和打卡记录，给自己一个小建议。</p><button class="btn btn-line" onclick="requestAICoach('+day+')"'+(busy?' disabled':'')+'>'+(busy?'正在整理建议…':'看看今日建议')+'</button><div class="ai-foot">AI 不可用时提供基础规则建议；内容仅供学习参考，不构成投资建议。</div></div>';
+  if(!c) return '<div class="ai-coach-card"><p>点点小猪，听听扑满想对你说什么。它只根据本目标的打卡状态陪伴你。</p><button class="btn btn-line" onclick="pigTalk()"'+(busy?' disabled':'')+'>'+(busy?'扑满正在想…':'听扑满说说话')+'</button><div class="ai-foot">无需输入对话；不发送金额、日记或答题画像。</div></div>';
   return '<div class="ai-coach-card"><div class="ai-label">'+escapeHtml(aiProviderLabel(c.provider))+'</div>'
     +'<h3>'+escapeHtml(c.title)+'</h3><p>'+escapeHtml(c.message)+'</p>'
     +'<p><b>今天可以：</b>'+escapeHtml(c.action)+'</p>'
-    +'<div class="ai-foot">风险提醒：'+escapeHtml(c.risk_note)+'</div></div>';
+    +'<button class="btn btn-line" onclick="pigTalk()">再听扑满说说</button>'
+    +'<div class="ai-foot">'+(c.provider==='llm'?'AI生成 · 仅使用打卡状态':'基础陪伴 · 本次未使用AI生成')+'<br>'+escapeHtml(c.risk_note)+'</div></div>';
+}
+function checkinPayload(line,day){return {day,completed_days:[...S.completed[line]].sort((a,b)=>a-b)};}
+function localCoach(day,days){
+  const done=days.includes(day),all=days.length===21;
+  return {title:'第'+day+'天 · 扑满想对你说',
+    message:all?'21个旅程日都留下了脚印，来看看属于你的结局吧！':done?'第'+day+'步完成啦！我收好了你的'+days.length+'个打卡印记，今天可以安心休息。':'我是扑满，已经帮你收好'+days.length+'个打卡印记。第'+day+'步等着你，按自己的节奏来就好。',
+    action:all?'打开21天结局。':done?'准备好再开启下一步。':'愿意的话，先读一读今天的小故事。',
+    risk_note:'只根据打卡状态陪伴，不判断你的财务状况。'};
 }
 async function requestAICoach(day){
-  if(!API_ENABLED){ toast('离线体验暂不提供 AI 建议，请连接本地服务后再试'); return; }
   const line=S.line,key=line+':'+day,contextKey=coachContextKey(line,day);
-  if(coachRequests.has(key))return;
-  coachRequests.add(key); refreshCoachCard();
-  try{
-    const L = LINES[line], current = L.days[day-1];
-    const result = await apiRequest('/api/ai/coach', {method:'POST', body:JSON.stringify({
-      line, day, completed:doneCount(line), story:current.story, idea:current.idea,
-      goal:line==='custom'?{name:S.customLine.name,total:S.customLine.goal,dailyTarget:S.customLine.entries[day]?.target ?? S.customLine.dailyTarget,saved:lineSavedAmount(line)}:{name:L.goal,saved:lineSavedAmount(line)},
-      profile:S.aiProfile ? {focus:S.aiProfile.focus, stage:S.aiProfile.stage} : null
-    })});
-    if(contextKey!==coachContextKey(line,day))return;
-    S.aiCoaches[line][day] = Object.assign({line,day}, result.coach, {provider:result.provider});
+  const cached=S.aiCoaches[line]?.[day];
+  if(cached?.contextKey===contextKey && (cached.provider==='llm' || !API_ENABLED))return cached;
+  if(coachRequests.has(key))return coachRequests.get(key);
+  const payload=checkinPayload(line,day);
+  const pending=(async()=>{
+    let result={provider:'rules',coach:localCoach(day,payload.completed_days)};
+    if(API_ENABLED){
+      try{ result=await apiRequest('/api/ai/coach',{method:'POST',body:JSON.stringify(payload)}); }
+      catch(e){ /* Show a truthful, check-in-only fallback. */ }
+    }
+    if(contextKey!==coachContextKey(line,day))return null;
+    const coach=Object.assign({line,day,contextKey},result.coach,{provider:result.provider});
+    S.aiCoaches[line][day]=coach;
     saveState();
-    trackEvent('ai_coach_generated', {line,day, provider:result.provider, audit_id:result.audit_id});
-  }catch(e){ toast('暂时没能生成建议，稍后再试试'); }
+    trackEvent('ai_coach_generated',{line,day,provider:result.provider,audit_id:result.audit_id});
+    return coach;
+  })();
+  coachRequests.set(key,pending);refreshCoachCard();
+  try{return await pending;}
   finally{coachRequests.delete(key);refreshCoachCard();}
 }
 function refreshCoachCard(){
@@ -1824,7 +1981,7 @@ function refreshCoachCard(){
   if(card)card.outerHTML=aiCoachHTML(S.day);
 }
 function coachContextKey(line,day){
-  return line==='custom'?JSON.stringify([S.customLine.name,S.customLine.goal,S.customLine.dailyTarget,S.customLine.intro,S.customLine.entries[day]?.target]):line+':'+day;
+  return JSON.stringify(['checkin-v1',line,checkinPayload(line,day)]);
 }
 function shade(hex){
   const n = parseInt(hex.slice(1),16);
@@ -1869,7 +2026,7 @@ function doTask(mode, d){
   S.lastAmountByLine[line]=amt;
   S.completed[line].push(d);
   S.gold += 1; S.idou += 200; S.lineGold[line]+=1;
-  const record={line,day:d,amount:amt,from:'每日剧情任务'};
+  const record={line,day:d,amount:amt,from:'每日剧情任务',completedAt:new Date().toISOString()};
   lineRecords(line).push(record);
   S.records.push(record);
   saveState();
@@ -1885,6 +2042,13 @@ function doTask(mode, d){
     setTimeout(()=>startTravel(line), 1600);
   }
   scheduleJourneyCompletion(line,d);
+  accompanyCheckin(line,d);
+}
+
+function accompanyCheckin(line,day){
+  setTimeout(()=>{
+    if(S.line===line && S.day===day && $('view-home').classList.contains('active')) pigTalk();
+  },900);
 }
 
 function scheduleJourneyCompletion(line,day){
@@ -1924,7 +2088,7 @@ function saveCustomDiary(day,complete){
   if(complete && !done){
     S.completed.custom.push(day);
     S.gold+=1;S.lineGold.custom+=1;S.idou+=200;
-    const record={line:'custom',day,amount,from:'自定义存钱日记',note:entry.note};
+    const record={line:'custom',day,amount,from:'自定义存钱日记',note:entry.note,completedAt:new Date().toISOString()};
     lineRecords('custom').push(record);S.records.push(record);
     trackEvent('daily_task_completed',{line:'custom',day,mode:'custom',amount});
     playCoin();flyCoin();toast('本目标已记录 '+amount.toFixed(2)+' 元 · 金币 +1');
@@ -1934,7 +2098,7 @@ function saveCustomDiary(day,complete){
     toast(done?'日记已更新，已记录的金额保持不变':'草稿已保存，准备好后再确认打卡');
   }
   saveState();renderHome();
-  if(complete && !done)scheduleJourneyCompletion('custom',day);
+  if(complete && !done){scheduleJourneyCompletion('custom',day);accompanyCheckin('custom',day);}
 }
 
 /* ========== 攒钱进度图案 ========== */
@@ -1952,7 +2116,8 @@ function sceneSvg(lineId, done, color){
     travel:'<rect x="12" y="42" width="34" height="22" rx="4"/><path d="M20 42v-5h18v5"/><rect x="20" y="51" width="18" height="5" rx="2"/><path d="M12 54h34" opacity=".4"/>',
     gap:'<rect x="20" y="26" width="24" height="32" rx="3"/><path d="M26 34h12M26 40h12M26 46h6"/><circle cx="39" cy="47" r="6" stroke="#F5A623" fill="rgba(245,166,35,.25)"/><path d="M36 47h6M39 44v6"/>',
     solo:'<path d="M28 30c-8-5-16-5-23-1v34c7-4 15-4 23 1 8-5 16-5 23-1V29c-7-4-15-4-23 1zM28 30v34"/><path d="M10 37h11M10 44h11M35 37h11M35 44h11"/>',
-    custom:'<circle cx="28" cy="45" r="22"/><circle cx="28" cy="45" r="13"/><path d="m25 48 23-23M37 25h11v11"/>'
+    custom:'<circle cx="28" cy="45" r="22"/><circle cx="28" cy="45" r="13"/><path d="m25 48 23-23M37 25h11v11"/>',
+    retirement:'<path d="M28 66V36M28 48C6 48 8 24 8 24s20 0 20 24zM28 38C28 17 50 18 50 18s0 20-22 20"/>'
   }[lineId] || '';
   return '<svg viewBox="0 0 240 106" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
     +dots
@@ -2081,7 +2246,7 @@ function renderBadge(){
       +'<span class="ico">'+beadSvgP(item.cells,item.lit,item.badge.rows.length)+'</span>'
       +'<span>'+item.badge.n+'</span>'+status+'</div>';
   }).join('')+'</div>';
-  const guide = '<p class="card-note">每天有三种任务可以点亮豆子，六个目标的进度一起累计。扑满每完成 3 天任务会出门旅行，回来带回一件纪念品。</p>'
+  const guide = '<p class="card-note">每天有三种任务可以点亮豆子，七个目标的进度一起累计。扑满每完成 3 天任务会出门旅行，回来带回一件纪念品。</p>'
     +'<button class="btn btn-line" onclick="jumpFeature(\'journey\',\'daily-task\')">去完成今日任务</button>';
   return viewIntro('把小成就，收藏起来','每一枚徽章、每一件礼物，都有自己的故事。','04')
     +featureCard('badge-collection','拼豆徽章','完成一个任务点亮一颗豆子，填满图案就得到徽章。',badges,'badge')
@@ -2115,6 +2280,45 @@ function renderSquad(){
 // ICBC mobile site's public personal-banking introduction, verified 2026-10-10.
 // Opens a normal official webpage, not an unverified app scheme or product sale.
 const ICBC_MOBILE_BANKING_URL = 'https://m.icbc.com.cn/column/1438058319981199366.html';
+function journeyEnding(line=S.line){
+  const days=new Set(S.completed[line]);
+  const quizzes=Object.entries(S.rewards.quizzes).filter(([key,value])=>{
+    const [id,d]=key.split(':');return id===line && days.has(Number(d)) && value.correct===true;
+  });
+  const challenges=new Set(S.challenges[line].filter(day=>days.has(day))).size;
+  const times=lineRecords(line).filter(r=>days.has(r.day) && Number.isFinite(Date.parse(r.completedAt)))
+    .map(r=>Date.parse(r.completedAt)).sort((a,b)=>a-b);
+  const returned=times.some((time,i)=>i>0 && time-times[i-1]>=48*60*60*1000);
+  const variants={
+    return:{title:'会重新出发的你',evidence:'本线记录显示，你曾间隔至少48小时后再次完成打卡。',letter:'有过间隔，也有新的脚印。我记住的是你愿意继续的那一步。以后再遇到暂停，我们也可以慢慢走回来。'},
+    guardian:{title:'认真守护心愿的你',evidence:'本线已有'+quizzes.length+'个旅程日答对理财一问（允许重试）。',letter:'一路上，你也为知识留下了位置。希望这份愿意多看一眼、多核实一次的认真，继续陪伴你做生活中的选择。'},
+    explorer:{title:'把坚持玩出花样的你',evidence:'本线已完成'+challenges+'个旅程日的存钱挑战。',letter:'你在小挑战里留下了自己的脚印。愿这些轻松的小动作，让下一份心愿也容易开始。'},
+    gentle:{title:'一步一步走到这里的你',evidence:'本线21个旅程日全部完成。',letter:'你为这个心愿留下了21个印记。金额多少不决定这个结局，每一小步都值得被记住。下一段旅程仍然可以按自己的节奏走。'}
+  };
+  const kind=returned?'return':quizzes.length>=7?'guardian':challenges>=7?'explorer':'gentle';
+  const scenes={home:'小家的灯亮了',baby:'给宝贝的小房间有了暖意',travel:'行李箱装进了新的期待',gap:'你为休息留了一份准备',solo:'书桌上多了一份成长的可能',custom:'你的心愿留下了自己的脚印',retirement:'未来花园种下了第一片绿意'};
+  return {kind,...variants[kind],scene:scenes[line],goal:LINES[line].name};
+}
+function endingHTML(){
+  const ending=journeyEnding();
+  return '<section class="completion-ticket" aria-labelledby="endingTitle" data-ending="'+ending.kind+'">'
+    +'<div class="completion-ticket-head"><h3 id="endingTitle">'+escapeHtml(ending.title)+'</h3><span>YOUR OWN ENDING</span></div>'
+    +'<p class="completion-goal">'+escapeHtml(ending.scene)+'</p>'
+    +'<p class="ending-letter">亲爱的你：<br>我们一起走过了「'+escapeHtml(ending.goal)+'」。'+escapeHtml(ending.letter)+'<br>—— 陪你走过这一程的扑满</p>'
+    +'<p class="completion-ticket-note">结局依据：'+escapeHtml(ending.evidence)+'这是成长纪念，不是财务能力或风险评级。</p></section>';
+}
+function officialServiceGuide(line=S.line){
+  const guides={
+    home:['为小家安排资金期限','了解工行储蓄、理财服务，关注预计装修时间与资金取用安排。'],
+    baby:['为家庭了解长期规划','了解工行正式理财与保险服务，先核对家庭支出、保障需求和资金期限。'],
+    travel:['为出行安排近期资金','了解工行资金管理与出行服务，先确认旅行预算的可用时间。'],
+    gap:['为休整保留资金弹性','了解工行资金管理服务，关注流动性，先为生活与应急留足空间。'],
+    solo:['让学习预算有合适去处','了解工行储蓄与理财服务，先核对报名、课程和考试的付款时间。'],
+    custom:['带着自己的心愿了解服务','了解工行正式理财服务，结合实际用途、资金期限和风险承受能力自主选择。'],
+    retirement:['为自己了解养老金融服务','了解工行个人养老金及相关正式服务。先核对参与条件、账户规则、产品风险与领取限制；本线模拟储备不等于已开立个人养老金账户。']
+  };
+  return guides[line];
+}
 function completionHTML(){
   const goal=escapeHtml(LINES[S.line].name);
   const saved=lineSavedAmount();
@@ -2140,18 +2344,29 @@ function completionHTML(){
     +'<div class="completion-phases"><span><b>01—07</b>觉醒</span><span><b>08—14</b>积累</span><span><b>15—21</b>守护</span></div>'
     +'<div class="completion-stats"><dl class="completion-stat"><dd>21<small> / 21</small></dd><dt>旅程打卡</dt></dl><dl class="completion-stat"><dd class="completion-amount">'+amount+'</dd><dt>模拟记录 / 元</dt></dl><dl class="completion-stat"><dd id="completionGold">'+lineGoldBalance()+'</dd><dt>目标金币</dt></dl></div>'
     +'<p class="completion-ticket-note">'+goalNote+'</p></section>'
+    +endingHTML()
     +'<section class="completion-next" aria-labelledby="completionNextTitle">'
-    +'<div class="completion-next-label"><span></span>下一章 · 与工行一起继续</div>'
-    +'<h3 id="completionNextTitle">继续解锁<br>你的工银e生故事</h3>'
-    +'<p>21 天的积累，是一个新的起点。<br>去工行 App 看看，让下一份心愿也有着落。</p>'
-    +'<a class="completion-explore" href="'+ICBC_MOBILE_BANKING_URL+'" target="_blank" rel="noopener noreferrer" aria-describedby="completionExternalNote" onclick="trackCompletionExplore()"><span>点击此处，探索更多工行 App 内容</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'
-    +'<p class="completion-external" id="completionExternalNote">前往工行官方手机银行介绍页 · 新窗口打开</p></section>'
+    +'<div class="completion-next-label"><span></span>下一章 · 工行正式理财服务</div>'
+    +'<h3 id="completionNextTitle">'+escapeHtml(officialServiceGuide()[0])+'</h3>'
+    +'<p>'+escapeHtml(officialServiceGuide()[1])+'</p>'
+    +'<ol class="service-steps"><li>通过工行官方渠道了解服务</li><li>按正式流程完成身份核验、授权与适当性评估</li><li>阅读产品说明、风险、期限和费用后自主决定</li></ol>'
+    +'<p>理财有风险，存款与理财不同；打卡结局不决定产品匹配，也不会自动购买。</p>'
+    +'<a class="completion-explore" href="'+ICBC_MOBILE_BANKING_URL+'" target="_blank" rel="noopener noreferrer" aria-describedby="completionExternalNote" onclick="return openCompletionExplore(event)"><span>前往工行官方渠道，了解理财服务</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'
+    +'<p class="completion-external" id="completionExternalNote">当前入口为工行官方手机银行介绍页 · 非产品购买页 · 新窗口打开</p></section>'
     +'<nav class="completion-actions" aria-label="完成后的其他选择"><button type="button" onclick="jumpFeature(\'calendar\',\'goal-records\')">回看我的 21 天</button><span aria-hidden="true"></span><button type="button" onclick="go(\'#/choose\')">继续其他目标</button></nav>'
     +'<p class="completion-footnote">本页为体验纪念，金币与 i 豆不代表现金或可兑换权益。<br>不向工行传送本页记录；具体服务以官方页面为准。</p>'
     +'<div class="completion-signoff">工银e生 · 陪你把心愿写成日常</div></div>';
 }
 function trackCompletionExplore(){
-  if(isJourneyComplete())trackEvent('completion_explore_clicked',{line:S.line,day:S.day,completed:TOTAL_DAYS,destination:'icbc_mobile_banking'});
+  if(isJourneyComplete())trackEvent('completion_explore_clicked',{line:S.line,day:S.day,completed:TOTAL_DAYS,destination:'icbc_mobile_banking',intent:'formal_financial_services'});
+}
+function openCompletionExplore(event){
+  trackCompletionExplore();
+  if(H5_MODE && PumanH5.emit('puman.openOfficialContent',{resource:'mobile-banking-introduction'})){
+    event?.preventDefault();
+    return false;
+  }
+  return true;
 }
 function renderGrad(){
   const L = LINES[S.line];
@@ -2312,14 +2527,16 @@ function sayBubble(text, face){
   b.textContent = text; b.style.display='block';
   if (face) setPigFace(face);
   clearTimeout(b._h);
-  b._h = setTimeout(()=>{ b.style.display='none'; setPigFace('default'); }, 3000);
+  b._h = setTimeout(()=>{ b.style.display='none'; setPigFace('default'); }, Math.max(4000,Math.min(15000,text.length*180)));
 }
-function pigTalk(){
-  if (!S.atHome){ sayBubble('🧳 我在旅行中，回来给你带纪念品～', 'plead'); playBlip(); return; }
-  const faces = ['happy','surprised','plead'];
-  const f = faces[Math.floor(Math.random()*faces.length)];
-  sayBubble(BUBBLES[Math.floor(Math.random()*BUBBLES.length)], f);
+async function pigTalk(){
+  const line=S.line,day=S.day,contextKey=coachContextKey(line,day);
+  sayBubble('让我看看我们的小脚印…','plead');
   playBlip();
+  const coach=await requestAICoach(day);
+  if(coach && S.line===line && S.day===day && contextKey===coachContextKey(line,day) && $('view-home').classList.contains('active')){
+    sayBubble((coach.provider==='llm'?'':'〔基础陪伴〕')+coach.message,isDone(day)?'happy':'default');
+  }
 }
 function showExclaim(){
   document.getElementById('pigExclaim').style.display='block';
