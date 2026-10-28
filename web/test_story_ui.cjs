@@ -92,7 +92,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH || 'C:/Users/mayzhang/.cach
       assert.deepEqual(endings,['gentle','explorer','guardian','return','gentle']);
       await page.waitForURL('**#/grad');
       assert.match(await page.locator('#gradContent').textContent(),/个人养老金/);
-      assert.match(await page.locator('#gradContent').textContent(),/非产品购买页/);
+      assert.match(await page.locator('#gradContent').textContent(),/工行官方手机银行介绍页/);
       const href=await page.locator('.completion-explore').getAttribute('href');
       assert.equal(new URL(href).hostname,'m.icbc.com.cn');assert.equal(new URL(href).search,'');
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
@@ -102,9 +102,37 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH || 'C:/Users/mayzhang/.cach
         S.line=line;S.completed[line]=Array.from({length:21},(_,i)=>i+1);
         return !!journeyEnding().scene && officialServiceGuide(line).length===2 && completionHTML().includes('endingTitle');
       })),true);
+      // Recommendations remain usable across goals, before/after analysis and offline.
+      const expectedProducts={home:['term','demand'],baby:['term','fund'],travel:['demand','term'],gap:['demand','term'],solo:['term','demand'],custom:['term','wealth'],retirement:['pension','fund']};
+      for(const [line,expected] of Object.entries(expectedProducts)){
+        await page.evaluate(line=>chooseLine(line),line);
+        await page.waitForURL('**#/home');
+        await page.evaluate(()=>jumpFeature('calendar','participation'));
+        await page.locator('#productRecommendations > summary').click();
+        assert.equal(await page.locator('#productRecommendations').getAttribute('open'),'');
+        assert.deepEqual(await page.locator('.product-card').evaluateAll(cards=>cards.map(card=>card.dataset.product)),expected);
+        assert.equal(await page.locator('.product-card:visible').count(),2);
+        assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+      }
+      const entry=page.locator('#productRecommendations');
+      const beforeClick=await page.evaluate(()=>JSON.stringify({completed:S.completed,records:S.lineRecords,rewards:S.rewards,goals:S.lineGoals}));
+      await page.evaluate(()=>{behaviorRevision++;return requestBehaviorState();});
+      assert.equal(await entry.getAttribute('open'),'');
+      await context.route('https://m.icbc.com.cn/**',route=>route.fulfill({contentType:'text/html',body:'Official entry test'}));
+      const popupPromise=page.waitForEvent('popup');
+      await page.locator('.product-official').click();
+      const popup=await popupPromise;
+      await popup.waitForLoadState();
+      assert.equal(popup.url(),href);
+      await popup.close();
+      await page.evaluate(()=>{window.testBridgeMessages=[];window.ICBCAppBridge={postMessage:message=>testBridgeMessages.push(JSON.parse(message))};});
+      await page.locator('.product-official').click();
+      assert.deepEqual(await page.evaluate(()=>testBridgeMessages),[{source:'gongyin-esheng',version:'1.0',type:'puman.openOfficialContent',detail:{resource:'mobile-banking-introduction'}}]);
+      assert.equal(await page.evaluate(()=>JSON.stringify({completed:S.completed,records:S.lineRecords,rewards:S.rewards,goals:S.lineGoals})),beforeClick);
+      if(width===390)await page.locator('#feature-participation').screenshot({path:path.join(temp,'participation-products-mobile.png'),animations:'disabled'});
       for(const request of requests)assert.deepEqual(Object.keys(request).sort(),['completed_days','day']);
       assert.deepEqual(errors,[]);
-      console.log(JSON.stringify({width,retirementSaved:true,oldProgressPreserved:true,checkinOnly:true,fourEndings:true}));
+      console.log(JSON.stringify({width,retirementSaved:true,oldProgressPreserved:true,checkinOnly:true,fourEndings:true,productRecommendations:true,officialEntry:true}));
       await page.waitForFunction(()=>!syncInFlight && !syncPending && coachRequests.size===0);
       await page.evaluate(()=>{clearTimeout(syncTimer);return syncState();});
       await context.close();
@@ -114,6 +142,13 @@ const {chromium}=require(process.env.PLAYWRIGHT_PATH || 'C:/Users/mayzhang/.cach
     await offline.evaluate(()=>pigTalk());
     assert.match(await offline.locator('#feature-ai-companion').textContent(),/基础陪伴/);
     assert.equal(await offline.evaluate(()=>S.aiCoaches.home[1].provider),'rules');
+    await offline.evaluate(()=>jumpFeature('calendar','participation'));
+    await offline.locator('#productRecommendations > summary').click();
+    assert.equal(await offline.locator('.product-card:visible').count(),2);
+    await offline.evaluate(()=>{S.customLine.name='<img src=x onerror="window.injected=true">';syncCustomLine();chooseLine('custom');jumpFeature('calendar','participation');});
+    await offline.locator('#productRecommendations > summary').click();
+    assert.equal(await offline.locator('.product-context img').count(),0);
+    assert.equal(await offline.evaluate(()=>window.injected),undefined);
     await offline.close();
     for(const context of modelInputs){
       assert.deepEqual(Object.keys(context).sort(),['completed','completed_days','day','journey_streak','participation_state','remaining','today_completed']);

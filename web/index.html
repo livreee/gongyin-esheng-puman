@@ -582,6 +582,27 @@ summary:focus-visible,.quick-links button:focus-visible,.cal-cell:focus-visible{
 #view-start .start-bottom .note{color:#B6C4DA}
 .c-form .btn{background:var(--red-deep)}
 .behavior-card .behavior-stat{background:#FAEFE7;color:#814538;border-color:#DFBBA3}
+.product-entry{margin-top:15px;border:1px solid #DEBFA3;border-radius:14px;overflow:hidden;background:#FFF9EF}
+.product-entry>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;padding:17px 14px;cursor:pointer;background:linear-gradient(115deg,#74182D,#982C40);color:#FFF8E8}
+.product-entry>summary::-webkit-details-marker{display:none}
+.product-summary-copy{min-width:0}
+.product-summary-copy b{display:block;font-size:15px;line-height:1.6}
+.product-summary-copy small{display:block;font-size:11px;color:#F0D4C6;line-height:1.8;margin-top:4px}
+.product-badge{display:inline-block;font-size:10px;line-height:1.7;padding:1px 7px;margin-bottom:5px;border:1px solid #DCB773;border-radius:5px;color:#FFE4AA}
+.product-entry-action{flex:none;color:#FFE2A0;font-size:12px;font-weight:700}
+.product-entry-action::after{content:' ＋'}
+.product-entry[open] .product-entry-action::after{content:' −'}
+.product-entry>summary:focus-visible{outline:3px solid #DBA330;outline-offset:-4px}
+.product-panel{padding:14px}
+.product-context{font-size:12px;line-height:1.8;color:#795649;overflow-wrap:anywhere}
+.product-list{display:grid;gap:11px;margin-top:12px}
+.product-card{min-width:0;padding:13px;border:1px solid #E9D6BC;border-radius:11px;background:#FFFDF9}
+.product-card h4{font-size:14px;color:var(--red-deep);line-height:1.7}
+.product-card .product-category{display:inline-block;font-size:10px;line-height:1.6;color:#8A642E;background:#F8ECCF;border-radius:4px;padding:2px 6px;margin-bottom:6px}
+.product-card p{font-size:12px;line-height:1.85;color:#68564B;margin-top:6px}
+.product-card .product-risk{font-size:11px;color:#8C493B;border-top:1px dashed #E8D3C0;margin-top:9px;padding-top:8px}
+.product-panel .completion-explore{margin-top:13px}
+.product-panel .product-footnote{margin-top:9px;font-size:10px;line-height:1.8;color:#876F5F}
 .team-goal .tg-fill{background:linear-gradient(90deg,var(--red-deep),#C87954)}
 .line-card .line-icon,.line-card .tag{box-shadow:2px 2px 0 rgba(120,14,34,.2)}
 
@@ -715,7 +736,7 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
   </div>
   <div class="start-bottom">
     <button class="btn btn-start" onclick="go('#/quiz')">开始我的攒钱计划</button>
-    <div class="note">体验版 · 金额为模拟记录，不连接银行账户，不产生实际扣款。金币与 i 豆为体验奖励，不可提现。</div>
+    <div class="note">体验版 · 模拟记账，无实际扣款。金币与 i 豆为体验奖励，不可提现。</div>
     <div class="backend-status" id="backendStatus" role="status">正在连接进度服务…</div>
   </div>
 </section>
@@ -760,7 +781,7 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
       <div class="custom-form-actions"><button class="btn btn-primary" type="submit">保存自定义目标</button></div>
     </form>
   </section>
-  <div class="line-tip">答题推荐：<b id="quizSuggest" style="color:var(--red)">还没测试</b>。推荐仅供参考，选你喜欢的就好。</div>
+  <div class="line-tip">答题推荐：<b id="quizSuggest" style="color:var(--red)">还没测试</b>。选你喜欢的目标，开启自己的旅程。</div>
 </section>
 
 <!-- ===== 视图：主旅程 ===== -->
@@ -851,7 +872,7 @@ body.completion-active #pigStage,body.completion-active #bgmBtn{display:none}
 <div class="sou-detail" id="souDetail"></div>
 
 <div class="toast" id="toast"></div>
-<div class="compliance hidden" id="compliance">体验版：所有金额均为模拟记录，不连接银行账户，不产生真实交易。金币与 i 豆为体验奖励，不可提现。AI 内容仅供知识学习与习惯参考，不构成投资建议。</div>
+<div class="compliance hidden" id="compliance">体验版 · 模拟记账，无实际扣款；金币与 i 豆为体验奖励，不可提现。理财有风险，投资需谨慎。办理业务请通过工行官方渠道完成相应评估并阅读产品说明。</div>
 
 </div>
 </div>
@@ -1053,7 +1074,7 @@ const HOTSPOTS_2026 = {
   baby:[
     [5,'直播间的育儿清单越看越长，先核对需要，别被限时倒计时推着囤货','为家庭列一份按需购买清单','理性育儿消费'],
     [15,'“育儿补贴客服”让你先交手续费，再共享屏幕领补贴','从官方渠道核实补贴申领信息','不为陌生链接交费或提供验证码'],
-    [16,'AI配音的“育儿专家”推荐高收益教育金，熟悉的声音不代表可信','核实机构资质和正式产品信息','把情感信任与金融判断分开']
+    [16,'AI配音的“育儿专家”推荐高收益教育金，先核实声音来源与专家资质','核实机构资质和正式产品信息','把情感信任与金融判断分开']
   ],
   travel:[
     [6,'Citywalk、追演唱会和远途旅行都很心动，先把门票、交通与住宿加起来','列出一趟出行的完整预算','兴趣消费看总成本'],
@@ -1631,6 +1652,8 @@ function profileQuizKey(){ return PROFILE_VERSION+':'+JSON.stringify(S.quizSel);
 function currentProfile(){
   return S.quizPersonDone && S.aiProfile && S.aiProfile.quizKey===profileQuizKey() ? S.aiProfile : null;
 }
+const PROFILE_NOTE = '结合你的生活选择，提供预算与储蓄习惯建议。理财有风险，投资需谨慎。';
+const COMPANION_NOTE = '扑满根据本目标的打卡状态，陪你走好每一小步。';
 function localProfile(context){
   const habits = [
     ['先存后花型','保留先储蓄的动作，再给日常开支设一个可接受的上限。'],
@@ -1645,7 +1668,7 @@ function localProfile(context){
     title:habit[0]+' · '+LINES[context.line].name, stage:'理财习惯探索',
     focus:focus[context.line], habit:habit[1],
     message:'你希望“'+context.evidence[0].answer+'”，也向往“'+context.evidence[2].answer+'”。关于额外收入，你选择了“'+context.evidence[3].answer+'”，可以试着'+surplus[context.answers[3]],
-    guardrail:'这是金融知识和习惯建议，不构成具体投资推荐。',
+    guardrail:PROFILE_NOTE,
     provider:'rules', context, quizKey:profileQuizKey(), fallback_reason:'offline'
   };
 }
@@ -1660,7 +1683,7 @@ function aiProfileHTML(){
   if(!p) return '<div class="ai-profile-card"><div class="ai-label">我的财富画像</div><p>4 个生活小问题，帮你找到攒钱的起点。没有标准答案，按自己的想法选就好。</p><div class="profile-actions"><button class="btn btn-line" onclick="restartProfileQuiz()">了解我的攒钱习惯</button></div></div>';
   const busy = profilePendingKey===profileQuizKey();
   const evidence = p.context && p.context.evidence || [];
-  const status = busy ? '正在整理你的答案…' : p.fallback_reason==='unavailable' ? 'AI 暂时不可用，先看看基于答题规则的分析。' : p.fallback_reason==='offline' ? '离线答题分析 · 未使用 AI 生成' : '';
+  const status = busy ? '正在整理你的答案…' : p.fallback_reason==='unavailable' ? '当前展示基于答题规则的分析，可稍后更新 AI 画像。' : p.fallback_reason==='offline' ? '离线答题分析' : '';
   return '<div class="ai-profile-card">'
     +'<div class="ai-label">'+(p.provider==='llm'?'AI 财富画像':'财富画像 · 答题分析')+'</div>'
     +(status?'<p class="profile-status" role="status">'+status+'</p>':'')
@@ -1672,7 +1695,7 @@ function aiProfileHTML(){
     +'<details><summary>这份分析来自哪些答案？</summary>'+evidence.map((item,i)=>'<div class="answer-evidence">'+(i+1)+'. '+escapeHtml(item.question)+'<span>'+escapeHtml(item.answer)+'</span></div>').join('')+'</details>'
     +'<div class="profile-actions"><button class="btn btn-line" onclick="restartProfileQuiz()">重新测一测</button>'
     +(API_ENABLED?'<button class="btn btn-line" onclick="requestAIProfile(true)"'+(busy?' disabled':'')+'>'+(busy?'生成中…':'更新画像')+'</button>':'')+'</div>'
-    +'<div class="ai-foot">'+escapeHtml(p.guardrail)+'</div></div>';
+    +'<div class="ai-foot">'+PROFILE_NOTE+'</div></div>';
 }
 async function requestAIProfile(force=false){
   const context = profileContext(S.quizSel);
@@ -1712,6 +1735,31 @@ let behaviorRequestInFlight = false;
 let behaviorRevision = 0;
 let behaviorUnavailable = false;
 function behaviorKey(){ return [S.line, S.day, behaviorRevision].join(':'); }
+function productRecommendationsHTML(){
+  const catalog={
+    demand:{name:'工行活期存款',category:'日常备用',description:'了解日常收支与应急备用金的存取安排，为近期支出留出空间。',focus:'账户使用、存取方式与计息规则。',risk:'利率与计息方式以工行公布的规则为准。'},
+    term:{name:'工行整存整取定期存款',category:'目标储蓄',description:'了解不同存期，把阶段性储蓄安排与目标用款时间对应起来。',focus:'存款期限、到期安排与提前支取规则。',risk:'提前支取会影响利息，请先确认资金使用时间。'},
+    fund:{name:'工行基金定投服务',category:'长期积累',description:'了解按约定周期投入的方式，学习金额、周期与长期资金安排。',focus:'基金类型、风险等级、费用与赎回规则。',risk:'基金净值可能波动并造成本金损失，定投也需承担投资风险。'},
+    wealth:{name:'工行理财服务',category:'资金规划',description:'通过工行正式渠道了解理财产品，比较期限、流动性与风险等级。',focus:'风险评级、产品说明、申赎安排与费用。',risk:'理财产品有本金损失风险，办理前需完成相应风险评估。'},
+    pension:{name:'工行个人养老金服务',category:'养老准备',description:'了解个人养老金资金账户及相关产品，为未来生活规划长期储备。',focus:'参与资格、缴存与税收规则、产品类型及领取条件。',risk:'个人养老金有领取条件，资金使用受到限制；各类产品风险不同，税收优惠与个人实际情况有关。'}
+  };
+  const byGoal={home:['term','demand'],baby:['term','fund'],travel:['demand','term'],gap:['demand','term'],solo:['term','demand'],custom:['term','wealth'],retirement:['pension','fund']};
+  const products=byGoal[S.line] || byGoal.custom;
+  const cards=products.map(id=>{
+    const p=catalog[id];
+    return '<article class="product-card" data-product="'+id+'"><span class="product-category">'+p.category+'</span><h4>'+p.name+'</h4><p>'+p.description+'</p><p><b>了解重点：</b>'+p.focus+'</p><p class="product-risk">'+p.risk+'</p></article>';
+  }).join('');
+  return '<details class="product-entry" id="productRecommendations">'
+    +'<summary><span class="product-summary-copy"><span class="product-badge">模拟体验</span><b>工行产品推荐</b><small>从生活目标出发，了解工行正式服务</small></span><span class="product-entry-action">查看</span></summary>'
+    +'<div class="product-panel"><p class="product-context">围绕你的「'+escapeHtml(LINES[S.line].name)+'」目标，探索以下产品与服务方向。</p>'
+    +'<div class="product-list">'+cards+'</div>'
+    +'<a class="completion-explore product-official" href="'+ICBC_MOBILE_BANKING_URL+'" target="_blank" rel="noopener noreferrer" aria-describedby="productOfficialNote" onclick="return openProductExplore(event)"><span>前往工行官方渠道了解</span><span aria-hidden="true">→</span></a>'
+    +'<p class="product-footnote" id="productOfficialNote">工行官方手机银行介绍页 · 新窗口打开。具体产品、利率、费用与办理条件以工行官方信息为准。投资类产品请先完成风险评估，仔细阅读产品说明。</p></div></details>';
+}
+function openProductExplore(event){
+  trackEvent('product_recommendation_explore_clicked',{line:S.line,day:S.day,mode:'simulation',destination:'icbc_mobile_banking'});
+  return openOfficialBanking(event);
+}
 function behaviorCardHTML(){
   const b = S.behavior && S.behavior.line===S.line && S.behavior.day === S.day ? S.behavior : null;
   if(!API_ENABLED || !b){
@@ -1726,7 +1774,7 @@ function behaviorCardHTML(){
     +'<div class="behavior-head"><b>'+escapeHtml(stateText)+'</b><span>趋势：'+escapeHtml(trendText)+'</span></div>'
     +'<p>'+escapeHtml(advice[b.state] || advice.activation)+'</p>'
     +'<div class="behavior-stats"><span class="behavior-stat">连续完成 '+Number(b.streak || 0)+' 天</span><span class="behavior-stat">活跃 '+Number(b.active_days || 0)+' 天</span><span class="behavior-stat">完成 '+Number(b.completed_days || 0)+' 天</span></div>'
-    +'<div class="behavior-foot">'+(behaviorUnavailable ? '暂时无法更新，先显示上次的分析。' : '根据本目标的活动记录估计，仅供习惯回顾，不是信用或投资风险评估。')+'</div></div>';
+    +'<div class="behavior-foot">'+(behaviorUnavailable ? '暂时无法更新，先显示上次的分析。' : '根据本目标的打卡、答题和记账记录，回顾各旅程日的参与节奏。')+'</div></div>';
 }
 async function requestBehaviorState(){
   if(!API_ENABLED || behaviorRequestInFlight) return;
@@ -1786,7 +1834,7 @@ function renderChoose(){
   const total=Object.keys(LINES).reduce((sum,id)=>sum+lineSavedAmount(id),0);
   const legacy=S.records.filter(item=>!Object.hasOwn(LINES,item.line)).reduce((sum,item)=>sum+(Number(item.amount)||0),0);
   $('portfolioSummary').innerHTML='累计记录 <b>'+total.toFixed(2)+' 元</b> · 共 '+goldBalance()+' 金币'
-    +'<small>模拟记账，不代表银行余额；每笔金额只计入对应目标。'+(legacy?'另有 '+legacy.toFixed(2)+' 元历史记录未关联目标，仍为你保留。':'')+'</small>';
+    +'<small>模拟记账 · 每笔金额计入对应目标。'+(legacy?'另有 '+legacy.toFixed(2)+' 元历史记录未关联目标，仍为你保留。':'')+'</small>';
   $('aiProfileBox').innerHTML = aiProfileHTML();
   if(S.quizPersonDone && !currentProfile()) requestAIProfile();
 }
@@ -1815,7 +1863,7 @@ function lineGoalHTML(){
     +'<div class="goal-total-actions"><button class="btn btn-primary" type="submit">'+(goal>0?'更新目标':'保存目标')+'</button>'
     +(goal>0 && S.line!=='custom'?'<button class="btn btn-line" type="button" onclick="clearLineGoal()">清除</button>':'')
     +'</div></form>'
-    +'<p class="goal-total-hint">只记下目标金额用来对比攒钱进度，不代表银行账户余额。</p>'
+    +'<p class="goal-total-hint">设置目标金额，查看每次记录带来的攒钱进度。</p>'
     +'</div>';
 }
 function saveLineGoal(event){
@@ -1919,7 +1967,7 @@ function renderHome(){
     taskContent = '<div class="task-card">'
       +'<div class="task-title">'+escapeHtml(day.task)+'</div>'
       +'<div class="task-sub">'+escapeHtml(day.idea)+'</div>'
-      +'<div class="task-zone" id="taskZone">'+taskZone.html+'</div><p class="ai-foot">体验任务会生成模拟金额，不读取账单，也不会实际扣款。</p></div>';
+      +'<div class="task-zone" id="taskZone">'+taskZone.html+'</div><p class="ai-foot">完成任务，留下今天的模拟记账记录。</p></div>';
   }
   html += '<div class="daily-grid">'
     +dailyPanel('daily-task',S.line==='custom'?'今日存钱日记':'今日玩法',taskContent)
@@ -1943,7 +1991,7 @@ function aiCoachHTML(day){
     +'<h3>'+escapeHtml(c.title)+'</h3><p>'+escapeHtml(c.message)+'</p>'
     +'<p><b>今天可以：</b>'+escapeHtml(c.action)+'</p>'
     +'<button class="btn btn-line" onclick="pigTalk()">再听扑满说说</button>'
-    +'<div class="ai-foot">'+(c.provider==='llm'?'AI生成 · 仅使用打卡状态':'基础陪伴 · 本次未使用AI生成')+'<br>'+escapeHtml(c.risk_note)+'</div></div>';
+    +'<div class="ai-foot">'+(c.provider==='llm'?'AI 生成 · 打卡陪伴':'基础陪伴 · 打卡反馈')+'<br>'+COMPANION_NOTE+'</div></div>';
 }
 function checkinPayload(line,day){return {day,completed_days:[...S.completed[line]].sort((a,b)=>a-b)};}
 function localCoach(day,days){
@@ -1951,7 +1999,7 @@ function localCoach(day,days){
   return {title:'第'+day+'天 · 扑满想对你说',
     message:all?'21个旅程日都留下了脚印，来看看属于你的结局吧！':done?'第'+day+'步完成啦！我收好了你的'+days.length+'个打卡印记，今天可以安心休息。':'我是扑满，已经帮你收好'+days.length+'个打卡印记。第'+day+'步等着你，按自己的节奏来就好。',
     action:all?'打开21天结局。':done?'准备好再开启下一步。':'愿意的话，先读一读今天的小故事。',
-    risk_note:'只根据打卡状态陪伴，不判断你的财务状况。'};
+    risk_note:COMPANION_NOTE};
 }
 async function requestAICoach(day){
   const line=S.line,key=line+':'+day,contextKey=coachContextKey(line,day);
@@ -2007,7 +2055,7 @@ function buildTaskZone(mode, d){
     case 'guess': return {title:'回想一下最近的花费', sub:'先估一估，再回看记录。了解自己的花钱节奏就好。', html:'<button class="box-item" onclick="doTask(\'guess\','+d+')"><b>体验预算打卡</b><span>不必猜准，从留意开始</span></button>'};
     case 'freeze': return {title:'给愿望留点预算', sub:'不必苛刻地节省，想想哪笔非必要开支可以缓一缓。', html:'<button class="box-item" onclick="doTask(\'freeze\','+d+')"><b>记录今天的小选择</b><span>照顾生活，也照顾心愿</span></button>'};
     case 'calc': return {title:'多看一眼总花费', sub:'除了标价，也留意附加费用，想清楚再做选择。', html:'<button class="box-item" onclick="doTask(\'calc\','+d+')"><b>体验成本打卡</b><span>为认真比较的自己记一笔</span></button>'};
-    case 'temp': return {title:'给存钱一点仪式感', sub:'把气温当作灵感，体验一次有趣的小额记录。', html:'<button class="box-item" onclick="doTask(\'temp\','+d+')"><b>体验气温存钱</b><span>模拟金额，未连接天气服务</span></button>'};
+    case 'temp': return {title:'给存钱一点仪式感', sub:'把气温当作灵感，体验一次有趣的小额记录。', html:'<button class="box-item" onclick="doTask(\'temp\','+d+')"><b>体验气温存钱</b><span>以示例气温生成模拟金额</span></button>'};
     case 'roll': return {title:'掷出今天的小目标', sub:'用一次掷骰子决定模拟金额，让记录轻松一点。', html:'<button class="box-item" onclick="doTask(\'roll\','+d+')"><b>掷骰子并记录</b><span>点数 × 10 元</span></button>'};
   }
 }
@@ -2072,7 +2120,7 @@ function customDiaryHTML(day){
     +'<label>今天计划存（元）<input id="customTarget" type="number" min="0" max="1000000" step="0.01" value="'+target+'" required></label>'
     +'<label>本次记账（元）<input id="customAmount" type="number" min="0" max="1000000" step="0.01" value="'+amount+'"'+(done?' readonly':'')+' required></label>'
     +'<label>今天的日记<textarea id="customDiaryNote" maxlength="240" placeholder="今天为心愿做了什么？一句话也值得记下来。">'+escapeHtml(entry.note || '')+'</textarea></label>'
-    +'<p class="ai-foot">仅记录金额，不发生实际转账。保存草稿不会计入进度。</p>'
+    +'<p class="ai-foot">模拟记账 · 确认打卡后计入进度，草稿可随时编辑。</p>'
     +(done?'<div class="custom-target">✓ 已记录 '+Number(entry.amount||0).toFixed(2)+' 元。还可以修改计划和日记，金额不再变动。</div>':'')
     +'<button class="btn btn-line" type="submit">'+(done?'更新日记':'保存计划与日记')+'</button>'
     +(!done?'<button class="btn btn-primary" type="button" onclick="saveCustomDiary('+day+',true)">确认记账并打卡</button>':'')+'</form>';
@@ -2135,7 +2183,7 @@ function savingsCardHTML(){
   return '<div class="scene-card">'
     +'<div class="scene-label"><span class="stage-name">'+(S.line==='custom'?'金额目标进度':'旅程进度 · '+L.scene[stageIdx])+'</span><span class="pct">'+pct+'%</span></div>'
     +'<div class="scene-visual">'+sceneSvg(S.line,done,L.color)+'</div>'
-    +'<div class="scene-stage"><b>已打卡 '+done+' 天</b><span>'+(S.line==='custom'?saved.toFixed(2)+' / '+customGoal.toFixed(2)+' 元':'已记录 '+saved.toFixed(2)+' 元')+'</span></div><p class="card-note">'+(S.line==='custom'?'按已记录金额计算，仅为模拟记账。':'百分比按打卡天数计算，不代表存款或收益。')+'</p></div>';
+    +'<div class="scene-stage"><b>已打卡 '+done+' 天</b><span>'+(S.line==='custom'?saved.toFixed(2)+' / '+customGoal.toFixed(2)+' 元':'已记录 '+saved.toFixed(2)+' 元')+'</span></div><p class="card-note">'+(S.line==='custom'?'按本目标的模拟记账金额计算进度。':'按本目标已完成的打卡天数计算进度。')+'</p></div>';
 }
 
 /* ========== 日历 ========== */
@@ -2157,7 +2205,7 @@ function renderCalendar(){
   return viewIntro('把坚持，留在日历里','回看走过的日子，也看看正在积累的改变。','02')
     +featureCard('calendar-days','21 天日历','点选天数，继续任务或回看已完成的记录。',calendar,'calendar')
     +featureCard('savings-progress','攒钱进度','每一次坚持，都让生活目标更近一点。',savingsCardHTML(),'coin')
-    +featureCard('participation','我的参与节奏','从记录中了解自己，找到舒服的坚持方式。',behaviorCardHTML(),'chart')
+    +featureCard('participation','我的参与节奏','从记录中了解自己，找到舒服的坚持方式。',behaviorCardHTML()+productRecommendationsHTML(),'chart')
     +featureCard('goal-records',S.line==='custom'?'我的存钱日记':'我的记账记录','留住为这个目标积累的每一笔。',goalRecordsHTML(),'note');
 }
 function goalRecordsHTML(){
@@ -2268,7 +2316,7 @@ function renderSquad(){
       +'<span class="squad-name">'+m.n+' '+m.tag+'</span>'
       +'<span class="squad-bar"><i style="width:'+(m.c/21*100)+'%;background:'+m.col+'"></i></span>'
       +'<span class="squad-num">'+m.c+'/21天</span></div>').join('')+'</div></div>';
-  const invite = '<p class="card-note">目前可以体验模拟小队，暂不支持邀请好友、匹配或私聊。你的记账金额不会显示在小队中。</p>'
+  const invite = '<p class="card-note">模拟小队展示各自的打卡进度。好友邀请功能筹备中。</p>'
     +'<button class="btn btn-line" onclick="toast(\'好友邀请还未开放，可以先体验模拟小队。\')">好友邀请 · 暂未开放</button>';
   return viewIntro('有人同行，也有自己的节奏','模拟小队体验 · 一起坚持，不比金额。','03')
     +featureCard('team-goal','小队共同目标','看看大家合在一起的打卡进度。',teamGoalHTML(),'chart')
@@ -2293,7 +2341,7 @@ function journeyEnding(line=S.line){
     return:{title:'会重新出发的你',evidence:'本线记录显示，你曾间隔至少48小时后再次完成打卡。',letter:'有过间隔，也有新的脚印。我记住的是你愿意继续的那一步。以后再遇到暂停，我们也可以慢慢走回来。'},
     guardian:{title:'认真守护心愿的你',evidence:'本线已有'+quizzes.length+'个旅程日答对理财一问（允许重试）。',letter:'一路上，你也为知识留下了位置。希望这份愿意多看一眼、多核实一次的认真，继续陪伴你做生活中的选择。'},
     explorer:{title:'把坚持玩出花样的你',evidence:'本线已完成'+challenges+'个旅程日的存钱挑战。',letter:'你在小挑战里留下了自己的脚印。愿这些轻松的小动作，让下一份心愿也容易开始。'},
-    gentle:{title:'一步一步走到这里的你',evidence:'本线21个旅程日全部完成。',letter:'你为这个心愿留下了21个印记。金额多少不决定这个结局，每一小步都值得被记住。下一段旅程仍然可以按自己的节奏走。'}
+    gentle:{title:'一步一步走到这里的你',evidence:'本线21个旅程日全部完成。',letter:'你为这个心愿留下了21个印记，每一小步都值得被记住。下一段旅程仍然可以按自己的节奏走。'}
   };
   const kind=returned?'return':quizzes.length>=7?'guardian':challenges>=7?'explorer':'gentle';
   const scenes={home:'小家的灯亮了',baby:'给宝贝的小房间有了暖意',travel:'行李箱装进了新的期待',gap:'你为休息留了一份准备',solo:'书桌上多了一份成长的可能',custom:'你的心愿留下了自己的脚印',retirement:'未来花园种下了第一片绿意'};
@@ -2305,7 +2353,7 @@ function endingHTML(){
     +'<div class="completion-ticket-head"><h3 id="endingTitle">'+escapeHtml(ending.title)+'</h3><span>YOUR OWN ENDING</span></div>'
     +'<p class="completion-goal">'+escapeHtml(ending.scene)+'</p>'
     +'<p class="ending-letter">亲爱的你：<br>我们一起走过了「'+escapeHtml(ending.goal)+'」。'+escapeHtml(ending.letter)+'<br>—— 陪你走过这一程的扑满</p>'
-    +'<p class="completion-ticket-note">结局依据：'+escapeHtml(ending.evidence)+'这是成长纪念，不是财务能力或风险评级。</p></section>';
+    +'<p class="completion-ticket-note">结局依据：'+escapeHtml(ending.evidence)+'</p></section>';
 }
 function officialServiceGuide(line=S.line){
   const guides={
@@ -2315,7 +2363,7 @@ function officialServiceGuide(line=S.line){
     gap:['为休整保留资金弹性','了解工行资金管理服务，关注流动性，先为生活与应急留足空间。'],
     solo:['让学习预算有合适去处','了解工行储蓄与理财服务，先核对报名、课程和考试的付款时间。'],
     custom:['带着自己的心愿了解服务','了解工行正式理财服务，结合实际用途、资金期限和风险承受能力自主选择。'],
-    retirement:['为自己了解养老金融服务','了解工行个人养老金及相关正式服务。先核对参与条件、账户规则、产品风险与领取限制；本线模拟储备不等于已开立个人养老金账户。']
+    retirement:['为自己了解养老金融服务','了解工行个人养老金及相关正式服务，核对参与条件、账户规则、产品风险与领取限制。']
   };
   return guides[line];
 }
@@ -2329,8 +2377,8 @@ function completionHTML(){
   }).join('');
   const target=lineGoalAmount();
   const goalNote=target>0
-    ? (saved>=target?'本次记录已达到设定金额；与真实银行余额无关。':'距离设定金额还差 '+(target-saved).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})+' 元；完成旅程不等于达成金额目标。')
-    : '金额仅为本目标的模拟记录，不代表银行余额。';
+    ? (saved>=target?'本目标的模拟记录已达到设定金额。':'距离设定金额还差 '+(target-saved).toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})+' 元，按自己的节奏继续积累。')
+    : '汇总本目标的模拟记账金额。';
   return '<div class="completion-page">'
     +'<header class="completion-hero" aria-labelledby="completionTitle">'
     +'<div class="completion-eyebrow">EVERY LITTLE STEP COUNTS</div>'
@@ -2350,11 +2398,11 @@ function completionHTML(){
     +'<h3 id="completionNextTitle">'+escapeHtml(officialServiceGuide()[0])+'</h3>'
     +'<p>'+escapeHtml(officialServiceGuide()[1])+'</p>'
     +'<ol class="service-steps"><li>通过工行官方渠道了解服务</li><li>按正式流程完成身份核验、授权与适当性评估</li><li>阅读产品说明、风险、期限和费用后自主决定</li></ol>'
-    +'<p>理财有风险，存款与理财不同；打卡结局不决定产品匹配，也不会自动购买。</p>'
+    +'<p>理财有风险，投资需谨慎。请结合资金用途、期限与风险承受能力，阅读产品说明后自主选择。</p>'
     +'<a class="completion-explore" href="'+ICBC_MOBILE_BANKING_URL+'" target="_blank" rel="noopener noreferrer" aria-describedby="completionExternalNote" onclick="return openCompletionExplore(event)"><span>前往工行官方渠道，了解理财服务</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>'
-    +'<p class="completion-external" id="completionExternalNote">当前入口为工行官方手机银行介绍页 · 非产品购买页 · 新窗口打开</p></section>'
+    +'<p class="completion-external" id="completionExternalNote">工行官方手机银行介绍页 · 新窗口打开</p></section>'
     +'<nav class="completion-actions" aria-label="完成后的其他选择"><button type="button" onclick="jumpFeature(\'calendar\',\'goal-records\')">回看我的 21 天</button><span aria-hidden="true"></span><button type="button" onclick="go(\'#/choose\')">继续其他目标</button></nav>'
-    +'<p class="completion-footnote">本页为体验纪念，金币与 i 豆不代表现金或可兑换权益。<br>不向工行传送本页记录；具体服务以官方页面为准。</p>'
+    +'<p class="completion-footnote">成长纪念 · 金币与 i 豆为体验奖励。<br>正式服务的规则与办理条件以工行官方页面为准。</p>'
     +'<div class="completion-signoff">工银e生 · 陪你把心愿写成日常</div></div>';
 }
 function trackCompletionExplore(){
@@ -2362,6 +2410,9 @@ function trackCompletionExplore(){
 }
 function openCompletionExplore(event){
   trackCompletionExplore();
+  return openOfficialBanking(event);
+}
+function openOfficialBanking(event){
   if(H5_MODE && PumanH5.emit('puman.openOfficialContent',{resource:'mobile-banking-introduction'})){
     event?.preventDefault();
     return false;
@@ -2391,8 +2442,8 @@ function renderGrad(){
     +(S.souvenirs.length ? S.souvenirs.map(i=>'<span class="gs-emoji" title="'+SOUVENIRS[i].name+'">'+SOUVENIRS[i].emoji+'</span>').join('') : '<span class="gs-emoji">🌱</span>')
     +'</div>'
     +'<div class="story-card"><div class="story-label">这一阶段的收获</div>'
-    +'<div class="story-text">这一趟旅程，你完成了'+done+'次打卡，累计记录 '+lineSavedAmount().toFixed(2)+' 元。'+(S.line==='custom'?'目标金额 '+S.customLine.goal.toFixed(2)+' 元，还差 '+Math.max(0,S.customLine.goal-lineSavedAmount()).toFixed(2)+' 元。':'')+'以上均为模拟记账，不代表银行实际资金到账。</div>'
-    +'<p class="card-note">金币与 i 豆仅为体验奖励，不代表现金或可兑换权益。</p></div>'
+    +'<div class="story-text">这一趟旅程，你完成了'+done+'次打卡，累计模拟记账 '+lineSavedAmount().toFixed(2)+' 元。'+(S.line==='custom'?'目标金额 '+S.customLine.goal.toFixed(2)+' 元，还差 '+Math.max(0,S.customLine.goal-lineSavedAmount()).toFixed(2)+' 元。':'')+'</div>'
+    +'<p class="card-note">每次打卡都为你积累金币与 i 豆体验奖励。</p></div>'
     +'<div class="next-card"><h4>接下来，按自己的节奏继续</h4><p>21 天是一段记录，不是目标的终点。可以回看“'+escapeHtml(L.name)+'”的日记与打卡，也可以切换到其他目标，之前的积累会为你保留。</p>'
     +'<div class="chips"><span class="chip">回看打卡</span><span class="chip">整理记录</span><span class="chip">继续其他目标</span></div></div>'
     +'<button class="btn btn-primary" style="margin-top:16px" onclick="go(\'#/home\')">回到我的旅程</button>';
@@ -2666,7 +2717,7 @@ function challengeCardHTML(d, done){
   return '<div class="challenge-card"><div class="c-title">🎲 今日存钱挑战</div><div class="c-desc">'+ch.desc+'</div>'
     + (doneCh
       ? '<div class="mini" style="color:var(--green);font-weight:700">✓ 今天已记录，又为心愿留下一笔。</div>'
-      : '<div class="c-form"><input type="number" id="challengeInput" aria-label="本次挑战金额，单位元" value="'+ch.amount+'" step="0.01" min="0"><button class="btn" onclick="doChallenge('+d+')">记录这笔金额</button></div><p class="ai-foot">金额可调整。仅模拟记账，不实际扣款；完成后金币 +1。</p>')
+      : '<div class="c-form"><input type="number" id="challengeInput" aria-label="本次挑战金额，单位元" value="'+ch.amount+'" step="0.01" min="0"><button class="btn" onclick="doChallenge('+d+')">记录这笔金额</button></div><p class="ai-foot">模拟记账 · 金额可调整，完成后金币 +1。</p>')
     + '</div>';
 }
 function doChallenge(d){

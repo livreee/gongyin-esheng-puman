@@ -183,7 +183,7 @@ def _profile_fallback(payload: dict[str, Any]) -> dict[str, Any]:
         "focus": focus,
         "habit": habit,
         "message": f"你希望“{payload['evidence'][0]['answer']}”，也向往“{payload['evidence'][2]['answer']}”。" + message + surplus,
-        "guardrail": "这是金融知识和习惯建议，不构成具体投资推荐。",
+        "guardrail": "结合你的生活选择，提供预算与储蓄习惯建议。理财有风险，投资需谨慎。",
     }
 
 
@@ -251,7 +251,7 @@ def _coach_fallback(context: dict[str, Any]) -> dict[str, str]:
         action = "读一读今日剧情，按自己的节奏完成第一次打卡。"
     return {
         "title": f"第{day}天 · 扑满想对你说", "message": message,
-        "action": action, "risk_note": "只根据打卡状态陪伴，不判断你的财务状况。",
+        "action": action, "risk_note": "扑满根据本目标的打卡状态，陪你走好每一小步。",
     }
 
 
